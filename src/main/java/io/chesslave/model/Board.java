@@ -16,10 +16,16 @@ public class Board {
         return new Square(col, row);
     }
 
+    public Square square(String coordinates) {
+        Ensure.isTrue(coordinates.length() == 2, "bad coordinate %s", coordinates);
+        final String coo = coordinates.toLowerCase();
+        return new Square(coo.charAt(0) - 'a', coo.charAt(1) - '1');
+    }
+
     public class Square {
 
-        private final int col;
-        private final int row;
+        public final int col;
+        public final int row;
 
         private Square(int col, int row) {
             Ensure.isTrue(0 <= col && col < size, "illegal column %d", col);
