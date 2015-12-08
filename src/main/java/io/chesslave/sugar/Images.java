@@ -8,9 +8,9 @@ import java.util.function.Predicate;
 
 public abstract class Images {
 
-    public static BufferedImage read(Class<?> clazz, String path) {
+    public static BufferedImage read(String path) {
         try {
-            return ImageIO.read(clazz.getResource(path));
+            return ImageIO.read(Images.class.getResource(path));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -88,32 +88,17 @@ public abstract class Images {
         return image.getSubimage(left, top, width, height);
     }
 
-    public static BufferedImage cropWhile(BufferedImage image, Predicate<Integer> predicate) {
-        final int middleY = image.getHeight() / 2;
-        final int middleX = image.getWidth() / 2;
-
-        int left = 0;
-        while (predicate.test(image.getRGB(left, middleY))) {
-            left++;
+    public static boolean areEquals(BufferedImage fst, BufferedImage snd) {
+        if (fst.getWidth() != snd.getWidth() || fst.getHeight() != snd.getHeight()) {
+            return false;
         }
-
-        int right = image.getWidth() - 1;
-        while (predicate.test(image.getRGB(right, middleY))) {
-            right--;
+        for (int x = 0; x < fst.getWidth(); ++x) {
+            for (int y = 0; y < fst.getHeight(); ++y) {
+                if (fst.getRGB(x, y) != snd.getRGB(x, y)) {
+                    return false;
+                }
+            }
         }
-
-        int top = 0;
-        while (predicate.test(image.getRGB(middleX, top))) {
-            top++;
-        }
-
-        int bottom = image.getHeight() - 1;
-        while (predicate.test(image.getRGB(middleX, bottom))) {
-            bottom--;
-        }
-
-        final int width = right - left + 1;
-        final int height = bottom - top + 1;
-        return image.getSubimage(left, top, width, height);
+        return true;
     }
 }

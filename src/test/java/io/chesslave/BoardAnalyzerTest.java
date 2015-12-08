@@ -11,7 +11,7 @@ public class BoardAnalyzerTest {
 
     @Test
     public void init() {
-        final BufferedImage userImage = Images.read(getClass(), "/images/initial-board-with-background.png");
+        final BufferedImage userImage = Images.read("/images/initial-board-with-background.png");
         final BoardConfiguration conf = new BoardAnalyzer().analyze(userImage);
         conf.save(new File("target"));
     }

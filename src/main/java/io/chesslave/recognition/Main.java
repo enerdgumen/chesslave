@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException, MalformedURLException {
         API.browse(new URL("http://www.chess.com/analysis-board-editor"));
-        final BufferedImage initialBoardImage = Images.read(Main.class, "sample/initial-board.png");
+        final BufferedImage initialBoardImage = Images.read("/io/chesslave/recognition/sample/initial-board.png");
         final BoardRecogniser boardRecogniser = new BoardRecogniser(initialBoardImage);
         final PositionRecogniser positionRecogniser = new PositionRecogniser(new PieceRecogniser(Board.standard));
         while (true) {

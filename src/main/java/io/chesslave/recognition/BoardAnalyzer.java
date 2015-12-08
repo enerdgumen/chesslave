@@ -34,13 +34,13 @@ public class BoardAnalyzer {
 
     private static BufferedImage cropBoard(BufferedImage image) {
         final int bgColor = image.getRGB(0, 0);
-        final BufferedImage boardImage = Images.cropWhile(image, color -> color == bgColor);
+        final BufferedImage boardImage = Images.crop(image, color -> color == bgColor);
         final int cellWidth = boardImage.getWidth() / 8;
         final int cellHeight = boardImage.getHeight() / 8;
         final int whiteColor = boardImage.getRGB(cellWidth / 2, (int) (cellHeight * 4.5));
         final int blackColor = boardImage.getRGB(cellWidth / 2, (int) (cellHeight * 3.5));
         Ensure.isTrue(whiteColor != blackColor, "White and black cells should be different, found %s", whiteColor);
-        return Images.cropWhile(boardImage, color -> color != whiteColor && color != blackColor);
+        return Images.crop(boardImage, color -> color != whiteColor && color != blackColor);
     }
 
     private static BufferedImage cropPiece(BufferedImage boardImage, Board.Square square) {
