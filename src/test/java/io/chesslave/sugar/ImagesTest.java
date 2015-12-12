@@ -2,7 +2,9 @@ package io.chesslave.sugar;
 
 import org.junit.Assert;
 import org.junit.Test;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class ImagesTest {
 
@@ -20,5 +22,13 @@ public class ImagesTest {
         final BufferedImage got = Images.crop(input, color -> color == input.getRGB(0, 0));
         final BufferedImage expected = Images.read("/images/crop/cropped-knight.png");
         Assert.assertEquals(true, Images.areEquals(expected, got));
+    }
+
+    @Test
+    public void fillingOuterBackground() {
+        final BufferedImage image = Images.read("/images/fillOuterBackground/queen.png");
+        Images.fillOuterBackground(image, Color.green.getRGB());
+        final BufferedImage expected = Images.read("/images/fillOuterBackground/queen-filled.png");
+        Assert.assertEquals(true, Images.areEquals(expected, image));
     }
 }

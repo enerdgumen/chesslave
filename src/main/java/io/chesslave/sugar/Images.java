@@ -25,67 +25,118 @@ public abstract class Images {
     }
 
     public static BufferedImage crop(BufferedImage image, Predicate<Integer> predicate) {
-        boolean acceptLine;
-
         int top = 0;
-        acceptLine = true;
-        while (acceptLine) {
-            for (int x = 0; x < image.getWidth(); ++x) {
-                if (!predicate.test(image.getRGB(x, top))) {
-                    acceptLine = false;
-                    break;
+        {
+            boolean accept = true;
+            while (accept) {
+                for (int x = 0; x < image.getWidth(); ++x) {
+                    if (!predicate.test(image.getRGB(x, top))) {
+                        accept = false;
+                        break;
+                    }
+                }
+                if (accept) {
+                    ++top;
                 }
             }
-            if (acceptLine) {
-                ++top;
-            }
         }
-
         int left = 0;
-        acceptLine = true;
-        while (acceptLine) {
-            for (int y = top; y < image.getHeight(); ++y) {
-                if (!predicate.test(image.getRGB(left, y))) {
-                    acceptLine = false;
-                    break;
+        {
+            boolean accept = true;
+            while (accept) {
+                for (int y = top; y < image.getHeight(); ++y) {
+                    if (!predicate.test(image.getRGB(left, y))) {
+                        accept = false;
+                        break;
+                    }
+                }
+                if (accept) {
+                    ++left;
                 }
             }
-            if (acceptLine) {
-                ++left;
-            }
         }
-
         int right = image.getWidth() - 1;
-        acceptLine = true;
-        while (acceptLine) {
-            for (int y = top; y < image.getHeight(); ++y) {
-                if (!predicate.test(image.getRGB(right, y))) {
-                    acceptLine = false;
-                    break;
+        {
+            boolean accept = true;
+            while (accept) {
+                for (int y = top; y < image.getHeight(); ++y) {
+                    if (!predicate.test(image.getRGB(right, y))) {
+                        accept = false;
+                        break;
+                    }
+                }
+                if (accept) {
+                    --right;
                 }
             }
-            if (acceptLine) {
-                --right;
-            }
         }
-
         int bottom = image.getHeight() - 1;
-        acceptLine = true;
-        while (acceptLine) {
-            for (int x = left; x <= right; ++x) {
-                if (!predicate.test(image.getRGB(x, bottom))) {
-                    acceptLine = false;
-                    break;
+        {
+            boolean accept = true;
+            while (accept) {
+                for (int x = left; x <= right; ++x) {
+                    if (!predicate.test(image.getRGB(x, bottom))) {
+                        accept = false;
+                        break;
+                    }
+                }
+                if (accept) {
+                    --bottom;
                 }
             }
-            if (acceptLine) {
-                --bottom;
-            }
         }
-
         final int width = right - left + 1;
         final int height = bottom - top + 1;
         return image.getSubimage(left, top, width, height);
+    }
+
+    public static BufferedImage fillOuterBackground(BufferedImage image, int newColor) {
+        final int oldColor = image.getRGB(0, 0);
+        // top -> bottom
+        for (int x = 0; x < image.getWidth(); ++x) {
+            for (int y = 0; y < image.getHeight(); ++y) {
+                final int color = image.getRGB(x, y);
+                if (color == oldColor) {
+                    image.setRGB(x, y, newColor);
+                } else if (color != newColor) {
+                    break;
+                }
+            }
+        }
+        // bottom -> top
+        for (int x = 0; x < image.getWidth(); ++x) {
+            for (int y = image.getHeight() - 1; y >= 0; --y) {
+                final int color = image.getRGB(x, y);
+                if (color == oldColor) {
+                    image.setRGB(x, y, newColor);
+                } else if (color != newColor) {
+                    break;
+                }
+            }
+        }
+        // left -> right
+        for (int y = 0; y < image.getHeight(); ++y) {
+            for (int x = 0; x < image.getWidth(); ++x) {
+                final int color = image.getRGB(x, y);
+                if (color == oldColor) {
+                    image.setRGB(x, y, newColor);
+                } else if (color != newColor) {
+                    break;
+                }
+            }
+        }
+        // right -> left
+        for (int y = 0; y < image.getHeight(); ++y) {
+            for (int x = image.getWidth() - 1; x >= 0; --x) {
+                final int color = image.getRGB(x, y);
+                if (color == oldColor) {
+                    image.setRGB(x, y, newColor);
+                } else if (color != newColor) {
+                    break;
+                }
+            }
+        }
+        return image;
     }
 
     public static boolean areEquals(BufferedImage fst, BufferedImage snd) {
