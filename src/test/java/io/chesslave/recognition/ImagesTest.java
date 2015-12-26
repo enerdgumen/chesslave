@@ -1,10 +1,10 @@
-package io.chesslave.sugar;
+package io.chesslave.recognition;
 
+import io.chesslave.recognition.Images;
 import org.junit.Assert;
 import org.junit.Test;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class ImagesTest {
 

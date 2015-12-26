@@ -1,4 +1,4 @@
-package io.chesslave.sugar;
+package io.chesslave.recognition;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

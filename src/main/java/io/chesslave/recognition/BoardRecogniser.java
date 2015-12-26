@@ -1,6 +1,6 @@
 package io.chesslave.recognition;
 
-import io.chesslave.sugar.Ensure;
+import io.chesslave.Ensure;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.function.Supplier;

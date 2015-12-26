@@ -1,4 +1,4 @@
-package io.chesslave.sugar;
+package io.chesslave;
 
 public abstract class Ensure {
 

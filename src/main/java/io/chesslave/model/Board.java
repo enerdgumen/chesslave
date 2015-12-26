@@ -1,6 +1,6 @@
 package io.chesslave.model;
 
-import io.chesslave.sugar.Ensure;
+import io.chesslave.Ensure;
 
 public class Board {
 

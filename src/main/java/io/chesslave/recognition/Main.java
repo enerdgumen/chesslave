@@ -2,7 +2,6 @@ package io.chesslave.recognition;
 
 import io.chesslave.model.Board;
 import io.chesslave.model.Position;
-import io.chesslave.sugar.Images;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;

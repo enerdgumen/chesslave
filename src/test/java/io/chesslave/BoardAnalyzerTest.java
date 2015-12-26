@@ -2,7 +2,7 @@ package io.chesslave;
 
 import io.chesslave.recognition.BoardAnalyzer;
 import io.chesslave.recognition.BoardConfiguration;
-import io.chesslave.sugar.Images;
+import io.chesslave.recognition.Images;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
 import java.io.File;
