@@ -5,9 +5,9 @@ import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
 import java.util.EnumSet;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javaslang.collection.Set;
 import org.sikuli.api.ScreenRegion;
 import org.sikuli.api.Target;
 

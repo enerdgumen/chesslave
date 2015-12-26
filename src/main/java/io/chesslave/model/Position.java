@@ -2,19 +2,19 @@ package io.chesslave.model;
 
 import io.chesslave.model.Board.Square;
 import io.chesslave.sugar.Ensure;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import javaslang.collection.HashMap;
+import javaslang.collection.Map;
+import javaslang.control.Option;
 
 public class Position {
 
     public static class Builder {
 
-        private final Map<Square, Piece> position = new HashMap<>();
+        private Map<Square, Piece> position = HashMap.empty();
 
         public Builder withPiece(Square square, Piece piece) {
             Ensure.isTrue(!position.containsKey(square), "cannot place %s into %s: square already used", piece, square);
-            position.put(square, piece);
+            position = position.put(square, piece);
             return this;
         }
 
@@ -29,8 +29,8 @@ public class Position {
         this.position = position;
     }
 
-    public Optional<Piece> at(Square square) {
-        return Optional.ofNullable(position.get(square));
+    public Option<Piece> at(Square square) {
+        return position.get(square);
     }
 
     @Override

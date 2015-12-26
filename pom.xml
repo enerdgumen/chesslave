@@ -30,9 +30,9 @@
             <classifier>${javacpp.classifier}</classifier>
         </dependency>
         <dependency>
-            <groupId>net.emaze</groupId>
-            <artifactId>emaze-dysfunctional</artifactId>
-            <version>5.2</version>
+            <groupId>com.javaslang</groupId>
+            <artifactId>javaslang</artifactId>
+            <version>2.0.0-RC2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -86,7 +86,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <id>macos</id>
