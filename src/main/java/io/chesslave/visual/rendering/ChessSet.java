@@ -1,8 +1,8 @@
-package io.chesslave.rendering;
+package io.chesslave.visual.rendering;
 
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
-import io.chesslave.recognition.Images;
+import io.chesslave.visual.Images;
 import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;

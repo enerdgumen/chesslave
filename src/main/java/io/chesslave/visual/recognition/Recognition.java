@@ -1,6 +1,7 @@
-package io.chesslave.recognition;
+package io.chesslave.visual.recognition;
 
 import io.chesslave.model.Board;
+import io.chesslave.visual.BoardMap;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import java.awt.Color;

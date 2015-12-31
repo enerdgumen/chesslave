@@ -1,11 +1,11 @@
-package io.chesslave.rendering;
+package io.chesslave.visual.rendering;
 
 import io.chesslave.model.Board;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Piece.Type;
 import io.chesslave.model.Position;
-import io.chesslave.recognition.Images;
+import io.chesslave.visual.Images;
 import org.junit.Assert;
 import org.junit.Test;
 import java.awt.image.BufferedImage;

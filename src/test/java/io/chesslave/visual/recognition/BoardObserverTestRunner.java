@@ -1,5 +1,6 @@
-package io.chesslave.recognition;
+package io.chesslave.visual.recognition;
 
+import io.chesslave.visual.Images;
 import org.junit.Test;
 
 public class BoardObserverTestRunner {

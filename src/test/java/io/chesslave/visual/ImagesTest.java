@@ -1,8 +1,8 @@
-package io.chesslave.recognition;
+package io.chesslave.visual;
 
 import org.junit.Assert;
 import org.junit.Test;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class ImagesTest {

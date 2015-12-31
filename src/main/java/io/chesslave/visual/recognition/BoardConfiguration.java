@@ -1,6 +1,7 @@
-package io.chesslave.recognition;
+package io.chesslave.visual.recognition;
 
 import io.chesslave.model.Piece;
+import io.chesslave.visual.Images;
 import javaslang.collection.List;
 import javaslang.collection.Map;
 import java.awt.image.BufferedImage;

@@ -1,11 +1,11 @@
-package io.chesslave.recognition;
+package io.chesslave.visual.recognition;
 
 import io.chesslave.model.Board;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
-import io.chesslave.rendering.BoardRenderer;
-import io.chesslave.rendering.ChessSet;
+import io.chesslave.visual.rendering.BoardRenderer;
+import io.chesslave.visual.rendering.ChessSet;
 import javaslang.collection.Set;
 import org.junit.Assert;
 import org.junit.Test;

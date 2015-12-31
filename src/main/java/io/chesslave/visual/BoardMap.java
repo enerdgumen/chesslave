@@ -1,4 +1,4 @@
-package io.chesslave.recognition;
+package io.chesslave.visual;
 
 import io.chesslave.model.Board;
 

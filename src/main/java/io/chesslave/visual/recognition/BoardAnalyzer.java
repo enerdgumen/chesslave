@@ -1,9 +1,10 @@
-package io.chesslave.recognition;
+package io.chesslave.visual.recognition;
 
 import io.chesslave.model.Board;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.Ensure;
+import io.chesslave.visual.Images;
 import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
