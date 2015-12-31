@@ -1,15 +1,16 @@
 package io.chesslave.visual.recognition;
 
-import io.chesslave.model.*;
+import io.chesslave.model.Color;
+import io.chesslave.model.Piece;
+import io.chesslave.model.Position;
+import io.chesslave.model.Square;
 import io.chesslave.visual.rendering.BoardRenderer;
-import io.chesslave.visual.rendering.ChessSet;
 import javaslang.collection.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
-import java.nio.file.Paths;
 
-public class RecognitionTest {
+public class RecognitionTest extends ChessSetTest {
 
     @Test
     public void canFindFilledSquares() throws Exception {
@@ -27,7 +28,7 @@ public class RecognitionTest {
                 .withPiece(Square.of("d3"), new Piece(Piece.Type.KING, Color.BLACK))
                 .withPiece(Square.of("c2"), new Piece(Piece.Type.PAWN, Color.BLACK))
                 .build();
-        final BufferedImage image = BoardRenderer.render(position, ChessSet.read(Paths.get("/images/set1")));
+        final BufferedImage image = BoardRenderer.render(position, set);
         final Set<Square> got = Recognition.filledSquares(image);
         Assert.assertEquals(position.get().keySet(), got);
     }
