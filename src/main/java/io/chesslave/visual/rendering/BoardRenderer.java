@@ -1,6 +1,5 @@
 package io.chesslave.visual.rendering;
 
-import io.chesslave.model.Board;
 import io.chesslave.model.Position;
 import io.chesslave.visual.BoardMap;
 import org.apache.batik.dom.GenericDOMImplementation;
@@ -24,7 +23,7 @@ public class BoardRenderer {
         final SVGGraphics2D g = createGraphics();
         g.setSVGCanvasSize(new Dimension(set.board.getWidth(), set.board.getHeight()));
         g.drawImage(set.board, 0, 0, null);
-        final BoardMap map = new BoardMap(Board.standard, set.board.getWidth());
+        final BoardMap map = new BoardMap(set.board.getWidth());
         position.get().forEach((square, piece) -> {
             final BufferedImage pieceImg = set.pieces.apply(piece);
             final AffineTransform translation = AffineTransform.getTranslateInstance(

@@ -1,6 +1,6 @@
 package io.chesslave.visual.recognition;
 
-import io.chesslave.model.Board;
+import io.chesslave.model.Square;
 import javaslang.collection.Set;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Image;
@@ -21,7 +21,7 @@ public class BoardObserver {
         findBoard(screen);
         while (true) {
             currentImg = screen.capture().getImage();
-            final Set<Board.Square> glance = Recognition.filledSquares(currentImg);
+            final Set<Square> glance = Recognition.filledSquares(currentImg);
             logger.debug("filled squares: {}", glance);
             Thread.sleep(2000);
         }

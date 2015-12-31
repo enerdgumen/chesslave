@@ -1,6 +1,6 @@
 package io.chesslave.visual.recognition;
 
-import io.chesslave.model.Board;
+import io.chesslave.model.Square;
 import io.chesslave.visual.BoardMap;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
@@ -9,12 +9,12 @@ import java.awt.image.BufferedImage;
 
 public class Recognition {
 
-    public static Set<Board.Square> filledSquares(BufferedImage boardImg) {
-        return Board.standard.allSquares().filter(square -> isSquareFilled(boardImg, square));
+    public static Set<Square> filledSquares(BufferedImage boardImg) {
+        return Square.all().filter(square -> isSquareFilled(boardImg, square));
     }
 
-    private static boolean isSquareFilled(BufferedImage image, Board.Square square) {
-        final BoardMap map = new BoardMap(Board.standard, image.getWidth());
+    private static boolean isSquareFilled(BufferedImage image, Square square) {
+        final BoardMap map = new BoardMap(image.getWidth());
         final int offset = map.squareSize() / 10;
         final int left = map.left(square) + offset;
         final int y = map.middleY(square);

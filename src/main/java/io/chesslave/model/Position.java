@@ -1,6 +1,5 @@
 package io.chesslave.model;
 
-import io.chesslave.model.Board.Square;
 import io.chesslave.Ensure;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
