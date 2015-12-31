@@ -1,6 +1,5 @@
 package io.chesslave.recognition;
 
-import io.chesslave.recognition.Images;
 import org.junit.Assert;
 import org.junit.Test;
 import java.awt.*;

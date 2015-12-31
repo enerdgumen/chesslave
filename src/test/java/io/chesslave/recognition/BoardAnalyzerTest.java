@@ -1,4 +1,4 @@
-package io.chesslave;
+package io.chesslave.recognition;
 
 import io.chesslave.recognition.BoardAnalyzer;
 import io.chesslave.recognition.BoardConfiguration;

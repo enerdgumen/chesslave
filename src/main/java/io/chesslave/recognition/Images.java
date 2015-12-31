@@ -1,5 +1,7 @@
 package io.chesslave.recognition;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,8 +10,11 @@ import java.util.function.Predicate;
 
 public abstract class Images {
 
+    private static final Logger logger = LoggerFactory.getLogger(Images.class);
+
     public static BufferedImage read(String path) {
         try {
+            logger.debug("Reading image {}", path);
             return ImageIO.read(Images.class.getResource(path));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -18,6 +23,7 @@ public abstract class Images {
 
     public static void write(BufferedImage image, File file) {
         try {
+            logger.debug("Writing image {}", file);
             ImageIO.write(image, "PNG", file);
         } catch (IOException ex) {
             throw new RuntimeException(ex);

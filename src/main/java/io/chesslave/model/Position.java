@@ -33,6 +33,10 @@ public class Position {
         return position.get(square);
     }
 
+    public Map<Square, Piece> get() {
+        return position;
+    }
+
     @Override
     public String toString() {
         return "Position{" + "position=" + position + '}';

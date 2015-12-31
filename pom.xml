@@ -10,8 +10,9 @@
     <properties>
         <start-class>io.chesslave.model.Chessroom</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <batik.version>1.7</batik.version>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.sikuli</groupId>
@@ -33,6 +34,37 @@
             <groupId>com.javaslang</groupId>
             <artifactId>javaslang</artifactId>
             <version>2.0.0-RC2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-svggen</artifactId>
+            <version>${batik.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-svg-dom</artifactId>
+            <version>${batik.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-rasterizer</artifactId>
+            <version>${batik.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-codec</artifactId>
+            <version>${batik.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.13</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.29</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
