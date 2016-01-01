@@ -5,7 +5,7 @@ import java.awt.*;
 public class Colors {
 
     public static boolean areSimilar(Color a, Color b) {
-        return Math.abs(hue(a) - hue(b)) < .1;
+        return Math.abs(hue(a) - hue(b)) < .02;
     }
 
     public static float hue(Color color) {

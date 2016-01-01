@@ -15,7 +15,7 @@ public class Recognition {
 
     private static boolean isSquareFilled(BufferedImage image, Square square) {
         final BoardMap map = new BoardMap(image.getWidth());
-        final int offset = map.squareSize() / 10;
+        final int offset = map.squareSize() / 16;
         final int left = map.left(square) + offset;
         final int y = map.middleY(square);
         final Color example = new Color(image.getRGB(left, y));
