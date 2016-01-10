@@ -16,18 +16,18 @@ public class BoardAnalyzer {
         final BufferedImage board = cropBoard(userImage);
         final BoardConfiguration.Characteristics chars = detectCharacteristics(board);
         final Map<Piece, BufferedImage> pieces = HashMap.ofAll(
-                Tuple.of(new Piece(Piece.Type.PAWN, Color.BLACK), cropPiece(board, Square.of("b7"))),
-                Tuple.of(new Piece(Piece.Type.KNIGHT, Color.BLACK), cropPiece(board, Square.of("g8"))),
-                Tuple.of(new Piece(Piece.Type.BISHOP, Color.BLACK), cropPiece(board, Square.of("c8"))),
-                Tuple.of(new Piece(Piece.Type.ROOK, Color.BLACK), cropPiece(board, Square.of("a8"))),
-                Tuple.of(new Piece(Piece.Type.QUEEN, Color.BLACK), Images.fillOuterBackground(cropPiece(board, Square.of("d8")), chars.whiteColor)),
-                Tuple.of(new Piece(Piece.Type.KING, Color.BLACK), cropPiece(board, Square.of("e8"))),
-                Tuple.of(new Piece(Piece.Type.PAWN, Color.WHITE), cropPiece(board, Square.of("b2"))),
-                Tuple.of(new Piece(Piece.Type.KNIGHT, Color.WHITE), cropPiece(board, Square.of("g1"))),
-                Tuple.of(new Piece(Piece.Type.BISHOP, Color.WHITE), cropPiece(board, Square.of("c1"))),
-                Tuple.of(new Piece(Piece.Type.ROOK, Color.WHITE), cropPiece(board, Square.of("a1"))),
-                Tuple.of(new Piece(Piece.Type.QUEEN, Color.WHITE), Images.fillOuterBackground(cropPiece(board, Square.of("d1")), chars.blackColor)),
-                Tuple.of(new Piece(Piece.Type.KING, Color.WHITE), cropPiece(board, Square.of("e1"))));
+                Tuple.of(Piece.of(Piece.Type.PAWN, Color.BLACK), cropPiece(board, Square.of("b7"))),
+                Tuple.of(Piece.of(Piece.Type.KNIGHT, Color.BLACK), cropPiece(board, Square.of("g8"))),
+                Tuple.of(Piece.of(Piece.Type.BISHOP, Color.BLACK), cropPiece(board, Square.of("c8"))),
+                Tuple.of(Piece.of(Piece.Type.ROOK, Color.BLACK), cropPiece(board, Square.of("a8"))),
+                Tuple.of(Piece.of(Piece.Type.QUEEN, Color.BLACK), Images.fillOuterBackground(cropPiece(board, Square.of("d8")), chars.whiteColor)),
+                Tuple.of(Piece.of(Piece.Type.KING, Color.BLACK), cropPiece(board, Square.of("e8"))),
+                Tuple.of(Piece.of(Piece.Type.PAWN, Color.WHITE), cropPiece(board, Square.of("b2"))),
+                Tuple.of(Piece.of(Piece.Type.KNIGHT, Color.WHITE), cropPiece(board, Square.of("g1"))),
+                Tuple.of(Piece.of(Piece.Type.BISHOP, Color.WHITE), cropPiece(board, Square.of("c1"))),
+                Tuple.of(Piece.of(Piece.Type.ROOK, Color.WHITE), cropPiece(board, Square.of("a1"))),
+                Tuple.of(Piece.of(Piece.Type.QUEEN, Color.WHITE), Images.fillOuterBackground(cropPiece(board, Square.of("d1")), chars.blackColor)),
+                Tuple.of(Piece.of(Piece.Type.KING, Color.WHITE), cropPiece(board, Square.of("e1"))));
         return new BoardConfiguration(board, pieces, chars, false);
     }
 

@@ -24,7 +24,7 @@ public class PositionRecogniser implements Function<Region, Position> {
         final Position.Builder position = new Position.Builder();
         for (Piece.Type type : EnumSet.allOf(Piece.Type.class)) {
             for (Color color : EnumSet.allOf(Color.class)) {
-                final Piece piece = new Piece(type, color);
+                final Piece piece = Piece.of(type, color);
                 final Image target = targetFactory.apply(piece);
                 final Set<Square> squares = pieceRecogniser.apply(region, target);
                 for (Square square : squares) {

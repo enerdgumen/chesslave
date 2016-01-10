@@ -3,5 +3,9 @@ package io.chesslave.model;
 public enum Color {
 
     WHITE,
-    BLACK
+    BLACK;
+
+    public Color opponent() {
+        return this == WHITE ? BLACK : WHITE;
+    }
 }

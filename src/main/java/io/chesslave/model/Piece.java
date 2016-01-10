@@ -20,15 +20,27 @@ public class Piece {
     public final Type type;
     public final Color color;
 
-    public Piece(Type type, Color color) {
+    private Piece(Type type, Color color) {
         this.type = type;
         this.color = color;
+    }
+
+    public static Piece of(Type type, Color color) {
+        return new Piece(type, color);
     }
 
     public static Set<Piece> all() {
         return List.of(Piece.Type.values()).crossProduct(List.of(Color.values()))
                 .map(Functions.of(Piece::new).tupled())
                 .toSet();
+    }
+
+    public boolean isFriend(Piece piece) {
+        return this.color == piece.color;
+    }
+
+    public boolean isOpponent(Piece piece) {
+        return this.color != piece.color;
     }
 
     @Override
