@@ -72,9 +72,17 @@ public class Position {
         return position;
     }
 
-    public Position move(Move move) {
-        final Piece movedPiece = position.apply(move.from);
-        return new Position(position.remove(move.from).put(move.to, movedPiece));
+    public Position put(Square square, Piece piece) {
+        return new Position(position.put(square, piece));
+    }
+
+    public Position remove(Square square) {
+        return new Position(position.remove(square));
+    }
+
+    public Position move(Square from, Square to) {
+        final Piece piece = position.apply(from);
+        return new Position(position.remove(from).put(to, piece));
     }
 
     @Override

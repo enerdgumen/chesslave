@@ -58,6 +58,6 @@ public class Game {
     }
 
     public Position position() {
-        return moves.foldLeft(initialPosition, Position::move);
+        return moves.foldLeft(initialPosition, (pos, move) -> move.apply(pos));
     }
 }

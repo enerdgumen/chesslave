@@ -1,7 +1,9 @@
 package io.chesslave.model;
 
 import io.chesslave.Functions;
+import io.chesslave.model.Moviment.Regular;
 import io.chesslave.model.Piece.Type;
+import javaslang.Function1;
 import javaslang.Tuple;
 import javaslang.collection.HashSet;
 import javaslang.collection.List;
@@ -13,29 +15,32 @@ import java.util.function.Predicate;
 
 public class Rules {
 
-    public static Set<Square> targets(Position pos, Square from) {
+    public static Set<Regular> moves(Position pos, Square from) {
         return pos.at(from)
                 .map(piece -> {
-                    final Predicate<Square> isAvailable = to -> isFreeOrWithOpponent(pos, to, piece)
-                            && isKingSafe(pos.move(Move.of(from, to)), piece.color);
+                    final Predicate<Regular> isAvailable = move
+                            -> isFreeOrWithOpponent(pos, move.to, piece)
+                            && isKingSafe(move.apply(pos), piece.color);
+                    final Function1<Square, Regular> regular = to -> Moviment.regular(from, to);
                     switch (piece.type) {
                         case PAWN:
-                            return pawnSquares(pos, from);
+                            return pawnMoves(pos, from);
                         case KING:
-                            return kingSquares(from).filter(isAvailable);
+                            return kingSquares(from).map(regular).filter(isAvailable);
                         case KNIGHT:
-                            return knightSquares(from).filter(isAvailable);
+                            return knightSquares(from).map(regular).filter(isAvailable);
                         case BISHOP:
-                            return bishopSquares(pos, from).filter(isAvailable);
+                            return bishopSquares(pos, from).map(regular).filter(isAvailable);
                         case ROOK:
-                            return rookSquares(pos, from).filter(isAvailable);
+                            return rookSquares(pos, from).map(regular).filter(isAvailable);
                         case QUEEN:
                             return HashSet.<Square>empty()
                                     .addAll(bishopSquares(pos, from))
                                     .addAll(rookSquares(pos, from))
+                                    .map(regular)
                                     .filter(isAvailable);
                     }
-                    return HashSet.<Square>empty();
+                    return HashSet.<Regular>empty();
                 })
                 .orElse(HashSet.empty());
     }
@@ -67,7 +72,7 @@ public class Rules {
         final Option<Piece> sw = square.walk(-1, -1).flatMap(position::at).headOption();
         final Option<Piece> w = square.walk(-1, +0).flatMap(position::at).headOption();
         final Option<Piece> nw = square.walk(-1, +1).flatMap(position::at).headOption();
-        final int pawnDir = opponent == Color.WHITE ? -1 : +1;
+        final int pawnDir = Pawns.direction(color);
         final Set<Piece> maybePawn = square.translateAll(Tuple.of(+1, pawnDir), Tuple.of(-1, pawnDir)).flatMap(position::at);
         return maybeKnight.exists(knight::equals)
                 || maybePawn.exists(pawn::equals)
@@ -112,21 +117,24 @@ public class Rules {
                 .flatMap(Functions.of(Rules::takeWhileFreeOrWithOpponent).apply(position, piece));
     }
 
-    private static Set<Square> pawnSquares(Position position, Square from) {
+    private static Set<Regular> pawnMoves(Position position, Square from) {
         final Piece piece = position.at(from).get();
-        final int direction = piece.color == Color.WHITE ? +1 : -1;
+        final int direction = Pawns.direction(piece.color);
         final int initialRow = piece.color == Color.WHITE ? 1 : 6;
         final int push = from.row == initialRow ? 2 : 1;
-        final Stream<Square> forward = from.walk(0, direction)
+        final Stream<Regular> forward = from.walk(0, direction)
                 .takeWhile(sq -> position.at(sq).isEmpty())
-                .take(push);
-        final Set<Square> captures = from.translateAll(Tuple.of(-1, direction), Tuple.of(+1, direction))
-                .filter(sq -> position.at(sq).exists(piece::isOpponent));
+                .take(push)
+                .map(to -> Moviment.regular(from, to));
+        final Set<Regular> captures = from.translateAll(Tuple.of(-1, direction), Tuple.of(+1, direction))
+                .filter(sq -> position.at(sq).exists(piece::isOpponent))
+                .map(to -> Moviment.regular(from, to));
         final int enPassantRow = piece.color == Color.WHITE ? 4 : 3;
-        final Set<Square> enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
+        final Set<Regular> enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
                 .filter(sq -> sq.row == enPassantRow)
                 .filter(sq -> position.at(sq).exists(Piece.of(Type.PAWN, piece.color.opponent())::equals))
-                .map(sq -> sq.translate(0, direction).get());
+                .map(sq -> sq.translate(0, direction).get())
+                .map(to -> Moviment.enPassant(from, to));
         return forward.appendAll(captures).appendAll(enPassantCaptures).toSet();
     }
 
