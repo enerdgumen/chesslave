@@ -1,3 +1,25 @@
 sintax: glob
 
-target
+# Java
+bin/
+classes/
+target/
+
+# Intellij
+.idea/
+out/
+*.iml
+
+# Eclipse
+.settings/
+.classpath
+.metadata
+.project
+local.properties
+
+# Temp file
+tmp/
+*.tmp
+
+# Log Files
+*.log
