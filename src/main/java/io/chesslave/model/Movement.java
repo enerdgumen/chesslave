@@ -2,7 +2,7 @@ package io.chesslave.model;
 
 import javaslang.control.Option;
 
-public final class Moviment {
+public final class Movement {
 
     static Regular regular(Square from, Square to) {
         return new Regular(from, to, false, Option.none());

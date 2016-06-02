@@ -1,7 +1,7 @@
 package io.chesslave.model;
 
 import io.chesslave.Functions;
-import io.chesslave.model.Moviment.Regular;
+import io.chesslave.model.Movement.Regular;
 import io.chesslave.model.Piece.Type;
 import javaslang.Function1;
 import javaslang.Tuple;
@@ -21,7 +21,7 @@ public class Rules {
                     final Predicate<Regular> isAvailable = move
                             -> isFreeOrWithOpponent(pos, move.to, piece)
                             && isKingSafe(move.apply(pos), piece.color);
-                    final Function1<Square, Regular> regular = to -> Moviment.regular(from, to);
+                    final Function1<Square, Regular> regular = to -> Movement.regular(from, to);
                     switch (piece.type) {
                         case PAWN:
                             return pawnMoves(pos, from);
@@ -125,16 +125,16 @@ public class Rules {
         final Stream<Regular> forward = from.walk(0, direction)
                 .takeWhile(sq -> position.at(sq).isEmpty())
                 .take(push)
-                .map(to -> Moviment.regular(from, to));
+                .map(to -> Movement.regular(from, to));
         final Set<Regular> captures = from.translateAll(Tuple.of(-1, direction), Tuple.of(+1, direction))
                 .filter(sq -> position.at(sq).exists(piece::isOpponent))
-                .map(to -> Moviment.regular(from, to));
+                .map(to -> Movement.regular(from, to));
         final int enPassantRow = piece.color == Color.WHITE ? 4 : 3;
         final Set<Regular> enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
                 .filter(sq -> sq.row == enPassantRow)
                 .filter(sq -> position.at(sq).exists(Piece.of(Type.PAWN, piece.color.opponent())::equals))
                 .map(sq -> sq.translate(0, direction).get())
-                .map(to -> Moviment.enPassant(from, to));
+                .map(to -> Movement.enPassant(from, to));
         return forward.appendAll(captures).appendAll(enPassantCaptures).toSet();
     }
 

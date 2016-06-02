@@ -1,6 +1,6 @@
 package io.chesslave.model;
 
-import io.chesslave.model.Moviment.Regular;
+import io.chesslave.model.Movement.Regular;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
 import org.junit.Test;

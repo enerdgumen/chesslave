@@ -18,12 +18,12 @@ public class GameTest {
                 "P|P|P| | |P|P|P",
                 "R|N|B|Q|K|B| |R");
         Position actual = Game.empty()
-                .move(Moviment.regular(Square.of("e2"), Square.of("e4")))
-                .move(Moviment.regular(Square.of("c7"), Square.of("c5")))
-                .move(Moviment.regular(Square.of("g1"), Square.of("f3")))
-                .move(Moviment.regular(Square.of("d7"), Square.of("d6")))
-                .move(Moviment.regular(Square.of("d2"), Square.of("d4")))
-                .move(Moviment.regular(Square.of("c5"), Square.of("d4")))
+                .move(Movement.regular(Square.of("e2"), Square.of("e4")))
+                .move(Movement.regular(Square.of("c7"), Square.of("c5")))
+                .move(Movement.regular(Square.of("g1"), Square.of("f3")))
+                .move(Movement.regular(Square.of("d7"), Square.of("d6")))
+                .move(Movement.regular(Square.of("d2"), Square.of("d4")))
+                .move(Movement.regular(Square.of("c5"), Square.of("d4")))
                 .position();
         assertEquals(expected, actual);
     }
