@@ -21,7 +21,7 @@ public class Game {
     /**
      * Creates a game from the initial position.
      */
-    public static Game empty() {
+    public static Game initialPosition() {
         final Position position = new Position.Builder()
                 .withPiece(Square.of("a1"), Piece.of(Type.ROOK, Color.WHITE))
                 .withPiece(Square.of("b1"), Piece.of(Type.KNIGHT, Color.WHITE))

@@ -1,5 +1,7 @@
 package io.chesslave;
 
+import java.util.function.Predicate;
+
 /**
  * Utilities to perform assertions.
  */
@@ -13,7 +15,7 @@ public abstract class Ensure {
     }
 
     public static void isTrue(boolean cond, String message, Object... args) {
-        if (cond == false) {
+        if (!cond) {
             throw new IllegalArgumentException(String.format(message, args));
         }
     }

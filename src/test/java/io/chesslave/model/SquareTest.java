@@ -1,6 +1,7 @@
 package io.chesslave.model;
 
 import javaslang.Tuple;
+import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
@@ -149,10 +150,8 @@ public class SquareTest {
     public void allTest() {
         final Set<Square> allSquares = Square.all();
         assertEquals(64, allSquares.length());
-        for (int col = 0; col < Board.SIZE; col++) {
-            for (int row = 0; row < Board.SIZE; row++) {
-                assertThat(allSquares, hasItem(new Square(col, row)));
-            }
-        }
+        List.range(0, Board.SIZE)
+                .crossProduct(List.range(0, Board.SIZE))
+                .forEach(t -> assertThat(allSquares, hasItem(new Square(t._1, t._2))));
     }
 }

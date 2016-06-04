@@ -17,7 +17,7 @@ public class GameTest {
                 " | | | | |N| | ",
                 "P|P|P| | |P|P|P",
                 "R|N|B|Q|K|B| |R");
-        Position actual = Game.empty()
+        Position actual = Game.initialPosition()
                 .move(Movement.regular(Square.of("e2"), Square.of("e4")))
                 .move(Movement.regular(Square.of("c7"), Square.of("c5")))
                 .move(Movement.regular(Square.of("g1"), Square.of("f3")))

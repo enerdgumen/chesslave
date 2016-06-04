@@ -12,12 +12,28 @@ public class Piece {
 
     public enum Type {
 
-        PAWN,
-        KNIGHT,
-        BISHOP,
-        ROOK,
-        QUEEN,
-        KING
+        PAWN("p", 1),
+        KNIGHT("n", 3),
+        BISHOP("b", 3),
+        ROOK("r", 5),
+        QUEEN("q", 9),
+        KING("k", 0);
+
+        private final String code;
+        private final int value;
+
+        Type(String code, int value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        public String code() {
+            return code;
+        }
+
+        public int value() {
+            return value;
+        }
     }
 
     public final Type type;
@@ -52,7 +68,14 @@ public class Piece {
      * @return True if the given piece has not the same color of this piece.
      */
     public boolean isOpponent(Piece piece) {
-        return this.color != piece.color;
+        return !isFriend(piece);
+    }
+
+    /**
+     * @return the code of the piece in the visual representation of the board
+     */
+    public String getCode() {
+        return color == Color.WHITE ? type.code.toUpperCase() : type.code;
     }
 
     @Override
@@ -62,12 +85,14 @@ public class Piece {
 
     @Override
     public boolean equals(Object rhs) {
-        if (rhs instanceof Piece == false) {
+        if (this == rhs) {
+            return true;
+        }
+        if (!(rhs instanceof Piece)) {
             return false;
         }
         final Piece other = (Piece) rhs;
-        return this.type == other.type &&
-                this.color == other.color;
+        return this.type == other.type && this.color == other.color;
     }
 
     @Override

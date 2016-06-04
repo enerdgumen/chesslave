@@ -97,7 +97,10 @@ public class Square {
 
     @Override
     public boolean equals(Object rhs) {
-        if (rhs instanceof Square == false) {
+        if (this == rhs) {
+            return true;
+        }
+        if (!(rhs instanceof Square)) {
             return false;
         }
         final Square other = (Square) rhs;

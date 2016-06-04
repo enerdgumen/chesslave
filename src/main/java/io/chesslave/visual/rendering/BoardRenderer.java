@@ -18,9 +18,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class BoardRenderer {
+    private static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
     public static BufferedImage render(Position position, ChessSet set) throws Exception {
-        final SVGGraphics2D g = createGraphics();
+        final SVGGraphics2D g = BoardRenderer.createGraphics();
         g.setSVGCanvasSize(new Dimension(set.board.getWidth(), set.board.getHeight()));
         g.drawImage(set.board, 0, 0, null);
         final BoardImageMap map = new BoardImageMap(set.board.getWidth());
@@ -31,15 +32,15 @@ public class BoardRenderer {
                     map.top(square) + (map.squareSize() - pieceImg.getHeight()) / 2);
             g.drawRenderedImage(pieceImg, translation);
         });
-        final String svg = graphicsToSvg(g);
-        try (final InputStream img = svgToPng(svg)) {
+        final String svg = BoardRenderer.graphicsToSvg(g);
+        try (final InputStream img = BoardRenderer.svgToPng(svg)) {
             return ImageIO.read(img);
         }
     }
 
     private static SVGGraphics2D createGraphics() {
         final DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-        final Document document = domImpl.createDocument("http://www.w3.org/2000/svg", "svg", null);
+        final Document document = domImpl.createDocument(SVG_NAMESPACE, "svg", null);
         return new SVGGraphics2D(document);
     }
 

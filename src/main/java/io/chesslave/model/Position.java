@@ -86,7 +86,10 @@ public class Position {
 
     @Override
     public boolean equals(Object rhs) {
-        if (rhs instanceof Position == false) {
+        if (this == rhs) {
+            return true;
+        }
+        if (!(rhs instanceof Position)) {
             return false;
         }
         final Position other = (Position) rhs;

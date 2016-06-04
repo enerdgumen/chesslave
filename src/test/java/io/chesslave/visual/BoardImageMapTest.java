@@ -46,6 +46,20 @@ public class BoardImageMapTest {
     }
 
     @Test
+    public void bottomTest() {
+        Stream.from(0).take(8)
+                .map(i -> new Square(0, i))
+                .forEach(square -> assertEquals(SQUARE_SIZE * (Board.SIZE - square.row), boardMap.bottom(square)));
+    }
+
+    @Test
+    public void middleXTest() {
+        Stream.from(0).take(8)
+                .map(i -> new Square(i, 0))
+                .forEach(square -> assertEquals(SQUARE_SIZE * square.col + HALF_SQUARE_SIZE, boardMap.middleX(square)));
+    }
+
+    @Test
     public void middleYTest() {
         Stream.from(0).take(8)
                 .map(i -> new Square(0, i))
