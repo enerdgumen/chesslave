@@ -13,8 +13,16 @@ import javaslang.control.Option;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Defines the chess logics.
+ */
 public class Rules {
 
+    /**
+     * TODO: Handle pawn promotion.
+     *
+     * @return All the available moves (excluding castling) of the piece placed at the given square for the specified position.
+     */
     public static Set<Regular> moves(Position pos, Square from) {
         return pos.at(from)
                 .map(piece -> {
@@ -49,19 +57,24 @@ public class Rules {
         return !position.at(square).exists(piece::isFriend);
     }
 
+    /**
+     * @return True if the king of the given color is not under attack.
+     */
     public static boolean isKingSafe(Position position, Color color) {
         final Square king = Square.all().findFirst(sq -> position.at(sq).exists(Piece.of(Type.KING, color)::equals)).get();
-        return !isTargetForOpponent(position, king, color);
+        return !isTargetForColor(position, king, color.opponent());
     }
 
-    public static boolean isTargetForOpponent(Position position, Square square, Color color) {
-        final Color opponent = color.opponent();
-        final Piece rook = Piece.of(Type.ROOK, opponent);
-        final Piece queen = Piece.of(Type.QUEEN, opponent);
-        final Piece knight = Piece.of(Type.KNIGHT, opponent);
-        final Piece bishop = Piece.of(Type.BISHOP, opponent);
-        final Piece pawn = Piece.of(Type.PAWN, opponent);
-        final Piece king = Piece.of(Type.KING, opponent);
+    /**
+     * @return True if the given square is under attack by pieces of the specified color.
+     */
+    public static boolean isTargetForColor(Position position, Square square, Color color) {
+        final Piece rook = Piece.of(Type.ROOK, color);
+        final Piece queen = Piece.of(Type.QUEEN, color);
+        final Piece knight = Piece.of(Type.KNIGHT, color);
+        final Piece bishop = Piece.of(Type.BISHOP, color);
+        final Piece pawn = Piece.of(Type.PAWN, color);
+        final Piece king = Piece.of(Type.KING, color);
         final Set<Piece> maybeKnight = knightSquares(square).flatMap(position::at);
         final Set<Piece> maybeKing = kingSquares(square).flatMap(position::at);
         final Option<Piece> n = square.walk(+0, +1).flatMap(position::at).headOption();

@@ -8,10 +8,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Predicate;
 
+/**
+ * Support methods for images.
+ */
 public abstract class Images {
 
     private static final Logger logger = LoggerFactory.getLogger(Images.class);
 
+    /**
+     * Reads the image from the classpath.
+     */
     public static BufferedImage read(String path) {
         try {
             logger.debug("Reading image {}", path);
@@ -21,6 +27,9 @@ public abstract class Images {
         }
     }
 
+    /**
+     * Writes the image of the given file as PNG.
+     */
     public static void write(BufferedImage image, File file) {
         try {
             logger.debug("Writing image {}", file);
@@ -30,6 +39,9 @@ public abstract class Images {
         }
     }
 
+    /**
+     * Removes the image border while the RGB pixel colors hold the given predicate.
+     */
     public static BufferedImage crop(BufferedImage image, Predicate<Integer> predicate) {
         int top = 0;
         {
@@ -96,6 +108,9 @@ public abstract class Images {
         return image.getSubimage(left, top, width, height);
     }
 
+    /**
+     * Fills the outer background with the specific RGB color.
+     */
     public static BufferedImage fillOuterBackground(BufferedImage image, int newColor) {
         final int oldColor = image.getRGB(0, 0);
         // top -> bottom
@@ -145,6 +160,9 @@ public abstract class Images {
         return image;
     }
 
+    /**
+     * @return True if the two images are identical.
+     */
     public static boolean areEquals(BufferedImage fst, BufferedImage snd) {
         if (fst.getWidth() != snd.getWidth() || fst.getHeight() != snd.getHeight()) {
             return false;

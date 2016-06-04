@@ -8,6 +8,9 @@ import java.util.function.Function;
 
 public class Positions {
 
+    /**
+     * Creates a position from a textual human-readable representation of the board.
+     */
     public static Position fromText(
             String row8,
             String row7,
@@ -40,6 +43,9 @@ public class Positions {
         return new Position(position);
     }
 
+    /**
+     * @return A textual human-readable representation of the position.
+     */
     public static String toText(Position position) {
         final Map<Piece, String> codeFromPiece = HashMap.ofAll(
                 Tuple.of(Piece.of(Piece.Type.PAWN, Color.WHITE), "P"),

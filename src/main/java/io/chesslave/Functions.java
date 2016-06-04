@@ -3,6 +3,9 @@ package io.chesslave;
 import javaslang.Function2;
 import javaslang.Function3;
 
+/**
+ * Utilities to cast method references to javaslang functions easily.
+ */
 public class Functions {
 
     public static <T1, T2, R> Function2<T1, T2, R> of(Function2<T1, T2, R> g) {

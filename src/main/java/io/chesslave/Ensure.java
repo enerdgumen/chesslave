@@ -1,5 +1,8 @@
 package io.chesslave;
 
+/**
+ * Utilities to perform assertions.
+ */
 public abstract class Ensure {
 
     public static <T> T notNull(T t, String message, Object... args) {

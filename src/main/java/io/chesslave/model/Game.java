@@ -3,6 +3,9 @@ package io.chesslave.model;
 import javaslang.collection.List;
 import static io.chesslave.model.Piece.Type;
 
+/**
+ * An immutable chess match tracker.
+ */
 public class Game {
 
     private final Position initialPosition;
@@ -15,6 +18,9 @@ public class Game {
         this.turn = turn;
     }
 
+    /**
+     * Creates a game from the initial position.
+     */
     public static Game empty() {
         final Position position = new Position.Builder()
                 .withPiece(Square.of("a1"), Piece.of(Type.ROOK, Color.WHITE))
@@ -53,10 +59,17 @@ public class Game {
         return new Game(position, List.empty(), Color.WHITE);
     }
 
+    /**
+     * Applies the move to the current position.
+     * @return The resulting game.
+     */
     public Game move(Move move) {
         return new Game(initialPosition, moves.append(move), turn.opponent());
     }
 
+    /**
+     * Get the current position.
+     */
     public Position position() {
         return moves.foldLeft(initialPosition, (pos, move) -> move.apply(pos));
     }
