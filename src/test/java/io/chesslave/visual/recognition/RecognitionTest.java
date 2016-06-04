@@ -5,16 +5,34 @@ import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.visual.rendering.BoardRenderer;
+import io.chesslave.visual.rendering.ChessSet;
 import javaslang.collection.Set;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static  org.junit.Assert.assertEquals;
 
-// FIXME
-@Ignore
-public class RecognitionTest extends AbstractChessSetTest {
+@RunWith(Parameterized.class)
+public class RecognitionTest {
+    private static final String DIR_IMAGES = "/images/";
+    private static final String PATH_CHESS_SET_1 = DIR_IMAGES + "set1/";
+    private static final String PATH_CHESS_SET_3 = DIR_IMAGES + "set3/";
+
+    @Parameterized.Parameter
+    public ChessSet chessSet;
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{
+                {ChessSet.read(PATH_CHESS_SET_1)},
+                {ChessSet.read(PATH_CHESS_SET_3)}
+        });
+    }
 
     @Test
     public void canFindFilledSquares() throws Exception {
@@ -32,7 +50,7 @@ public class RecognitionTest extends AbstractChessSetTest {
                 .withPiece(Square.of("d3"), Piece.of(Piece.Type.KING, Color.BLACK))
                 .withPiece(Square.of("c2"), Piece.of(Piece.Type.PAWN, Color.BLACK))
                 .build();
-        final BufferedImage image = BoardRenderer.render(position, set);
+        final BufferedImage image = BoardRenderer.render(position, chessSet);
         final Set<Square> got = Recognition.filledSquares(image);
         assertEquals(position.get().keySet(), got);
     }

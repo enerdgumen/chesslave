@@ -6,15 +6,15 @@ import io.chesslave.model.Piece.Type;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.visual.Images;
-import org.junit.Ignore;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
 
 import static org.junit.Assert.assertTrue;
 
-// FIXME
-@Ignore
 public class BoardRendererTest {
+    private static final String DIR_IMAGES = "/images/";
+    private static final String DIR_CHESS_SET = DIR_IMAGES + "set1/";
+    private static final String DIR_RENDERING = DIR_IMAGES + "rendering/";
 
     @Test
     public void canRenderChessboard() throws Exception {
@@ -32,8 +32,8 @@ public class BoardRendererTest {
                 .withPiece(Square.of("d3"), Piece.of(Type.KING, Color.BLACK))
                 .withPiece(Square.of("c2"), Piece.of(Type.PAWN, Color.BLACK))
                 .build();
-        final BufferedImage got = BoardRenderer.render(position, ChessSet.read("/images/set1"));
-        final BufferedImage expected = Images.read("/images/rendering/expected.png");
+        final BufferedImage got = BoardRenderer.render(position, ChessSet.read(DIR_CHESS_SET));
+        final BufferedImage expected = Images.read(DIR_RENDERING + "expected.png");
         assertTrue(Images.areEquals(expected, got));
     }
 }
