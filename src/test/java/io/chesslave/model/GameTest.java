@@ -8,7 +8,7 @@ public class GameTest {
 
     @Test
     public void sicilianOpening() {
-        final Position expected = Position.of(
+        final Position expected = Positions.fromText(
                 "r|n|b|q|k|b|n|r",
                 "p|p| | |p|p|p|p",
                 " | | |p| | | | ",

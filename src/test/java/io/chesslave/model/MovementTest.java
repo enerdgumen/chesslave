@@ -10,7 +10,7 @@ public class MovementTest {
 
     @Test
     public void shortCastleWhiteTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -36,7 +36,7 @@ public class MovementTest {
 
     @Test
     public void longCastleWhiteTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -64,7 +64,7 @@ public class MovementTest {
 
     @Test
     public void shortCastleBlackTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | |r",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -90,7 +90,7 @@ public class MovementTest {
 
     @Test
     public void longCastleBlackTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 "r| | | |k| | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -118,7 +118,7 @@ public class MovementTest {
 
     @Test
     public void enPassantWhiteTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -143,7 +143,7 @@ public class MovementTest {
 
     @Test
     public void enPassantBlackTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -168,7 +168,7 @@ public class MovementTest {
 
     @Test
     public void promotionTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | | | | | ",
                 " |P| | | | | | ",
                 " | | | | | | | ",
@@ -189,7 +189,7 @@ public class MovementTest {
 
     @Test
     public void regularTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 "r|n|b|q|k|b|n|r",
                 "p|p|p|p|p|p|p|p",
                 " | | | | | | | ",
@@ -210,7 +210,7 @@ public class MovementTest {
 
     @Test
     public void captureTest() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 "r| |b|q|k|b|n|r",
                 " |p|p|p| |p|p|p",
                 "p| |n| | | | | ",

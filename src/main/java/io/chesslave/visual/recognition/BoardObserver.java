@@ -22,7 +22,7 @@ public class BoardObserver {
         screen.setRect(match.getRect());
         screen.highlight(1);
         Position previousPos = positionRecogniser.apply(screen);
-        logger.debug("initial position:\n{}", previousPos.render());
+        logger.debug("initial position:\n{}", Positions.toText(previousPos));
         Game game = new Game(previousPos, List.empty(), Color.WHITE);
         while (true) {
             final Position currentPos = positionRecogniser.apply(screen);
@@ -31,7 +31,7 @@ public class BoardObserver {
                 Thread.sleep(2000);
                 continue;
             }
-            logger.debug("current position:\n{}", currentPos.render());
+            logger.debug("current position:\n{}", Positions.toText(currentPos));
             final Move move = moveRecognizer.detect(previousPos, currentPos);
             logger.info("detected move {}", move);
             game = game.move(move);
