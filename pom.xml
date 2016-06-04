@@ -62,6 +62,12 @@
             <version>0.9.29</version>
         </dependency>
         <dependency>
+            <groupId>org.immutables</groupId>
+            <artifactId>value</artifactId>
+            <version>2.2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -109,6 +115,8 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <!-- Prevents an endPosTable exception during compilation -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                 </configuration>
             </plugin>
         </plugins>

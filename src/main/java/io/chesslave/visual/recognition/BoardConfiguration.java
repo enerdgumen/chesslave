@@ -1,6 +1,7 @@
 package io.chesslave.visual.recognition;
 
 import io.chesslave.model.Piece;
+import io.chesslave.visual.BoardImage;
 import io.chesslave.visual.Images;
 import javaslang.collection.List;
 import javaslang.collection.Map;
@@ -9,7 +10,7 @@ import java.io.File;
 
 public class BoardConfiguration {
 
-    public final BufferedImage boardImage;
+    public final BoardImage board;
     public final Map<Piece, BufferedImage> pieces;
     public final Characteristics characteristics;
     public final boolean reversed;
@@ -28,15 +29,15 @@ public class BoardConfiguration {
         }
     }
 
-    public BoardConfiguration(BufferedImage boardImage, Map<Piece, BufferedImage> pieces, Characteristics characteristics, boolean reversed) {
-        this.boardImage = boardImage;
+    public BoardConfiguration(BoardImage board, Map<Piece, BufferedImage> pieces, Characteristics characteristics, boolean reversed) {
+        this.board = board;
         this.pieces = pieces;
         this.characteristics = characteristics;
         this.reversed = reversed;
     }
 
     public void save(File dir) {
-        Images.write(boardImage, new File(dir, "board.png"));
+        Images.write(board.image(), new File(dir, "board.png"));
         pieces.forEach((piece, image) -> {
             Images.write(image, new File(dir, List.of(piece.type.name(), "_", piece.color.name(), ".png").reduce(String::concat)));
         });

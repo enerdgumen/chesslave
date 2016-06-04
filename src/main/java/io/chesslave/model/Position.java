@@ -3,9 +3,11 @@ package io.chesslave.model;
 import io.chesslave.Ensure;
 import io.chesslave.model.Piece.Type;
 import javaslang.Tuple;
+import javaslang.Tuple2;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import javaslang.collection.Map;
+import javaslang.collection.Set;
 import javaslang.control.Option;
 import java.util.function.Function;
 
@@ -58,6 +60,29 @@ public class Position {
         return new Position(position);
     }
 
+    public String render() {
+        final Map<Piece, String> codeFromPiece = HashMap.ofAll(
+                Tuple.of(Piece.of(Type.PAWN, Color.WHITE), "P"),
+                Tuple.of(Piece.of(Type.KNIGHT, Color.WHITE), "N"),
+                Tuple.of(Piece.of(Type.BISHOP, Color.WHITE), "B"),
+                Tuple.of(Piece.of(Type.ROOK, Color.WHITE), "R"),
+                Tuple.of(Piece.of(Type.QUEEN, Color.WHITE), "Q"),
+                Tuple.of(Piece.of(Type.KING, Color.WHITE), "K"),
+                Tuple.of(Piece.of(Type.PAWN, Color.BLACK), "p"),
+                Tuple.of(Piece.of(Type.KNIGHT, Color.BLACK), "n"),
+                Tuple.of(Piece.of(Type.BISHOP, Color.BLACK), "b"),
+                Tuple.of(Piece.of(Type.ROOK, Color.BLACK), "r"),
+                Tuple.of(Piece.of(Type.QUEEN, Color.BLACK), "q"),
+                Tuple.of(Piece.of(Type.KING, Color.BLACK), "k"));
+        return List.rangeClosedBy(Board.SIZE - 1, 0, -1)
+                .map(row -> List.range(0, Board.SIZE)
+                        .map(col -> position.get(new Square(col, row))
+                                .map(codeFromPiece::apply)
+                                .orElse(" "))
+                        .mkString("|"))
+                .mkString("\n");
+    }
+
     private final Map<Square, Piece> position;
 
     private Position(Map<Square, Piece> position) {
@@ -83,6 +108,10 @@ public class Position {
     public Position move(Square from, Square to) {
         final Piece piece = position.apply(from);
         return new Position(position.remove(from).put(to, piece));
+    }
+
+    public Set<Tuple2<Square, Piece>> toSet() {
+        return position.toSet();
     }
 
     @Override

@@ -49,12 +49,12 @@ public class Rules {
         return !position.at(square).exists(piece::isFriend);
     }
 
-    private static boolean isKingSafe(Position position, Color color) {
+    public static boolean isKingSafe(Position position, Color color) {
         final Square king = Square.all().findFirst(sq -> position.at(sq).exists(Piece.of(Type.KING, color)::equals)).get();
         return !isTargetForOpponent(position, king, color);
     }
 
-    private static boolean isTargetForOpponent(Position position, Square square, Color color) {
+    public static boolean isTargetForOpponent(Position position, Square square, Color color) {
         final Color opponent = color.opponent();
         final Piece rook = Piece.of(Type.ROOK, opponent);
         final Piece queen = Piece.of(Type.QUEEN, opponent);

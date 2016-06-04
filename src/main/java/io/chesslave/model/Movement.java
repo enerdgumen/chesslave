@@ -47,6 +47,16 @@ public final class Movement {
             final Position captured = enPassant ? promoted.remove(to.translate(0, -direction).get()) : promoted;
             return captured;
         }
+
+        @Override
+        public String toString() {
+            return "Regular{" +
+                    "from=" + from +
+                    ", to=" + to +
+                    ", enPassant=" + enPassant +
+                    ", promotion=" + promotion +
+                    '}';
+        }
     }
 
     public static class ShortCastling implements Move {
