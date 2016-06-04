@@ -3,12 +3,12 @@ package io.chesslave.visual;
 import io.chesslave.model.Board;
 import io.chesslave.model.Square;
 
-public final class BoardMap {
+public final class BoardImageMap {
 
     private final int squareSize;
 
-    public BoardMap(int imageSize) {
-        this.squareSize = imageSize / Board.SIZE;
+    public BoardImageMap(int boardSize) {
+        this.squareSize = boardSize / Board.SIZE;
     }
 
     public int squareSize() {
@@ -25,6 +25,14 @@ public final class BoardMap {
 
     public int top(Square square) {
         return squareSize * (Board.SIZE - square.row - 1);
+    }
+
+    public int bottom(Square square) {
+        return squareSize * (Board.SIZE - square.row);
+    }
+
+    public int middleX(Square square) {
+        return left(square) + squareSize / 2;
     }
 
     public int middleY(Square square) {

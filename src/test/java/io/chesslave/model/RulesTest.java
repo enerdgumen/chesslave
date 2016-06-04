@@ -19,7 +19,7 @@ public class RulesTest {
 
     @Test
     public void whitePawnMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -35,7 +35,7 @@ public class RulesTest {
 
     @Test
     public void blackPawnMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | |p| | | | | ",
                 " |R|*|n| | | | ",
@@ -51,7 +51,7 @@ public class RulesTest {
 
     @Test
     public void lockedPawn() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -67,7 +67,7 @@ public class RulesTest {
 
     @Test
     public void whiteEnPassant() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | |*|*| | | | ",
@@ -83,7 +83,7 @@ public class RulesTest {
 
     @Test
     public void blackEnPassant() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -103,7 +103,7 @@ public class RulesTest {
 
     @Test
     public void kingMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -121,7 +121,7 @@ public class RulesTest {
 
     @Test
     public void kingCannotMoveOutOfTheBoard() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | |*|k|*| | ",
                 " | | |*|*|*| | ",
                 " | | | | | | | ",
@@ -137,7 +137,7 @@ public class RulesTest {
 
     @Test
     public void kingCannotMoveInOpponentSquares() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | |*| |N| | ",
                 " | | |B| | | | ",
@@ -153,7 +153,7 @@ public class RulesTest {
 
     @Test
     public void kingCannotMoveInSquaresFilledWithFriends() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | |*|k| | | ",
                 " | | |*| |p| | ",
                 " | | |B| | | | ",
@@ -169,7 +169,7 @@ public class RulesTest {
 
     @Test
     public void checkmate() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " |R| | |k| | | ",
                 "R| | | | | | | ",
                 " | | | | | | | ",
@@ -189,7 +189,7 @@ public class RulesTest {
 
     @Test
     public void knightMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | |*| |*| | ",
@@ -207,7 +207,7 @@ public class RulesTest {
 
     @Test
     public void lockedKnightHasNoMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | |r| | | ",
@@ -223,7 +223,7 @@ public class RulesTest {
 
     @Test
     public void knightMustDefendKingIfCheck() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | |r| | | ",
@@ -239,7 +239,7 @@ public class RulesTest {
 
     @Test
     public void knightCannotMoveOutOfTheBoard() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | | ",
                 " | | | | | | | ",
@@ -259,7 +259,7 @@ public class RulesTest {
 
     @Test
     public void bishopMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | | | | |N",
                 " | |n| | | |*| ",
@@ -281,7 +281,7 @@ public class RulesTest {
 
     @Test
     public void rookMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | |p| | |N",
                 " | | | |*| | | ",
@@ -304,7 +304,7 @@ public class RulesTest {
 
     @Test
     public void queenMoves() {
-        final Position position = Position.of(
+        final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | | |p| | |N",
                 " | |n| |*| |*| ",
