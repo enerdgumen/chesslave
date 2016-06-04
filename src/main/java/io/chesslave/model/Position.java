@@ -44,13 +44,6 @@ public class Position {
     }
 
     /**
-     * @return A map having as keys the filled squares and as values the relative pieces.
-     */
-    public Map<Square, Piece> get() {
-        return position;
-    }
-
-    /**
      * @return A new position having the given piece placed to the given square.
      */
     public Position put(Square square, Piece piece) {
@@ -70,6 +63,13 @@ public class Position {
     public Position move(Square from, Square to) {
         final Piece piece = position.apply(from);
         return new Position(position.remove(from).put(to, piece));
+    }
+
+    /**
+     * @return A map having as keys the filled squares and as values the relative pieces.
+     */
+    public Map<Square, Piece> toMap() {
+        return position;
     }
 
     /**

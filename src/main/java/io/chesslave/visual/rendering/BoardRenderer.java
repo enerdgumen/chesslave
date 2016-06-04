@@ -24,7 +24,7 @@ public class BoardRenderer {
         g.setSVGCanvasSize(new Dimension(set.board.getWidth(), set.board.getHeight()));
         g.drawImage(set.board, 0, 0, null);
         final BoardImageMap map = new BoardImageMap(set.board.getWidth());
-        position.get().forEach((square, piece) -> {
+        position.toMap().forEach((square, piece) -> {
             final BufferedImage pieceImg = set.pieces.apply(piece);
             final AffineTransform translation = AffineTransform.getTranslateInstance(
                     map.left(square) + (map.squareSize() - pieceImg.getWidth()) / 2,

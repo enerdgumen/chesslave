@@ -41,7 +41,7 @@ public class RecognitionTest {
                     .build();
             final BoardImage board = new BoardImage(BoardRenderer.render(position, set));
             final Set<Square> got = Recognition.filledSquares(board).map(it -> it.square());
-            Assert.assertEquals(position.get().keySet(), got);
+            Assert.assertEquals(position.toMap().keySet(), got);
         }
     }
 
