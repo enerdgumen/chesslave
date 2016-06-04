@@ -50,7 +50,7 @@ public class Rules {
                     }
                     return HashSet.<Regular>empty();
                 })
-                .orElse(HashSet.empty());
+                .getOrElse(HashSet.empty());
     }
 
     private static boolean isFreeOrWithOpponent(Position position, Square square, Piece piece) {
@@ -61,7 +61,7 @@ public class Rules {
      * @return True if the king of the given color is not under attack.
      */
     public static boolean isKingSafe(Position position, Color color) {
-        final Square king = Square.all().findFirst(sq -> position.at(sq).exists(Piece.of(Type.KING, color)::equals)).get();
+        final Square king = Square.all().find(sq -> position.at(sq).exists(Piece.of(Type.KING, color)::equals)).get();
         return !isTargetForColor(position, king, color.opponent());
     }
 

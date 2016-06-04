@@ -80,7 +80,7 @@ public class Square {
      * @return A stream of all valid squares crossed from this square (excluded) applying repeatedly the translation.
      */
     public Stream<Square> walk(int col, int row) {
-        return Stream.gen(translate(col, row), previous -> previous.flatMap(sq -> sq.translate(col, row)))
+        return Stream.iterate(translate(col, row), previous -> previous.flatMap(sq -> sq.translate(col, row)))
                 .takeWhile(Option::isDefined)
                 .flatMap(Function.identity());
     }

@@ -61,7 +61,7 @@ public final class Movement {
             final Piece piece = position.at(from).get();
             final int direction = Pawns.direction(piece.color);
             final Position moved = position.move(from, to);
-            final Position promoted = promotion.foldLeft(moved, (pos, type) -> pos.put(to, Piece.of(type, piece.color)));
+            final Position promoted = promotion.toSet().foldLeft(moved, (pos, type) -> pos.put(to, Piece.of(type, piece.color)));
             final Position captured = enPassant ? promoted.remove(to.translate(0, -direction).get()) : promoted;
             return captured;
         }

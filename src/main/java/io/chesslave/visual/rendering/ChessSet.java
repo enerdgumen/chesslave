@@ -27,16 +27,16 @@ public class ChessSet {
     }
 
     private static String name(Piece piece) {
-        final HashMap<Color, String> colors = HashMap.ofAll(
-                Tuple.of(Color.WHITE, "w"),
-                Tuple.of(Color.BLACK, "b"));
-        final HashMap<Piece.Type, String> types = HashMap.ofAll(
-                Tuple.of(Piece.Type.BISHOP, "b"),
-                Tuple.of(Piece.Type.KING, "k"),
-                Tuple.of(Piece.Type.KNIGHT, "n"),
-                Tuple.of(Piece.Type.PAWN, "p"),
-                Tuple.of(Piece.Type.QUEEN, "q"),
-                Tuple.of(Piece.Type.ROOK, "r"));
+        final HashMap<Color, String> colors = HashMap.<Color, String>of(
+                Color.WHITE, "w",
+                Color.BLACK, "b");
+        final HashMap<Piece.Type, String> types = HashMap.of(
+                Piece.Type.BISHOP, "b",
+                Piece.Type.KING, "k",
+                Piece.Type.KNIGHT, "n",
+                Piece.Type.PAWN, "p",
+                Piece.Type.QUEEN, "q",
+                Piece.Type.ROOK, "r");
         return colors.apply(piece.color).concat(types.apply(piece.type));
     }
 }

@@ -19,12 +19,12 @@ public class MoveRecognizer {
                     String.format("cannot detect move (from: %s, to: %s)", previous, current));
         }
         final Piece movedPiece = to.get()._2;
-        final Square fromSquare = from.findFirst(it -> it._2.equals(movedPiece)).map(it -> it._1).get();
+        final Square fromSquare = from.find(it -> it._2.equals(movedPiece)).map(it -> it._1).get();
         final Square toSquare = to.get()._1;
         return Rules.moves(previous, fromSquare)
                 .filter(it -> it.to.equals(toSquare))
                 .getOption()
-                .orElseThrow(() -> new UnexpectedMoveException(
+                .getOrElseThrow(() -> new UnexpectedMoveException(
                         String.format("invalid move %s:%s (from: %s, to: %s)", fromSquare, toSquare, previous, current)));
     }
 }

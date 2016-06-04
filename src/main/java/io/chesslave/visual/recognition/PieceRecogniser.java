@@ -18,7 +18,7 @@ public class PieceRecogniser implements BiFunction<Region, Image, Set<Square>> {
     @Override
     public Set<Square> apply(Region region, Image target) {
         final Rectangle bounds = region.getRect();
-        final Iterator<Match> matches = Try.of(() -> region.findAll(target)).orElse(Collections.emptyIterator());
+        final Iterator<Match> matches = Try.of(() -> region.findAll(target)).getOrElse(Collections.emptyIterator());
         return HashSet.ofAll(() -> matches)
                 .map(match -> {
                     final Rectangle piece = match.getRect();

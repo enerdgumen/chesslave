@@ -51,9 +51,9 @@ public class Recognition {
                 ))
                 .toList();
         final Set<FloatSet> components = values.foldLeft(HashSet.<FloatSet>empty(), (sets, value) -> {
-            final FloatSet set = sets.findFirst(it -> it.contains(value))
+            final FloatSet set = sets.find(it -> it.contains(value))
                     .peek(it -> it.add(value))
-                    .orElseGet(() -> new FloatSet(value));
+                    .getOrElse(() -> new FloatSet(value));
             return sets.add(set);
         });
         final float brightness = components.maxBy(it -> it.weight).get().average;
