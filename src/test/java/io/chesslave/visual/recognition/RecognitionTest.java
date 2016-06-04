@@ -6,10 +6,11 @@ import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.visual.rendering.BoardRenderer;
 import javaslang.collection.Set;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
+
+import static  org.junit.Assert.assertEquals;
 
 // FIXME
 @Ignore
@@ -33,6 +34,6 @@ public class RecognitionTest extends AbstractChessSetTest {
                 .build();
         final BufferedImage image = BoardRenderer.render(position, set);
         final Set<Square> got = Recognition.filledSquares(image);
-        Assert.assertEquals(position.get().keySet(), got);
+        assertEquals(position.get().keySet(), got);
     }
 }

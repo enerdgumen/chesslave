@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.awt.image.BufferedImage;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -29,8 +28,8 @@ public class ChessSetTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {ChessSet.read(Paths.get(PATH_CHESS_SET_1)), PATH_CHESS_SET_1},
-                {ChessSet.read(Paths.get(PATH_CHESS_SET_3)), PATH_CHESS_SET_3}
+                {ChessSet.read(PATH_CHESS_SET_1), PATH_CHESS_SET_1},
+                {ChessSet.read(PATH_CHESS_SET_3), PATH_CHESS_SET_3}
         });
     }
 

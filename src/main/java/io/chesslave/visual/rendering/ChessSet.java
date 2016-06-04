@@ -7,7 +7,6 @@ import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import java.awt.image.BufferedImage;
-import java.nio.file.Path;
 
 public class ChessSet {
 
@@ -19,10 +18,10 @@ public class ChessSet {
         this.pieces = pieces;
     }
 
-    public static ChessSet read(Path path) {
-        final BufferedImage board = Images.read(path.resolve("empty-board.png").toString());
+    public static ChessSet read(String path) {
+        final BufferedImage board = Images.read(path + "empty-board.png");
         final Map<Piece, BufferedImage> pieces = Piece.all()
-                .toMap(p -> Tuple.of(p, Images.read(path.resolve(name(p).concat(".png")).toString())));
+                .toMap(p -> Tuple.of(p, Images.read(path + ChessSet.name(p) + ".png")));
         return new ChessSet(board, pieces);
     }
 

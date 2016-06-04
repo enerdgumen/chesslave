@@ -6,11 +6,11 @@ import io.chesslave.model.Piece.Type;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.visual.Images;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
-import java.nio.file.Paths;
+
+import static org.junit.Assert.assertTrue;
 
 // FIXME
 @Ignore
@@ -32,8 +32,8 @@ public class BoardRendererTest {
                 .withPiece(Square.of("d3"), Piece.of(Type.KING, Color.BLACK))
                 .withPiece(Square.of("c2"), Piece.of(Type.PAWN, Color.BLACK))
                 .build();
-        final BufferedImage got = BoardRenderer.render(position, ChessSet.read(Paths.get("/images/set1")));
+        final BufferedImage got = BoardRenderer.render(position, ChessSet.read("/images/set1"));
         final BufferedImage expected = Images.read("/images/rendering/expected.png");
-        Assert.assertEquals(true, Images.areEquals(expected, got));
+        assertTrue(Images.areEquals(expected, got));
     }
 }
