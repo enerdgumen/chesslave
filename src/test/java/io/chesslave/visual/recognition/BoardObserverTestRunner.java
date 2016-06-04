@@ -1,8 +1,11 @@
 package io.chesslave.visual.recognition;
 
 import io.chesslave.visual.Images;
+import org.junit.Ignore;
 import org.junit.Test;
 
+// FIXME
+@Ignore
 public class BoardObserverTestRunner {
 
     @Test

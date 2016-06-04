@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public abstract class ChessSetTest {
+public abstract class AbstractChessSetTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
