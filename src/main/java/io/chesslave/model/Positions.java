@@ -22,6 +22,20 @@ public class Positions {
             "q", Piece.of(Piece.Type.QUEEN, Color.BLACK),
             "k", Piece.of(Piece.Type.KING, Color.BLACK));
 
+    private static final Map<Piece, String> CODE_FROM_PIECE = HashMap.of(
+            Piece.of(Piece.Type.PAWN, Color.WHITE), "P",
+            Piece.of(Piece.Type.KNIGHT, Color.WHITE), "N",
+            Piece.of(Piece.Type.BISHOP, Color.WHITE), "B",
+            Piece.of(Piece.Type.ROOK, Color.WHITE), "R",
+            Piece.of(Piece.Type.QUEEN, Color.WHITE), "Q",
+            Piece.of(Piece.Type.KING, Color.WHITE), "K",
+            Piece.of(Piece.Type.PAWN, Color.BLACK), "p",
+            Piece.of(Piece.Type.KNIGHT, Color.BLACK), "n",
+            Piece.of(Piece.Type.BISHOP, Color.BLACK), "b",
+            Piece.of(Piece.Type.ROOK, Color.BLACK), "r",
+            Piece.of(Piece.Type.QUEEN, Color.BLACK), "q",
+            Piece.of(Piece.Type.KING, Color.BLACK), "k");
+
     /**
      * Creates a position from a textual human-readable representation of the board.
      */
@@ -52,7 +66,7 @@ public class Positions {
         return List.rangeClosedBy(Board.SIZE - 1, 0, -1)
                 .map(row -> List.range(0, Board.SIZE)
                         .map(col -> position.at(new Square(col, row))
-                                .map(Piece::getCode)
+                                .map(CODE_FROM_PIECE::apply)
                                 .getOrElse(" "))
                         .mkString("|"))
                 .mkString("\n");

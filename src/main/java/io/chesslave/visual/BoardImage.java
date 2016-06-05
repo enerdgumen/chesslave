@@ -7,11 +7,11 @@ public final class BoardImage {
     private static final int DEFAULT_PADDING = 2;
 
     private final BufferedImage image;
-    private final BoardImageMap boardImageMap;
+    private final BoardImageMap boardMap;
 
     public BoardImage(BufferedImage image) {
         this.image = image;
-        this.boardImageMap = new BoardImageMap(image.getWidth());
+        this.boardMap = new BoardImageMap(image.getWidth());
     }
 
     public BufferedImage image() {
@@ -24,9 +24,9 @@ public final class BoardImage {
 
     public BufferedImage squareImage(Square square, int padding) {
         return image.getSubimage(
-                boardImageMap.left(square) + padding,
-                boardImageMap.top(square) + padding,
-                boardImageMap.squareSize() - padding * 2,
-                boardImageMap.squareSize() - padding * 2);
+                boardMap.left(square) + padding,
+                boardMap.top(square) + padding,
+                boardMap.squareSize() - padding * 2,
+                boardMap.squareSize() - padding * 2);
     }
 }

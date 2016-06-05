@@ -12,23 +12,17 @@ public class Piece {
 
     public enum Type {
 
-        PAWN("p", 1),
-        KNIGHT("n", 3),
-        BISHOP("b", 3),
-        ROOK("r", 5),
-        QUEEN("q", 9),
-        KING("k", 0);
+        PAWN(1),
+        KNIGHT(3),
+        BISHOP(3),
+        ROOK(5),
+        QUEEN(9),
+        KING(0);
 
-        private final String code;
         private final int value;
 
-        Type(String code, int value) {
-            this.code = code;
+        Type(int value) {
             this.value = value;
-        }
-
-        public String code() {
-            return code;
         }
 
         public int value() {
@@ -69,13 +63,6 @@ public class Piece {
      */
     public boolean isOpponent(Piece piece) {
         return !isFriend(piece);
-    }
-
-    /**
-     * @return the code of the piece in the visual representation of the board
-     */
-    public String getCode() {
-        return color == Color.WHITE ? type.code.toUpperCase() : type.code;
     }
 
     @Override

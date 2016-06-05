@@ -1,12 +1,25 @@
 package io.chesslave.visual.rendering;
 
+import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.visual.Images;
 import javaslang.Tuple;
+import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import java.awt.image.BufferedImage;
 
 public class ChessSet {
+    private static final HashMap<Color, String> COLOR_TO_CODE = HashMap.<Color, String>of(
+            Color.WHITE, "w",
+            Color.BLACK, "b");
+    private static final HashMap<Piece.Type, String> PIECE_TYPE_TO_CODE = HashMap.of(
+            Piece.Type.BISHOP, "b",
+            Piece.Type.KING, "k",
+            Piece.Type.KNIGHT, "n",
+            Piece.Type.PAWN, "p",
+            Piece.Type.QUEEN, "q",
+            Piece.Type.ROOK, "r");
+
     public final BufferedImage board;
     public final Map<Piece, BufferedImage> pieces;
 
@@ -23,6 +36,6 @@ public class ChessSet {
     }
 
     private static String name(Piece piece) {
-        return piece.color.code().concat(piece.type.code());
+        return COLOR_TO_CODE.apply(piece.color).concat(PIECE_TYPE_TO_CODE.apply(piece.type));
     }
 }

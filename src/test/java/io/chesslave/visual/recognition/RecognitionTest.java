@@ -41,7 +41,7 @@ public class RecognitionTest {
                     .withPiece(Square.of("c2"), Piece.of(Piece.Type.PAWN, Color.BLACK))
                     .build();
             final BoardImage board = new BoardImage(BoardRenderer.render(position, chessSet));
-            final Set<Square> got = Recognition.filledSquares(board).map(it -> it.square());
+            final Set<Square> got = Recognition.filledSquares(board).map(Recognition.SquareGlance::square);
             assertEquals(position.toMap().keySet(), got);
         }
     }
