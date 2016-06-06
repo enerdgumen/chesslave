@@ -3,10 +3,9 @@ package io.chesslave.visual.recognition;
 import io.chesslave.model.Color;
 import io.chesslave.model.Square;
 import io.chesslave.visual.BoardImage;
-import javaslang.collection.HashSet;
-import javaslang.collection.List;
-import javaslang.collection.Set;
-import javaslang.collection.Stream;
+import io.chesslave.visual.Images;
+import javaslang.Tuple2;
+import javaslang.collection.*;
 import org.immutables.value.Value;
 import java.awt.image.BufferedImage;
 
@@ -31,25 +30,12 @@ public class Recognition {
     }
 
     public static boolean isSquareFilled(BufferedImage square) {
-        final int offset = square.getWidth() / 16;
-        final int left = offset;
-        final int y = square.getHeight() / 2;
-        final java.awt.Color example = new java.awt.Color(square.getRGB(left, y));
-        return Stream.rangeBy(left, square.getWidth() - offset, offset)
-                .map(x -> new java.awt.Color(square.getRGB(x, y)))
-                .exists(c -> !Colors.areSimilar(example, c));
+        final java.awt.Color example = new java.awt.Color(square.getRGB(square.getWidth() / 2, square.getHeight() / 2));
+        return !Images.sample(square, 1, 16).forAll(it -> Colors.areSimilar(example, it));
     }
 
     public static Color guessPieceSide(BufferedImage square) {
-        final int offset = square.getWidth() / 16;
-        final int x = square.getWidth() / 2;
-        final List<Float> values = Stream.rangeBy(offset, square.getHeight() - offset, offset)
-                .flatMap(y -> List.of(
-                        Colors.brightness(new java.awt.Color(square.getRGB(x, y))),
-                        Colors.brightness(new java.awt.Color(square.getRGB(x - offset, y))),
-                        Colors.brightness(new java.awt.Color(square.getRGB(x + offset, y)))
-                ))
-                .toList();
+        final Iterator<Float> values = Images.sample(square, 1, 16).map(Colors::brightness);
         final Set<FloatSet> components = values.foldLeft(HashSet.<FloatSet>empty(), (sets, value) -> {
             final FloatSet set = sets.find(it -> it.contains(value))
                     .peek(it -> it.add(value))

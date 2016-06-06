@@ -1,8 +1,11 @@
 package io.chesslave.visual;
 
+import javaslang.collection.Iterator;
+import javaslang.collection.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -158,6 +161,22 @@ public abstract class Images {
             }
         }
         return image;
+    }
+
+    /**
+     * @param rowPoints    The number of pixel colors to read for each image row.
+     * @param columnPoints The number of pixel colors to read for each image column.
+     * @return The stream of all pixel colors read from the upper-left corner to the down-right corner.
+     * For each row only {@code rowPoints} pixels are read at regular intervals at the center of the image.
+     * As the same way, for each column only {@code columnPoints} pixels are read at regular intervals at
+     * the center of the image.
+     */
+    public static Iterator<Color> sample(BufferedImage image, int rowPoints, int columnPoints) {
+        final int widthStep = image.getWidth() / (rowPoints + 1);
+        final int heightStep = image.getHeight() / (columnPoints + 1);
+        return Stream.rangeClosed(1, rowPoints)
+                .crossProduct(Stream.rangeClosed(1, columnPoints))
+                .map(point -> new Color(image.getRGB(point._1 * widthStep, point._2 * heightStep)));
     }
 
     /**

@@ -1,7 +1,5 @@
 package io.chesslave;
 
-import java.util.function.Predicate;
-
 /**
  * Utilities to perform assertions.
  */
