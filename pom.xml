@@ -6,6 +6,14 @@
     <groupId>io.chesslave</groupId>
     <artifactId>chesslave</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <name>Chesslave</name>
+    <organization>
+        <name>Chesslave</name>
+        <url>https://github.com/chesslave</url>
+    </organization>
+    <scm>
+        <url>https://github.com/chesslave/chesslave</url>
+    </scm>
 
     <properties>
         <start-class>io.chesslave.model.Chessroom</start-class>
@@ -78,7 +86,9 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -96,8 +106,9 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.0.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -111,7 +122,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -122,17 +133,46 @@
         </plugins>
     </build>
 
+    <!-- to resolve jxgrabkey:jxgrabkey:jar:1.0 -->
+    <repositories>
+        <repository>
+            <id>jxgrabkey-repo</id>
+            <url>http://mvn.is.inf.uni-due.de:8081/nexus/content/repositories/atunes-dependencies/</url>
+        </repository>
+    </repositories>
+
     <profiles>
         <profile>
-            <id>macos</id>
+            <id>macosx</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
             <properties>
                 <javacpp.classifier>macosx-x86_64</javacpp.classifier>
             </properties>
         </profile>
         <profile>
             <id>linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
             <properties>
                 <javacpp.classifier>linux-x86_64</javacpp.classifier>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <javacpp.classifier>windows-x86_64</javacpp.classifier>
             </properties>
         </profile>
     </profiles>
