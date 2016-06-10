@@ -4,8 +4,9 @@ import io.chesslave.model.Color;
 import io.chesslave.model.Square;
 import io.chesslave.visual.BoardImage;
 import io.chesslave.visual.Images;
-import javaslang.Tuple2;
-import javaslang.collection.*;
+import javaslang.collection.HashSet;
+import javaslang.collection.Iterator;
+import javaslang.collection.Set;
 import org.immutables.value.Value;
 import java.awt.image.BufferedImage;
 
@@ -30,12 +31,12 @@ public class Recognition {
     }
 
     public static boolean isSquareFilled(BufferedImage square) {
-        final java.awt.Color example = new java.awt.Color(square.getRGB(square.getWidth() / 2, square.getHeight() / 2));
-        return !Images.sample(square, 1, 16).forAll(it -> Colors.areSimilar(example, it));
+        final java.awt.Color example = Colors.of(square.getRGB(square.getWidth() / 2, square.getHeight() / 2));
+        return !Images.sample(square, 1, 16).forAll(it -> Colors.areSimilar(example, Colors.of(it)));
     }
 
     public static Color guessPieceSide(BufferedImage square) {
-        final Iterator<Float> values = Images.sample(square, 1, 16).map(Colors::brightness);
+        final Iterator<Float> values = Images.sample(square, 1, 16).map(it -> Colors.brightness(Colors.of(it)));
         final Set<FloatSet> components = values.foldLeft(HashSet.<FloatSet>empty(), (sets, value) -> {
             final FloatSet set = sets.find(it -> it.contains(value))
                     .peek(it -> it.add(value))

@@ -5,7 +5,6 @@ import javaslang.collection.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -171,12 +170,22 @@ public abstract class Images {
      * As the same way, for each column only {@code columnPoints} pixels are read at regular intervals at
      * the center of the image.
      */
-    public static Iterator<Color> sample(BufferedImage image, int rowPoints, int columnPoints) {
+    public static Iterator<Integer> sample(BufferedImage image, int rowPoints, int columnPoints) {
         final int widthStep = image.getWidth() / (rowPoints + 1);
         final int heightStep = image.getHeight() / (columnPoints + 1);
         return Stream.rangeClosed(1, rowPoints)
                 .crossProduct(Stream.rangeClosed(1, columnPoints))
-                .map(point -> new Color(image.getRGB(point._1 * widthStep, point._2 * heightStep)));
+                .map(point -> image.getRGB(point._1 * widthStep, point._2 * heightStep));
+    }
+
+    /**
+     * @return True if the two images are *surely* different, false otherwise.
+     */
+    public static boolean areDifferent(BufferedImage fst, BufferedImage snd) {
+        if (fst.getWidth() != snd.getWidth() || fst.getHeight() != snd.getHeight()) {
+            return true;
+        }
+        return Images.sample(fst, 10, 10).sum().intValue() != Images.sample(snd, 10, 10).sum().intValue();
     }
 
     /**

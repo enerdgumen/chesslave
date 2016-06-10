@@ -5,6 +5,10 @@ import java.awt.Color;
 public class Colors {
     private static final double DEFAULT_TOLERANCE = .02d;
 
+    public static Color of(int rgb) {
+        return new Color(rgb);
+    }
+
     public static boolean areSimilar(Color a, Color b) {
         return Colors.areSimilar(a, b, DEFAULT_TOLERANCE);
     }
