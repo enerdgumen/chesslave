@@ -1,5 +1,6 @@
 package io.chesslave.eyes;
 
+import io.chesslave.model.BoardImageMap;
 import io.chesslave.model.Square;
 import java.awt.image.BufferedImage;
 

@@ -1,6 +1,6 @@
 package io.chesslave.hands;
 
-import io.chesslave.eyes.BoardImageMap;
+import io.chesslave.model.BoardImageMap;
 import io.chesslave.model.Square;
 
 import java.awt.*;

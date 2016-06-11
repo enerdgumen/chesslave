@@ -1,7 +1,7 @@
 package io.chesslave.rendering;
 
 import io.chesslave.model.Position;
-import io.chesslave.eyes.BoardImageMap;
+import io.chesslave.model.BoardImageMap;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;

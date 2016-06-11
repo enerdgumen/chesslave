@@ -1,6 +1,7 @@
-package io.chesslave.eyes;
+package io.chesslave.model;
 
 import io.chesslave.model.Board;
+import io.chesslave.model.BoardImageMap;
 import io.chesslave.model.Square;
 import javaslang.collection.Stream;
 import org.junit.Before;
