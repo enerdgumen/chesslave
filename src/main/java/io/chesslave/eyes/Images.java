@@ -22,7 +22,7 @@ public abstract class Images {
      */
     public static BufferedImage read(String path) {
         try {
-            logger.debug("Reading image {}", path);
+            logger.trace("Reading image {}", path);
             return ImageIO.read(Images.class.getResource(path));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
