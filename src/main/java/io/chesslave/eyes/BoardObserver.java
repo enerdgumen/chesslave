@@ -1,13 +1,11 @@
 package io.chesslave.eyes;
 
+import io.chesslave.eyes.sikuli.SikuliScreen;
+import io.chesslave.eyes.sikuli.SikuliVision;
 import io.chesslave.model.*;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.collection.List;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Image;
-import org.sikuli.script.Match;
-import org.sikuli.script.Screen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
@@ -19,19 +17,23 @@ public class BoardObserver {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void start(BoardConfiguration config) throws Exception {
-        final Screen screen = Screen.getScreen(1);
-        final PositionRecogniser positionRecogniser = new FullPositionRecogniser(config);
+        final Screen screen = new SikuliScreen();
+        final Vision vision = new SikuliVision();
+        final PositionRecogniser positionRecogniser = new FullPositionRecogniser(vision, config);
         final MoveRecogniser moveRecogniser = new MoveRecogniser();
 
         // detecting initial position
-        final BoardImage initImage = findBoardRegion(screen, config.board);
+        final BufferedImage desktop = screen.captureAll();
+        final Vision.Match match = vision.recognise(desktop).bestMatch(config.board.image()).get();
+        screen.highlight(match.region(), 1, TimeUnit.SECONDS);
+        final BoardImage initImage = new BoardImage(match.image());
         final Position initPosition = positionRecogniser.begin(initImage).get();
         final Game initGame = new Game(initPosition, List.empty(), Color.WHITE);
         logger.debug("initial position:\n{}", Positions.toText(initPosition));
 
         // following game
         final Observable<BufferedImage> captures = Observable.interval(1, TimeUnit.SECONDS)
-                .map(count -> screen.capture().getImage());
+                .map(count -> screen.capture(match.region()));
         final Observable<Tuple2<BoardImage, BoardImage>> boards = captures.zipWith(captures.skip(1), Tuple::of)
                 .filter(it -> {
                     if (Images.areDifferent(it._1, it._2)) return true;
@@ -51,12 +53,5 @@ public class BoardObserver {
         // waiting forever
         while (true) {
         }
-    }
-
-    private BoardImage findBoardRegion(Screen screen, BoardImage board) throws FindFailed {
-        final Match match = screen.find(new Image(board.image()));
-        screen.setRect(match.getRect());
-        screen.highlight(1);
-        return new BoardImage(screen.capture().getImage());
     }
 }
