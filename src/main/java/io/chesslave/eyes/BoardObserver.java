@@ -21,7 +21,7 @@ public class BoardObserver {
     public void start(BoardConfiguration config) throws Exception {
         final Screen screen = Screen.getScreen(1);
         final PositionRecogniser positionRecogniser = new FullPositionRecogniser(config);
-        final MoveRecognizer moveRecognizer = new MoveRecognizer();
+        final MoveRecogniser moveRecogniser = new MoveRecogniser();
 
         // detecting initial position
         final BoardImage initImage = findBoardRegion(screen, config.board);
@@ -42,7 +42,7 @@ public class BoardObserver {
         final Observable<Game> moves = boards.scan(initGame, (game, images) -> {
             final Position position = positionRecogniser.next(game.position(), images._1, images._2).get();
             logger.debug("current position:\n{}", Positions.toText(position));
-            final Move move = moveRecognizer.detect(game.position(), position);
+            final Move move = moveRecogniser.detect(game.position(), position);
             logger.info("detected move {}", move);
             return game.move(move);
         });

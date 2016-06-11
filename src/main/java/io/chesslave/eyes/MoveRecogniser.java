@@ -6,7 +6,7 @@ import javaslang.collection.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MoveRecognizer {
+public class MoveRecogniser {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

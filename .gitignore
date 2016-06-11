@@ -9,6 +9,8 @@ target/
 .idea/
 out/
 *.iml
+*.ipr
+*.iws
 
 # Eclipse
 .settings/
