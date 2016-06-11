@@ -20,6 +20,7 @@ public class DragBotMover extends BaseBotMover {
         Point fromCoords = getSquareCoords(from);
         robot.mouseMove(fromCoords.x, fromCoords.y);
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+        robot.delay(100);
 
         Point toCoords = getSquareCoords(to);
         robot.mouseMove(toCoords.x, toCoords.y);
