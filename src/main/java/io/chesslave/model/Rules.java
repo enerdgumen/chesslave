@@ -1,6 +1,6 @@
 package io.chesslave.model;
 
-import io.chesslave.Functions;
+import io.chesslave.support.Functions;
 import io.chesslave.model.Movement.Regular;
 import io.chesslave.model.Piece.Type;
 import javaslang.Function1;

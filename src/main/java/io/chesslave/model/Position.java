@@ -1,6 +1,6 @@
 package io.chesslave.model;
 
-import io.chesslave.Ensure;
+import io.chesslave.support.Ensure;
 import javaslang.Tuple2;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;

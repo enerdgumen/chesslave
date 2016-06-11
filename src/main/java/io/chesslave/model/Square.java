@@ -1,7 +1,7 @@
 package io.chesslave.model;
 
-import io.chesslave.Ensure;
-import io.chesslave.Functions;
+import io.chesslave.support.Ensure;
+import io.chesslave.support.Functions;
 import javaslang.Tuple2;
 import javaslang.collection.HashSet;
 import javaslang.collection.List;
