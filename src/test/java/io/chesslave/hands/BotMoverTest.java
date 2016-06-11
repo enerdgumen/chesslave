@@ -1,6 +1,5 @@
 package io.chesslave.hands;
 
-import io.chesslave.model.BoardImageMap;
 import io.chesslave.eyes.Images;
 import io.chesslave.model.Square;
 import org.junit.Before;
@@ -9,13 +8,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Image;
-import org.sikuli.script.Location;
-import org.sikuli.script.Match;
+import org.sikuli.script.Region;
 import org.sikuli.script.Screen;
 
-import java.awt.Point;
-import java.awt.Robot;
-import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,53 +28,38 @@ public class BotMoverTest {
     public BaseBotMover botMover;
 
     @Parameterized.Parameter(value = 1)
-    public Point resetPosition;
+    public Region resetButtonArea;
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() throws Exception {
+        // open https://www.chess.com/analysis-board-editor
+        final Screen screen = Screen.getPrimaryScreen();
         final BufferedImage initialBoardImage = Images.read(IMAGE_INITIAL_BOARD);
-        final BoardImageMap boardMap = new BoardImageMap(initialBoardImage.getWidth());
-        final Point topLeftCorner = BotMoverTest.getTopLeftBoardCorner(initialBoardImage);
+        final Region boardArea = BotMoverTest.findRegion(screen, initialBoardImage);
 
-        Point resetButtonPosition;
+        Region buttonArea;
         try {
             final BufferedImage buttonImage1 = Images.read(IMAGE_RESET_BUTTON_1);
-            resetButtonPosition = BotMoverTest.getResetButtonPosition(buttonImage1);
+            buttonArea = BotMoverTest.findRegion(screen, buttonImage1);
         } catch (FindFailed findFailed) {
             final BufferedImage buttonImage2 = Images.read(IMAGE_RESET_BUTTON_2);
-            resetButtonPosition = BotMoverTest.getResetButtonPosition(buttonImage2);
+            buttonArea = BotMoverTest.findRegion(screen, buttonImage2);
         }
 
         return Arrays.asList(new Object[][]{
-                {new ClickBotMover(boardMap, topLeftCorner), resetButtonPosition},
-                {new DragBotMover(boardMap, topLeftCorner), resetButtonPosition}
+                {new ClickBotMover(boardArea), buttonArea},
+                {new DragBotMover(boardArea), buttonArea}
         });
     }
 
-    private static Point getTopLeftBoardCorner(BufferedImage boardImage) throws FindFailed {
-        // open http://www.chess.com/analysis-board-editor
-        final Screen screen = Screen.getPrimaryScreen();
-        final Match match = screen.find(new Image(boardImage));
-        return new Point(match.getX(), match.getY());
-    }
-
-    private static Point getResetButtonPosition(BufferedImage buttonImage) throws FindFailed {
-        final Screen screen = Screen.getPrimaryScreen();
-        final Match match = screen.find(new Image(buttonImage));
-        final Location centerPoint = match.getCenter();
-        return new Point(centerPoint.getX(), centerPoint.getY());
+    private static Region findRegion(Screen screen, BufferedImage image) throws FindFailed {
+        return screen.find(new Image(image));
     }
 
     @Before
     public void setUp() throws Exception {
-        // FIXME simple code to reset board position after each test
-        Robot robot = new Robot();
-        robot.delay(2000);
-        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-        robot.mouseMove(resetPosition.x, resetPosition.y);
-        robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-        robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+        // reset board position after each test
+        resetButtonArea.click();
     }
 
     @Test

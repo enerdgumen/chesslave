@@ -12,6 +12,7 @@ public interface Mover {
      *
      * @param from starting square
      * @param to destination square
+     * @throws MoverException if something goes wrong executing the move
      */
-    void move(Square from, Square to);
+    void move(Square from, Square to) throws MoverException;
 }
