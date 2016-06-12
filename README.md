@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/chesslave/chesslave.png)](https://travis-ci.org/chesslave/chesslave)
+
 # Chesslave
 
 **Under active development - Contributions are welcome!**
