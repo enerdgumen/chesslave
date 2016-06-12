@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/chesslave/chesslave.png)](https://travis-ci.org/chesslave/chesslave)
 [![Coverage](https://codecov.io/gh/chesslave/chesslave/branch/master/graph/badge.svg)](https://codecov.io/gh/chesslave/chesslave)
+[![Join the chat at https://gitter.im/chesslave/chesslave](https://badges.gitter.im/chesslave/chesslave.svg)](https://gitter.im/chesslave/chesslave?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Chesslave
 
