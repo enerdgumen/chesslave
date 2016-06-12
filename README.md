@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/chesslave/chesslave.png)](https://travis-ci.org/chesslave/chesslave)
+[![Coverage](https://codecov.io/gh/chesslave/chesslave/branch/master/graph/badge.svg)](https://codecov.io/gh/chesslave/chesslave)
 
 # Chesslave
 
