@@ -7,6 +7,7 @@ import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.rendering.BoardRenderer;
 import javaslang.collection.Set;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -45,6 +46,7 @@ public class RecognitionTest {
         }
     }
 
+    @Ignore
     public static class GuessPieceColorTest extends BaseRecognitionTest {
 
         @Test
