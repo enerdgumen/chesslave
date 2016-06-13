@@ -1,5 +1,8 @@
 package io.chesslave.hands;
 
+import static org.junit.Assume.assumeThat;
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 import io.chesslave.eyes.Images;
 import io.chesslave.model.Square;
 import org.junit.Before;
@@ -31,24 +34,34 @@ public class BotMoverTest {
     public Region resetButtonArea;
 
     @Parameterized.Parameters
-    public static Collection<Object[]> data() throws Exception {
+    public static Collection<Object[]> data() {
         // open https://www.chess.com/analysis-board-editor
         final Screen screen = Screen.getPrimaryScreen();
-        final BufferedImage initialBoardImage = Images.read(IMAGE_INITIAL_BOARD);
-        final Region boardArea = BotMoverTest.findRegion(screen, initialBoardImage);
 
-        Region buttonArea;
+        Region boardArea = null;
+        try {
+            final BufferedImage initialBoardImage = Images.read(IMAGE_INITIAL_BOARD);
+            boardArea = BotMoverTest.findRegion(screen, initialBoardImage);
+        } catch (FindFailed findFailed) {
+            // ignore
+        }
+
+        Region buttonArea = null;
         try {
             final BufferedImage buttonImage1 = Images.read(IMAGE_RESET_BUTTON_1);
             buttonArea = BotMoverTest.findRegion(screen, buttonImage1);
         } catch (FindFailed findFailed) {
             final BufferedImage buttonImage2 = Images.read(IMAGE_RESET_BUTTON_2);
-            buttonArea = BotMoverTest.findRegion(screen, buttonImage2);
+            try {
+                buttonArea = BotMoverTest.findRegion(screen, buttonImage2);
+            } catch (FindFailed findFailed1) {
+                // ignore
+            }
         }
 
         return Arrays.asList(new Object[][]{
-                {new ClickBotMover(boardArea), buttonArea},
-                {new DragBotMover(boardArea), buttonArea}
+                {boardArea != null ? new ClickBotMover(boardArea) : null, buttonArea},
+                {boardArea != null ? new DragBotMover(boardArea) : null, buttonArea}
         });
     }
 
@@ -58,6 +71,9 @@ public class BotMoverTest {
 
     @Before
     public void setUp() throws Exception {
+        assumeThat(botMover, notNullValue());
+        assumeThat(resetButtonArea, notNullValue());
+
         // reset board position after each test
         resetButtonArea.click();
     }
