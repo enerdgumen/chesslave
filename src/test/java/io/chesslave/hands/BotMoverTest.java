@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import io.chesslave.eyes.Images;
 import io.chesslave.model.Square;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -18,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collection;
 
+@Ignore
 @RunWith(Parameterized.class)
 public class BotMoverTest {
     private static final String DIR_IMAGES = "/images/";
