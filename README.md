@@ -14,7 +14,7 @@ Basically it gives you a slave that stands for you in front of the screen and
  * listens for your moves and
  * performs the move for you on the screen.
 
-These actions are implemented emulating the four organs involved in the process, that is the eyes to see, the mouth to speak, the hears to listen and the hands to move.
+These actions are implemented emulating the four organs involved in the process, that is the eyes to see, the mouth to speak, the ears to listen and the hands to move.
 
 ### Build instructions
 
