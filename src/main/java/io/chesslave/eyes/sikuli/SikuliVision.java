@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class SikuliVision implements Vision {
 
-    private static class SikuliRecogniser implements Recognizer {
+    private static class SikuliRecogniser implements Recogniser {
 
         private final BufferedImage source;
 
@@ -62,7 +62,7 @@ public class SikuliVision implements Vision {
     }
 
     @Override
-    public Recognizer recognise(BufferedImage image) {
+    public Recogniser recognise(BufferedImage image) {
         return new SikuliRecogniser(image);
     }
 }

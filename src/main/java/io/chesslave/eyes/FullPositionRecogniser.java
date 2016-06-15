@@ -29,15 +29,15 @@ public class FullPositionRecogniser implements PositionRecogniser {
     }
 
     private Optional<Position> recognise(BoardImage board) {
-        final Vision.Recognizer recognizer = vision.recognise(board.image());
+        final Vision.Recogniser recogniser = vision.recognise(board.image());
         final Position.Builder position = new Position.Builder();
-        Piece.all().forEach(piece -> findAllPieces(recognizer, piece)
+        Piece.all().forEach(piece -> findAllPieces(recogniser, piece)
                 .forEach(square -> position.withPiece(square, piece)));
         return Optional.of(position.build());
     }
 
-    private Set<Square> findAllPieces(Vision.Recognizer recognizer, Piece piece) {
-        return recognizer.matches(config.pieces.apply(piece))
+    private Set<Square> findAllPieces(Vision.Recogniser recogniser, Piece piece) {
+        return recogniser.matches(config.pieces.apply(piece))
                 .map(match -> {
                     final Rectangle region = match.region();
                     final int col = (int) (Board.SIZE * region.getCenterX() / match.source().getWidth());

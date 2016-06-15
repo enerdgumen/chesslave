@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public interface Vision {
 
-    interface Recognizer {
+    interface Recogniser {
 
         Stream<Match> matches(BufferedImage target);
 
@@ -16,7 +16,7 @@ public interface Vision {
             return matches(target)
                     .takeUntil(it -> it.similarity() < bestSimilarity)
                     .toList()
-                    .sortBy(it -> it.similarity())
+                    .sortBy(Match::similarity)
                     .lastOption();
         }
     }
@@ -32,5 +32,5 @@ public interface Vision {
         BufferedImage image();
     }
 
-    Recognizer recognise(BufferedImage image);
+    Recogniser recognise(BufferedImage image);
 }
