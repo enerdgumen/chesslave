@@ -1,29 +1,30 @@
 package io.chesslave.hands;
 
+import io.chesslave.hands.sikuli.SikuliMouse;
 import io.chesslave.model.BoardImageMap;
 import io.chesslave.model.Square;
-import org.sikuli.script.Location;
-import org.sikuli.script.Region;
-import org.sikuli.script.Screen;
+
+import java.awt.Point;
+import java.awt.Rectangle;
 
 /**
  * Base implementation of a bot which can move pieces on the board.
  */
 public abstract class BaseBotMover implements Mover {
-    protected final Screen screen;
+    protected final Mouse mouse;
 
     private final BoardImageMap boardMap;
-    private final Region boardArea;
+    private final Rectangle boardArea;
 
-    protected BaseBotMover(Region boardArea) {
-        screen = Screen.getPrimaryScreen();
+    protected BaseBotMover(Rectangle boardArea) {
+        mouse = new SikuliMouse();
         this.boardArea = boardArea;
-        boardMap = new BoardImageMap(boardArea.getW());
+        boardMap = new BoardImageMap(boardArea.getSize().width);
     }
 
-    protected Location getSquareLocation(Square square) {
+    protected Point getSquareCoords(Square square) {
         final int offsetX = boardMap.middleX(square);
         final int offsetY = boardMap.middleY(square);
-        return new Location(boardArea.x + offsetX, boardArea.y + offsetY);
+        return new Point(boardArea.x + offsetX, boardArea.y + offsetY);
     }
 }

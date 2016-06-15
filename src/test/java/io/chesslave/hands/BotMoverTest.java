@@ -4,22 +4,24 @@ import static org.junit.Assume.assumeThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 import io.chesslave.eyes.Images;
+import io.chesslave.eyes.Vision;
+import io.chesslave.eyes.sikuli.SikuliScreen;
+import io.chesslave.eyes.sikuli.SikuliVision;
+import io.chesslave.hands.sikuli.SikuliMouse;
 import io.chesslave.model.Square;
+import javaslang.control.Option;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Image;
-import org.sikuli.script.Region;
-import org.sikuli.script.Screen;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collection;
 
-@Ignore
 @RunWith(Parameterized.class)
 public class BotMoverTest {
     private static final String DIR_IMAGES = "/images/";
@@ -33,42 +35,34 @@ public class BotMoverTest {
     public BaseBotMover botMover;
 
     @Parameterized.Parameter(value = 1)
-    public Region resetButtonArea;
+    public Rectangle resetButtonArea;
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         // open https://www.chess.com/analysis-board-editor
-        final Screen screen = Screen.getPrimaryScreen();
+        io.chesslave.eyes.Screen screen = new SikuliScreen();
+        Vision.Recogniser recogniser = new SikuliVision().recognise(screen.captureAll());
 
-        Region boardArea = null;
-        try {
-            final BufferedImage initialBoardImage = Images.read(IMAGE_INITIAL_BOARD);
-            boardArea = BotMoverTest.findRegion(screen, initialBoardImage);
-        } catch (FindFailed findFailed) {
-            // ignore
-        }
+        final BufferedImage initialBoardImage = Images.read(IMAGE_INITIAL_BOARD);
+        Option<Vision.Match> boardAreaMatch = recogniser.bestMatch(initialBoardImage);
+        final Rectangle boardArea = BotMoverTest.getRectangleOrNull(boardAreaMatch);
 
-        Region buttonArea = null;
-        try {
-            final BufferedImage buttonImage1 = Images.read(IMAGE_RESET_BUTTON_1);
-            buttonArea = BotMoverTest.findRegion(screen, buttonImage1);
-        } catch (FindFailed findFailed) {
+        final BufferedImage buttonImage1 = Images.read(IMAGE_RESET_BUTTON_1);
+        Option<Vision.Match> buttonMatch = recogniser.bestMatch(buttonImage1);
+        if (buttonMatch.isEmpty()) {
             final BufferedImage buttonImage2 = Images.read(IMAGE_RESET_BUTTON_2);
-            try {
-                buttonArea = BotMoverTest.findRegion(screen, buttonImage2);
-            } catch (FindFailed findFailed1) {
-                // ignore
-            }
+            buttonMatch = recogniser.bestMatch(buttonImage2);
         }
+        final Rectangle button = BotMoverTest.getRectangleOrNull(buttonMatch);
 
         return Arrays.asList(new Object[][]{
-                {boardArea != null ? new ClickBotMover(boardArea) : null, buttonArea},
-                {boardArea != null ? new DragBotMover(boardArea) : null, buttonArea}
+                {boardArea != null ? new ClickBotMover(boardArea) : null, button},
+                {boardArea != null ? new DragBotMover(boardArea) : null, button}
         });
     }
 
-    private static Region findRegion(Screen screen, BufferedImage image) throws FindFailed {
-        return screen.find(new Image(image));
+    private static Rectangle getRectangleOrNull(Option<Vision.Match> visionMatch) {
+        return visionMatch.isDefined() ? visionMatch.get().region() : null;
     }
 
     @Before
@@ -77,7 +71,8 @@ public class BotMoverTest {
         assumeThat(resetButtonArea, notNullValue());
 
         // reset board position after each test
-        resetButtonArea.click();
+        Point point = new Point((int) resetButtonArea.getCenterX(), (int) resetButtonArea.getCenterY());
+        new SikuliMouse().click(point);
     }
 
     @Test
