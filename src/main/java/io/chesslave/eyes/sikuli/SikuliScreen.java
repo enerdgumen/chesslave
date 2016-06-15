@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class SikuliScreen implements Screen {
 
     // TODO: detect the proper screen
-    private static final int DEFAULT_SCREEN_ID = 1;
+    private static final int DEFAULT_SCREEN_ID = 0;
 
     private final org.sikuli.script.Screen screen = org.sikuli.script.Screen.getScreen(DEFAULT_SCREEN_ID);
 
