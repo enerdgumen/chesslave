@@ -9,16 +9,17 @@ import io.chesslave.eyes.sikuli.SikuliScreen;
 import io.chesslave.eyes.sikuli.SikuliVision;
 import io.chesslave.hands.sikuli.SikuliMouse;
 import io.chesslave.model.Square;
+import javaslang.collection.Stream;
 import javaslang.control.Option;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.awt.Desktop;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -30,6 +31,7 @@ public class BotMoverTest {
     private static final String IMAGE_INITIAL_BOARD = DIR_PIECE_SET + "initial-board.png";
     private static final String IMAGE_RESET_BUTTON_1 = DIR_HANDS + "chesscom-reset-button-unpressed.png";
     private static final String IMAGE_RESET_BUTTON_2 = DIR_HANDS + "chesscom-reset-button-pressed.png";
+    private static final String CHESS_BOARD_WEB_PAGE = "https://www.chess.com/analysis-board-editor";
 
     @Parameterized.Parameter
     public BaseBotMover botMover;
@@ -39,21 +41,21 @@ public class BotMoverTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        // open https://www.chess.com/analysis-board-editor
-        io.chesslave.eyes.Screen screen = new SikuliScreen();
-        Vision.Recogniser recogniser = new SikuliVision().recognise(screen.captureAll());
+        Rectangle boardArea = null;
+        Rectangle button = null;
+        try {
+            Desktop.getDesktop().browse(new URI(CHESS_BOARD_WEB_PAGE));
+            // 5 seconds to open the browser
+            Thread.sleep(5000);
 
-        final BufferedImage initialBoardImage = Images.read(IMAGE_INITIAL_BOARD);
-        Option<Vision.Match> boardAreaMatch = recogniser.bestMatch(initialBoardImage);
-        final Rectangle boardArea = BotMoverTest.getRectangleOrNull(boardAreaMatch);
+            io.chesslave.eyes.Screen screen = new SikuliScreen();
+            final Vision.Recogniser recogniser = new SikuliVision().recognise(screen.captureAll());
 
-        final BufferedImage buttonImage1 = Images.read(IMAGE_RESET_BUTTON_1);
-        Option<Vision.Match> buttonMatch = recogniser.bestMatch(buttonImage1);
-        if (buttonMatch.isEmpty()) {
-            final BufferedImage buttonImage2 = Images.read(IMAGE_RESET_BUTTON_2);
-            buttonMatch = recogniser.bestMatch(buttonImage2);
+            boardArea = BotMoverTest.findRectangle(recogniser, IMAGE_INITIAL_BOARD);
+            button = BotMoverTest.findRectangle(recogniser, IMAGE_RESET_BUTTON_1, IMAGE_RESET_BUTTON_2);
+        } catch (Exception e) {
+            // ignore
         }
-        final Rectangle button = BotMoverTest.getRectangleOrNull(buttonMatch);
 
         return Arrays.asList(new Object[][]{
                 {boardArea != null ? new ClickBotMover(boardArea) : null, button},
@@ -61,8 +63,12 @@ public class BotMoverTest {
         });
     }
 
-    private static Rectangle getRectangleOrNull(Option<Vision.Match> visionMatch) {
-        return visionMatch.isDefined() ? visionMatch.get().region() : null;
+    private static Rectangle findRectangle(Vision.Recogniser recogniser, String...images) {
+        Option<Vision.Match> match = Stream.of(images)
+                .map(image -> recogniser.bestMatch(Images.read(image)))
+                .takeUntil(Option::isEmpty)
+                .head();
+        return match.isDefined() ? match.get().region() : null;
     }
 
     @Before
