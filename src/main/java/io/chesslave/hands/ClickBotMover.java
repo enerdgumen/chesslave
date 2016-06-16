@@ -1,16 +1,15 @@
 package io.chesslave.hands;
 
+import io.chesslave.visual.BoardImage;
 import io.chesslave.model.Square;
-
-import java.awt.Rectangle;
 
 /**
  * A bot able to move pieces through a point and click strategy.
  */
 public class ClickBotMover extends BaseBotMover {
 
-    public ClickBotMover(Rectangle boardArea) {
-        super(boardArea);
+    public ClickBotMover(BoardImage board) {
+        super(board);
     }
 
     @Override

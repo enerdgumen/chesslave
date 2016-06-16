@@ -3,6 +3,7 @@ package io.chesslave.hands;
 import static org.junit.Assume.assumeThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
+import io.chesslave.visual.BoardImage;
 import io.chesslave.eyes.Images;
 import io.chesslave.eyes.Vision;
 import io.chesslave.eyes.sikuli.SikuliScreen;
@@ -41,34 +42,37 @@ public class BotMoverTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        Rectangle boardArea = null;
+        BoardImage board = null;
         Rectangle button = null;
         try {
             Desktop.getDesktop().browse(new URI(CHESS_BOARD_WEB_PAGE));
             // 5 seconds to open the browser
             Thread.sleep(5000);
 
-            io.chesslave.eyes.Screen screen = new SikuliScreen();
+            final SikuliScreen screen = new SikuliScreen();
             final Vision.Recogniser recogniser = new SikuliVision().recognise(screen.captureAll());
 
-            boardArea = BotMoverTest.findRectangle(recogniser, IMAGE_INITIAL_BOARD);
-            button = BotMoverTest.findRectangle(recogniser, IMAGE_RESET_BUTTON_1, IMAGE_RESET_BUTTON_2);
+            board = BotMoverTest.findRectangle(recogniser, IMAGE_INITIAL_BOARD)
+                    .map(match -> new BoardImage(match.image(), match.region().getLocation()))
+                    .getOrElse((BoardImage) null);
+            button = BotMoverTest.findRectangle(recogniser, IMAGE_RESET_BUTTON_1, IMAGE_RESET_BUTTON_2)
+                    .map(Vision.Match::region)
+                    .getOrElse((Rectangle) null);
         } catch (Exception e) {
             // ignore
         }
 
         return Arrays.asList(new Object[][]{
-                {boardArea != null ? new ClickBotMover(boardArea) : null, button},
-                {boardArea != null ? new DragBotMover(boardArea) : null, button}
+                {board != null ? new ClickBotMover(board) : null, button},
+                {board != null ? new DragBotMover(board) : null, button}
         });
     }
 
-    private static Rectangle findRectangle(Vision.Recogniser recogniser, String...images) {
-        Option<Vision.Match> match = Stream.of(images)
+    private static Option<Vision.Match> findRectangle(Vision.Recogniser recogniser, String... images) {
+        return Stream.of(images)
                 .map(image -> recogniser.bestMatch(Images.read(image)))
                 .takeUntil(Option::isEmpty)
                 .head();
-        return match.isDefined() ? match.get().region() : null;
     }
 
     @Before

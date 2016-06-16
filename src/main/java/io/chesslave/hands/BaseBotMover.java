@@ -1,30 +1,28 @@
 package io.chesslave.hands;
 
+import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.SquareImage;
 import io.chesslave.hands.sikuli.SikuliMouse;
-import io.chesslave.model.BoardImageMap;
 import io.chesslave.model.Square;
-
 import java.awt.Point;
-import java.awt.Rectangle;
 
 /**
  * Base implementation of a bot which can move pieces on the board.
  */
 public abstract class BaseBotMover implements Mover {
+
     protected final Mouse mouse;
+    private final BoardImage board;
 
-    private final BoardImageMap boardMap;
-    private final Rectangle boardArea;
-
-    protected BaseBotMover(Rectangle boardArea) {
+    protected BaseBotMover(BoardImage board) {
         mouse = new SikuliMouse();
-        this.boardArea = boardArea;
-        boardMap = new BoardImageMap(boardArea.getSize().width);
+        this.board = board;
     }
 
     protected Point getSquareCoords(Square square) {
-        final int offsetX = boardMap.middleX(square);
-        final int offsetY = boardMap.middleY(square);
-        return new Point(boardArea.x + offsetX, boardArea.y + offsetY);
+        final SquareImage squareImage = board.squareImage(square);
+        return new Point(
+                board.offset().x + squareImage.middleX(),
+                board.offset().y + squareImage.middleY());
     }
 }

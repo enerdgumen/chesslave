@@ -6,13 +6,13 @@ import io.chesslave.model.Piece.Type;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.rendering.BoardRenderer;
+import io.chesslave.visual.BoardImage;
 import javaslang.collection.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import java.awt.image.BufferedImage;
-
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Suite.class)
@@ -173,7 +173,7 @@ public class RecognitionTest {
         private Color guess(Square square, Piece piece) throws Exception {
             final Position position = new Position.Builder().withPiece(square, piece).build();
             final BoardImage board = new BoardImage(BoardRenderer.render(position, chessSet));
-            final BufferedImage image = board.squareImage(square);
+            final BufferedImage image = board.squareImage(square).image();
             return Recognition.guessPieceSide(image);
         }
     }

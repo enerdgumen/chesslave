@@ -1,8 +1,8 @@
 package io.chesslave.eyes;
 
-import io.chesslave.eyes.ImmutableSquareGlance;
 import io.chesslave.model.Color;
 import io.chesslave.model.Square;
+import io.chesslave.visual.BoardImage;
 import javaslang.collection.HashSet;
 import javaslang.collection.Iterator;
 import javaslang.collection.Set;
@@ -22,10 +22,10 @@ public class Recognition {
 
     public static Set<SquareGlance> filledSquares(BoardImage board) {
         return Square.all()
-                .filter(square -> isSquareFilled(board.squareImage(square)))
+                .filter(square -> isSquareFilled(board.squareImage(square).image()))
                 .map(square -> ImmutableSquareGlance.builder()
                         .square(square)
-                        .side(guessPieceSide(board.squareImage(square)))
+                        .side(guessPieceSide(board.squareImage(square).image()))
                         .build());
     }
 

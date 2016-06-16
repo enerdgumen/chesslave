@@ -1,7 +1,7 @@
 package io.chesslave.eyes;
 
 import io.chesslave.model.Position;
-import io.chesslave.eyes.BoardImage;
+import io.chesslave.visual.BoardImage;
 import java.util.Optional;
 
 public interface PositionRecogniser {

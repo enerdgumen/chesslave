@@ -36,7 +36,7 @@ public class ChessSetTest {
     @Test
     public void factoryMethodTest() {
         final BufferedImage expectedBoardImage = Images.read(chessSetPath + "empty-board.png");
-        assertTrue(Images.areEquals(chessSet.board, expectedBoardImage));
+        assertTrue(Images.areEquals(chessSet.board.image(), expectedBoardImage));
         chessSet.pieces.forEach((piece, image) -> {
             final BufferedImage expectedPieceImage = Images.read(chessSetPath + getPieceBaseName(piece) + ".png");
             assertTrue(Images.areEquals(image, expectedPieceImage));

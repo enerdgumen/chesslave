@@ -1,9 +1,10 @@
 package io.chesslave.eyes;
 
-import io.chesslave.support.Ensure;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Square;
+import io.chesslave.support.Ensure;
+import io.chesslave.visual.BoardImage;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import java.awt.image.BufferedImage;
@@ -43,7 +44,7 @@ public class BoardAnalyzer {
     }
 
     private static BufferedImage cropPiece(BoardImage board, Square square) {
-        final BufferedImage squareImage = board.squareImage(square);
+        final BufferedImage squareImage = board.squareImage(square).image();
         return Images.crop(squareImage, color -> color == squareImage.getRGB(0, 0));
     }
 }

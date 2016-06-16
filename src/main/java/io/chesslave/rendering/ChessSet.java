@@ -1,8 +1,9 @@
 package io.chesslave.rendering;
 
+import io.chesslave.visual.BoardImage;
+import io.chesslave.eyes.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
-import io.chesslave.eyes.Images;
 import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
@@ -20,16 +21,16 @@ public class ChessSet {
             Piece.Type.QUEEN, "q",
             Piece.Type.ROOK, "r");
 
-    public final BufferedImage board;
+    public final BoardImage board;
     public final Map<Piece, BufferedImage> pieces;
 
-    public ChessSet(BufferedImage board, Map<Piece, BufferedImage> pieces) {
+    public ChessSet(BoardImage board, Map<Piece, BufferedImage> pieces) {
         this.board = board;
         this.pieces = pieces;
     }
 
     public static ChessSet read(String path) {
-        final BufferedImage board = Images.read(path + "empty-board.png");
+        final BoardImage board = new BoardImage(Images.read(path + "empty-board.png"));
         final Map<Piece, BufferedImage> pieces = Piece.all()
                 .toMap(p -> Tuple.of(p, Images.read(path + ChessSet.name(p) + ".png")));
         return new ChessSet(board, pieces);

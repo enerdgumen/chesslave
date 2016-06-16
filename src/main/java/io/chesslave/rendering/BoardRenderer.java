@@ -1,7 +1,7 @@
 package io.chesslave.rendering;
 
+import io.chesslave.visual.SquareImage;
 import io.chesslave.model.Position;
-import io.chesslave.model.BoardImageMap;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
@@ -22,14 +22,14 @@ public class BoardRenderer {
 
     public static BufferedImage render(Position position, ChessSet set) throws Exception {
         final SVGGraphics2D g = BoardRenderer.createGraphics();
-        g.setSVGCanvasSize(new Dimension(set.board.getWidth(), set.board.getHeight()));
-        g.drawImage(set.board, 0, 0, null);
-        final BoardImageMap map = new BoardImageMap(set.board.getWidth());
+        g.setSVGCanvasSize(new Dimension(set.board.image().getWidth(), set.board.image().getHeight()));
+        g.drawImage(set.board.image(), 0, 0, null);
         position.toMap().forEach((square, piece) -> {
             final BufferedImage pieceImg = set.pieces.apply(piece);
+            final SquareImage squareImg = set.board.squareImage(square);
             final AffineTransform translation = AffineTransform.getTranslateInstance(
-                    map.left(square) + (map.squareSize() - pieceImg.getWidth()) / 2,
-                    map.top(square) + (map.squareSize() - pieceImg.getHeight()) / 2);
+                    squareImg.left() + (squareImg.size() - pieceImg.getWidth()) / 2,
+                    squareImg.top() + (squareImg.size() - pieceImg.getHeight()) / 2);
             g.drawRenderedImage(pieceImg, translation);
         });
         final String svg = BoardRenderer.graphicsToSvg(g);
