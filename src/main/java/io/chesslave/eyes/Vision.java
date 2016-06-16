@@ -12,9 +12,7 @@ public interface Vision {
         Stream<Match> matches(BufferedImage target);
 
         default Option<Match> bestMatch(BufferedImage target) {
-            final double bestSimilarity = 0.75;
             return matches(target)
-                    .takeUntil(it -> it.similarity() < bestSimilarity)
                     .toList()
                     .sortBy(Match::similarity)
                     .lastOption();
