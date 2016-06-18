@@ -9,21 +9,16 @@ import java.util.concurrent.TimeUnit;
 
 public class SikuliScreen implements Screen {
 
-    // TODO: detect the proper screen
-    private static final int DEFAULT_SCREEN_ID = 0;
-
-    private final org.sikuli.script.Screen screen = org.sikuli.script.Screen.getScreen(DEFAULT_SCREEN_ID);
+    private final org.sikuli.script.Screen screen = org.sikuli.script.Screen.all();
 
     @Override
     public BufferedImage captureAll() {
-        screen.setRect(org.sikuli.script.Screen.getBounds(DEFAULT_SCREEN_ID));
-        return captureScreen();
+        return screen.capture().getImage();
     }
 
     @Override
     public BufferedImage capture(Rectangle region) {
-        screen.setRect(region);
-        return captureScreen();
+        return screen.capture(region).getImage();
     }
 
     @Override
@@ -31,9 +26,5 @@ public class SikuliScreen implements Screen {
         final ScreenHighlighter overlay = new ScreenHighlighter(screen, null);
         overlay.highlight(screen.newRegion(new Location(region.x, region.y), region.width, region.height),
                 unit.convert(time, TimeUnit.SECONDS));
-    }
-
-    private BufferedImage captureScreen() {
-        return screen.capture().getImage();
     }
 }
