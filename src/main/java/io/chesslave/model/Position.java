@@ -81,7 +81,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position{" + "position=" + position + '}';
+        return Positions.toText(this);
     }
 
     @Override
