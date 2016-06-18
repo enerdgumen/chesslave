@@ -30,9 +30,9 @@ public class ImagesTest {
     @Test
     public void fillingOuterBackground() {
         final BufferedImage image = Images.read(DIR_FILL_BACKGROUND + "queen.png");
-        Images.fillOuterBackground(image, Color.green.getRGB());
+        final BufferedImage got = Images.fillOuterBackground(image, Color.green.getRGB());
         final BufferedImage expected = Images.read(DIR_FILL_BACKGROUND + "queen-filled.png");
-        assertTrue(Images.areEquals(expected, image));
+        assertTrue(Images.areEquals(expected, got));
     }
 
     @Test
