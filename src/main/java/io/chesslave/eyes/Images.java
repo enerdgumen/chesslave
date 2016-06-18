@@ -5,6 +5,7 @@ import javaslang.collection.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +40,17 @@ public abstract class Images {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     * Clones the given image.
+     */
+    public static BufferedImage copy(BufferedImage image) {
+        final BufferedImage copy = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+        final Graphics g = copy.getGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+        return copy;
     }
 
     /**
@@ -113,7 +125,8 @@ public abstract class Images {
     /**
      * Fills the outer background with the specific RGB color.
      */
-    public static BufferedImage fillOuterBackground(BufferedImage image, int newColor) {
+    public static BufferedImage fillOuterBackground(BufferedImage source, int newColor) {
+        final BufferedImage image = Images.copy(source);
         final int oldColor = image.getRGB(0, 0);
         // top -> bottom
         for (int x = 0; x < image.getWidth(); ++x) {
