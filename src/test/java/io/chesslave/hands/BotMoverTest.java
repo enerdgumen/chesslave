@@ -8,10 +8,8 @@ import io.chesslave.eyes.Images;
 import io.chesslave.eyes.Vision;
 import io.chesslave.eyes.sikuli.SikuliScreen;
 import io.chesslave.eyes.sikuli.SikuliVision;
-import io.chesslave.hands.sikuli.SikuliMouse;
+import io.chesslave.hands.sikuli.SikuliPointer;
 import io.chesslave.model.Square;
-import javaslang.collection.Stream;
-import javaslang.control.Option;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +28,7 @@ public class BotMoverTest {
     private static final String DIR_PIECE_SET = DIR_IMAGES + "set1/";
     private static final String DIR_HANDS = DIR_IMAGES + "hands/";
     private static final String IMAGE_INITIAL_BOARD = DIR_PIECE_SET + "initial-board.png";
-    private static final String IMAGE_RESET_BUTTON_1 = DIR_HANDS + "chesscom-reset-button-unpressed.png";
-    private static final String IMAGE_RESET_BUTTON_2 = DIR_HANDS + "chesscom-reset-button-pressed.png";
+    private static final String IMAGE_RESET_BUTTON = DIR_HANDS + "chesscom-reset-button.png";
     private static final String CHESS_BOARD_WEB_PAGE = "https://www.chess.com/analysis-board-editor";
 
     @Parameterized.Parameter
@@ -52,10 +49,10 @@ public class BotMoverTest {
             final SikuliScreen screen = new SikuliScreen();
             final Vision.Recogniser recogniser = new SikuliVision().recognise(screen.captureAll());
 
-            board = BotMoverTest.findRectangle(recogniser, IMAGE_INITIAL_BOARD)
+            board = recogniser.bestMatch(Images.read(IMAGE_INITIAL_BOARD))
                     .map(match -> new BoardImage(match.image(), match.region().getLocation()))
                     .getOrElse((BoardImage) null);
-            button = BotMoverTest.findRectangle(recogniser, IMAGE_RESET_BUTTON_1, IMAGE_RESET_BUTTON_2)
+            button = recogniser.bestMatch(Images.read(IMAGE_RESET_BUTTON))
                     .map(Vision.Match::region)
                     .getOrElse((Rectangle) null);
         } catch (Exception e) {
@@ -68,13 +65,6 @@ public class BotMoverTest {
         });
     }
 
-    private static Option<Vision.Match> findRectangle(Vision.Recogniser recogniser, String... images) {
-        return Stream.of(images)
-                .map(image -> recogniser.bestMatch(Images.read(image)))
-                .takeUntil(Option::isEmpty)
-                .head();
-    }
-
     @Before
     public void setUp() throws Exception {
         assumeThat(botMover, notNullValue());
@@ -82,7 +72,7 @@ public class BotMoverTest {
 
         // reset board position after each test
         Point point = new Point((int) resetButtonArea.getCenterX(), (int) resetButtonArea.getCenterY());
-        new SikuliMouse().click(point);
+        new SikuliPointer().click(point);
     }
 
     @Test

@@ -15,8 +15,8 @@ public class ClickBotMover extends BaseBotMover {
     @Override
     public void move(Square from, Square to) throws MoverException {
         try {
-            mouse.click(getSquareCoords(from));
-            mouse.click(getSquareCoords(to));
+            pointer.click(getSquareCoords(from));
+            pointer.click(getSquareCoords(to));
         } catch (RuntimeException re) {
             throw new MoverException(re);
         }

@@ -4,7 +4,7 @@ import io.chesslave.visual.BoardImage;
 import io.chesslave.model.Square;
 
 /**
- * A bot able to move pieces through a dragFrom and drop strategy.
+ * A bot able to move pieces through a drag and drop strategy.
  */
 public class DragBotMover extends BaseBotMover {
 
@@ -15,8 +15,8 @@ public class DragBotMover extends BaseBotMover {
     @Override
     public void move(Square from, Square to) throws MoverException {
         try {
-            mouse.dragFrom(getSquareCoords(from));
-            mouse.dropAt(getSquareCoords(to));
+            pointer.dragFrom(getSquareCoords(from));
+            pointer.dropAt(getSquareCoords(to));
         } catch (RuntimeException re) {
             throw new MoverException(re);
         }

@@ -2,7 +2,7 @@ package io.chesslave.hands;
 
 import java.awt.Point;
 
-public interface Mouse {
+public interface Pointer {
 
     void moveTo(Point coords);
 

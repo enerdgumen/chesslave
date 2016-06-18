@@ -1,6 +1,6 @@
 package io.chesslave.hands.sikuli;
 
-import io.chesslave.hands.Mouse;
+import io.chesslave.hands.Pointer;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Location;
 import org.sikuli.script.Screen;
@@ -10,10 +10,10 @@ import java.awt.Point;
 /**
  * An abstraction of mouse based on Sikuli.
  */
-public class SikuliMouse implements Mouse {
+public class SikuliPointer implements Pointer {
     private final Screen screen;
 
-    public SikuliMouse() {
+    public SikuliPointer() {
         // TODO: similar to SikuliScreen, we need to detect the proper screen
         screen = Screen.getPrimaryScreen();
     }
@@ -41,7 +41,7 @@ public class SikuliMouse implements Mouse {
         try {
             screen.drag(location(coords));
         } catch (FindFailed ff) {
-            throw new RuntimeException("Unable to dragFrom starting at " + coords, ff);
+            throw new RuntimeException("Unable to drag starting at " + coords, ff);
         }
     }
 

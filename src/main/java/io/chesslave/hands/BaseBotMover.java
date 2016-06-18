@@ -2,7 +2,7 @@ package io.chesslave.hands;
 
 import io.chesslave.visual.BoardImage;
 import io.chesslave.visual.SquareImage;
-import io.chesslave.hands.sikuli.SikuliMouse;
+import io.chesslave.hands.sikuli.SikuliPointer;
 import io.chesslave.model.Square;
 import java.awt.Point;
 
@@ -11,11 +11,11 @@ import java.awt.Point;
  */
 public abstract class BaseBotMover implements Mover {
 
-    protected final Mouse mouse;
+    protected final Pointer pointer;
     private final BoardImage board;
 
     protected BaseBotMover(BoardImage board) {
-        mouse = new SikuliMouse();
+        pointer = new SikuliPointer();
         this.board = board;
     }
 
