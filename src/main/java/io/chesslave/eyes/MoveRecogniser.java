@@ -15,7 +15,7 @@ public class MoveRecogniser {
         final Set<Tuple2<Square, Piece>> to = current.toSet().diff(previous.toSet());
         logger.debug("changed squares: from={}, to={}", from, to);
         if (to.length() != 1) {
-            new UnexpectedMoveException(
+            throw new UnexpectedMoveException(
                     String.format("cannot detect move (from: %s, to: %s)", previous, current));
         }
         final Piece movedPiece = to.get()._2;
