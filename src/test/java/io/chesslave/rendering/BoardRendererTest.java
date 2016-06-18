@@ -1,14 +1,13 @@
 package io.chesslave.rendering;
 
+import io.chesslave.eyes.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Piece.Type;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
-import io.chesslave.eyes.Images;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
-
 import static org.junit.Assert.assertTrue;
 
 public class BoardRendererTest {
@@ -32,7 +31,7 @@ public class BoardRendererTest {
                 .withPiece(Square.of("d3"), Piece.of(Type.KING, Color.BLACK))
                 .withPiece(Square.of("c2"), Piece.of(Type.PAWN, Color.BLACK))
                 .build();
-        final BufferedImage got = BoardRenderer.render(position, ChessSet.read(DIR_CHESS_SET));
+        final BufferedImage got = BoardRenderer.render(position, ChessSet.read(DIR_CHESS_SET)).image();
         final BufferedImage expected = Images.read(DIR_RENDERING + "expected.png");
         assertTrue(Images.areEquals(expected, got));
     }

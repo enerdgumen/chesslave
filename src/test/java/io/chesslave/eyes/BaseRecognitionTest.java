@@ -9,6 +9,7 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public abstract class BaseRecognitionTest {
+
     private static final String DIR_IMAGES = "/images/";
     private static final String PATH_CHESS_SET_1 = DIR_IMAGES + "set1/";
     private static final String PATH_CHESS_SET_3 = DIR_IMAGES + "set3/";
