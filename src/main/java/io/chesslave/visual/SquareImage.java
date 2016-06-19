@@ -9,12 +9,14 @@ public final class SquareImage {
 
     private final Lazy<BufferedImage> image;
     private final Square square;
+    private final boolean flipped;
     private final int size;
 
-    public SquareImage(BufferedImage board, Square square) {
+    public SquareImage(BufferedImage board, Square square, boolean flipped) {
         this.square = square;
+        this.flipped = flipped;
         this.size = board.getWidth() / Board.SIZE;
-        this.image = Lazy.of(() -> board.getSubimage(left(), top(), size(), size()));
+        this.image = Lazy.of(() -> board.getSubimage(left(), top(), size, size));
     }
 
     public BufferedImage image() {
@@ -26,19 +28,19 @@ public final class SquareImage {
     }
 
     public int left() {
-        return size * square.col;
+        return size * horizontalOffset(square.col);
     }
 
     public int right() {
-        return size * (square.col + 1);
+        return size * (horizontalOffset(square.col) + 1);
     }
 
     public int top() {
-        return size * (Board.SIZE - square.row - 1);
+        return size * verticalOffset(square.row);
     }
 
     public int bottom() {
-        return size * (Board.SIZE - square.row);
+        return size * (verticalOffset(square.row) + 1);
     }
 
     public int middleX() {
@@ -47,5 +49,13 @@ public final class SquareImage {
 
     public int middleY() {
         return top() + size / 2;
+    }
+
+    private int horizontalOffset(int col) {
+        return flipped ? Board.SIZE - 1 - col : col;
+    }
+
+    private int verticalOffset(int row) {
+        return flipped ? row : Board.SIZE - 1 - row;
     }
 }
