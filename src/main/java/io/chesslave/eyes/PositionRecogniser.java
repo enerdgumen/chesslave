@@ -2,6 +2,7 @@ package io.chesslave.eyes;
 
 import io.chesslave.model.Position;
 import io.chesslave.visual.BoardImage;
+import javaslang.control.Option;
 import java.util.Optional;
 
 public interface PositionRecogniser {
