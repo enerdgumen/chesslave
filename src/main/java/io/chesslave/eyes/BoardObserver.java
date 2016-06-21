@@ -31,12 +31,12 @@ public class BoardObserver {
         this.moveRecogniser = new MoveRecogniser();
     }
 
-    public Observable<Game> start() throws Exception {
+    public Observable<Game> start(Color color) throws Exception {
         // detecting initial position
         final Vision.Match match = findBoardInDesktop(config.board);
         final BoardImage initImage = new BoardImage(match.image(), match.region().getLocation());
         final Position initPosition = positionRecogniser.begin(initImage).get();
-        final Game initGame = new Game(initPosition, List.empty(), Color.WHITE);
+        final Game initGame = new Game(initPosition, List.empty(), color);
         logger.debug("initial position:\n{}", initPosition);
         // following game
         final Observable<Tuple2<BoardImage, BoardImage>> boards = captureBoards(match.region());

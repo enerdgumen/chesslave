@@ -1,5 +1,6 @@
 package io.chesslave.eyes;
 
+import io.chesslave.model.Color;
 import io.chesslave.model.Game;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class BoardObserverTestRunner {
         Thread.sleep(5000);
 
         final BoardConfiguration config = new BoardAnalyzer().analyze(Images.read(IMAGE_INITIAL_BOARD));
-        final Observable<Game> moves = new BoardObserver(config).start();
+        final Observable<Game> moves = new BoardObserver(config).start(Color.WHITE);
         moves.toBlocking().last(); // waiting forever
     }
 }
