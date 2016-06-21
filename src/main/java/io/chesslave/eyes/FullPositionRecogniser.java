@@ -6,8 +6,8 @@ import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import io.chesslave.visual.BoardImage;
 import javaslang.collection.Set;
+import javaslang.control.Option;
 import java.awt.Rectangle;
-import java.util.Optional;
 
 public class FullPositionRecogniser implements PositionRecogniser {
 
@@ -20,21 +20,21 @@ public class FullPositionRecogniser implements PositionRecogniser {
     }
 
     @Override
-    public Optional<Position> begin(BoardImage image) {
+    public Option<Position> begin(BoardImage image) {
         return recognise(image);
     }
 
     @Override
-    public Optional<Position> next(Position previousPosition, BoardImage previousImage, BoardImage currentImage) {
+    public Option<Position> next(Position previousPosition, BoardImage previousImage, BoardImage currentImage) {
         return recognise(currentImage);
     }
 
-    private Optional<Position> recognise(BoardImage board) {
+    private Option<Position> recognise(BoardImage board) {
         final Vision.Recogniser recogniser = vision.recognise(board.image());
         final Position.Builder position = new Position.Builder();
         Piece.all().forEach(piece -> findAllPieces(recogniser, piece)
                 .forEach(square -> position.withPiece(square, piece)));
-        return Optional.of(position.build());
+        return Option.of(position.build());
     }
 
     private Set<Square> findAllPieces(Vision.Recogniser recogniser, Piece piece) {
