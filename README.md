@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/chesslave/chesslave.png)](https://travis-ci.org/chesslave/chesslave)
-[![Coverage](https://img.shields.io/codecov/c/github/chesslave/chesslave.svg?maxAge=600)](https://codecov.io/gh/chesslave/chesslave)
-[![Ready Issues](https://badge.waffle.io/chesslave/chesslave.svg?label=ready&title=ready)](http://waffle.io/chesslave/chesslave)
+[![Coverage](https://codecov.io/gh/chesslave/chesslave/branch/master/graph/badge.svg)](https://codecov.io/gh/chesslave/chesslave)
 [![Join the chat at https://gitter.im/chesslave/chesslave](https://badges.gitter.im/chesslave/chesslave.svg)](https://gitter.im/chesslave/chesslave?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Issues in progress](https://badge.waffle.io/chesslave/chesslave.svg?label=In%20Progress&title=WIP)](http://waffle.io/chesslave/chesslave)
 
 # Chesslave
 
