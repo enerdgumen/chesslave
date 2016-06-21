@@ -7,9 +7,11 @@ import io.chesslave.visual.BoardImage;
 import javaslang.control.Option;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import java.util.Optional;
 
+@Ignore
 public class FullPositionRecogniserTest extends SinglePieceRecognitionTest {
 
     private FullPositionRecogniser recogniser;
