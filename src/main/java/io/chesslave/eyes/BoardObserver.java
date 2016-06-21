@@ -45,6 +45,10 @@ public class BoardObserver {
         final Observable<Game> moves = changingBoards.scan(initGame, (game, images) -> {
             final Position position = positionRecogniser.next(game.position(), images._1, images._2).get();
             logger.debug("current position:\n{}", Positions.toText(position));
+            if (game.position().equals(position)) {
+                logger.debug("nothing is changed");
+                return game;
+            }
             final Move move = moveRecogniser.detect(game.position(), position);
             logger.info("detected move {}", move);
             return game.move(move);
