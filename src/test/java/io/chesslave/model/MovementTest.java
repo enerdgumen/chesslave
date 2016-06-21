@@ -228,4 +228,14 @@ public class MovementTest {
         assertTrue(whiteBishop.isDefined());
         assertEquals(Piece.of(Piece.Type.BISHOP, Color.WHITE), whiteBishop.get());
     }
+
+    @Test
+    public void toStringTest() {
+        final Movement.Regular regular = Movement.regular(Square.of("b5"), Square.of("c6"));
+        assertTrue(regular.toString().startsWith("Regular"));
+        final Movement.ShortCastling shortCastling = Movement.shortCastling(Color.WHITE);
+        assertTrue(shortCastling.toString().startsWith("ShortCastling"));
+        final Movement.LongCastling longCastling = Movement.longCastling(Color.BLACK);
+        assertTrue(longCastling.toString().startsWith("LongCastling"));
+    }
 }

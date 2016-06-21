@@ -7,7 +7,7 @@ import javaslang.collection.Map;
 import javaslang.control.Option;
 import java.util.function.Function;
 
-public class Positions {
+public final class Positions {
     private static final Map<String, Piece> PIECE_FROM_CODE = HashMap.of(
             "P", Piece.of(Piece.Type.PAWN, Color.WHITE),
             "N", Piece.of(Piece.Type.KNIGHT, Color.WHITE),
@@ -35,6 +35,8 @@ public class Positions {
             Piece.of(Piece.Type.ROOK, Color.BLACK), "r",
             Piece.of(Piece.Type.QUEEN, Color.BLACK), "q",
             Piece.of(Piece.Type.KING, Color.BLACK), "k");
+
+    private Positions() {}
 
     /**
      * Creates a position from a textual human-readable representation of the board.

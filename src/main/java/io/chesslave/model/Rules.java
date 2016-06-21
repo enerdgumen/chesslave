@@ -16,7 +16,9 @@ import java.util.function.Predicate;
 /**
  * Defines the chess logics.
  */
-public class Rules {
+public final class Rules {
+
+    private Rules() {}
 
     /**
      * TODO: Handle pawn promotion.
@@ -28,7 +30,7 @@ public class Rules {
                 .map(piece -> {
                     final Predicate<Regular> isAvailable = move
                             -> isFreeOrWithOpponent(pos, move.to, piece)
-                            && isKingSafe(move.apply(pos), piece.color);
+                                && isKingSafe(move.apply(pos), piece.color);
                     final Function1<Square, Regular> regular = to -> Movement.regular(from, to);
                     switch (piece.type) {
                         case PAWN:
@@ -47,8 +49,9 @@ public class Rules {
                                     .addAll(rookSquares(pos, from))
                                     .map(regular)
                                     .filter(isAvailable);
+                        default:
+                            return HashSet.<Regular>empty();
                     }
-                    return HashSet.<Regular>empty();
                 })
                 .getOrElse(HashSet.empty());
     }

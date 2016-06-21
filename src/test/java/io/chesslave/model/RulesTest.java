@@ -3,6 +3,7 @@ package io.chesslave.model;
 import io.chesslave.model.Movement.Regular;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -94,6 +95,24 @@ public class RulesTest {
                 " | | | |K| | | ");
         final Set<Square> got = Rules.moves(position, Square.of("c4")).map(this::target);
         final Set<Square> expected = HashSet.of(Square.of("c3"), Square.of("d3"));
+        assertEquals(expected, got);
+    }
+
+    // FIXME pawn cannot move to f4 cause the king is threaten
+    @Ignore
+    @Test
+    public void pawnMustDefendKingIfCheck() {
+        final Position position = Positions.fromText(
+                " | | | |k| | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | |r| | |*|K| ",
+                " | | | | |P| | ",
+                " | | | | | | | ");
+        final Set<Square> got = Rules.moves(position, Square.of("f2")).map(this::target);
+        final Set<Square> expected = HashSet.of(Square.of("f3"));
         assertEquals(expected, got);
     }
 

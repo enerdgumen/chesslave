@@ -1,6 +1,6 @@
 package io.chesslave.model;
 
-public abstract class Board {
+public final class Board {
 
     public static final int SIZE = 8;
 }

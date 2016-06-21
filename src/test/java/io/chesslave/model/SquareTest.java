@@ -10,6 +10,8 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -120,7 +122,7 @@ public class SquareTest {
                 Tuple.of(0, 3),
                 Tuple.of(-1, 0),
                 Tuple.of(0, -1));
-        assertEquals(3, a1Translations.length());
+        assertEquals(3, a1Translations.size());
         assertThat(a1Translations, hasItem(Square.of("c2")));
         assertThat(a1Translations, hasItem(Square.of("h8")));
         assertThat(a1Translations, hasItem(Square.of("a4")));
@@ -130,7 +132,7 @@ public class SquareTest {
     public void walkTest() {
         final Square a1 = Square.of("a1");
         final Stream<Square> a1Walk = a1.walk(1, 1);
-        assertEquals(7, a1Walk.length());
+        assertEquals(7, a1Walk.size());
         assertThat(a1Walk, hasItem(Square.of("b2")));
         assertThat(a1Walk, hasItem(Square.of("c3")));
         assertThat(a1Walk, hasItem(Square.of("d4")));
@@ -141,7 +143,7 @@ public class SquareTest {
 
         final Square e4 = Square.of("e4");
         final Stream<Square> e4Walk = e4.walk(-2, 1);
-        assertEquals(2, e4Walk.length());
+        assertEquals(2, e4Walk.size());
         assertThat(e4Walk, hasItem(Square.of("c5")));
         assertThat(e4Walk, hasItem(Square.of("a6")));
     }
@@ -149,9 +151,26 @@ public class SquareTest {
     @Test
     public void allTest() {
         final Set<Square> allSquares = Square.all();
-        assertEquals(64, allSquares.length());
+        assertEquals(64, allSquares.size());
         List.range(0, Board.SIZE)
                 .crossProduct(List.range(0, Board.SIZE))
                 .forEach(t -> assertThat(allSquares, hasItem(new Square(t._1, t._2))));
+    }
+
+    @Test
+    public void equalsTest() {
+        final Square e1Square = Square.of("e1");
+        assertTrue(e1Square.equals(e1Square));
+        assertFalse(e1Square.equals(new Object()));
+        assertTrue(e1Square.equals(Square.of("e1")));
+    }
+
+    @Test
+    public void hashCodeTest() {
+        final Square e1Square = Square.of("e1");
+        final int e1SquareHash = e1Square.hashCode();
+        assertEquals(e1SquareHash, e1Square.hashCode());
+        assertNotEquals(e1SquareHash, new Object().hashCode());
+        assertEquals(e1SquareHash, Square.of("e1").hashCode());
     }
 }

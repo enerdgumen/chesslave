@@ -7,6 +7,8 @@ import javaslang.control.Option;
  */
 public final class Movement {
 
+    private Movement() {}
+
     /**
      * Moves a piece from a square to another square.
      */
@@ -68,12 +70,12 @@ public final class Movement {
 
         @Override
         public String toString() {
-            return "Regular{" +
-                    "from=" + from +
-                    ", to=" + to +
-                    ", enPassant=" + enPassant +
-                    ", promotion=" + promotion +
-                    '}';
+            return new StringBuilder()
+                    .append("Regular{from=").append(from)
+                    .append(", to=").append(to)
+                    .append(", enPassant=").append(enPassant)
+                    .append(", promotion=").append(promotion).append("}")
+                    .toString();
         }
     }
 
@@ -92,6 +94,13 @@ public final class Movement {
                     .move(new Square(4, row), new Square(6, row))
                     .move(new Square(7, row), new Square(5, row));
         }
+
+        @Override
+        public String toString() {
+            return new StringBuilder()
+                    .append("ShortCastling{color=").append(color).append("}")
+                    .toString();
+        }
     }
 
     public static class LongCastling implements Move {
@@ -108,6 +117,13 @@ public final class Movement {
             return position
                     .move(new Square(4, row), new Square(2, row))
                     .move(new Square(0, row), new Square(3, row));
+        }
+
+        @Override
+        public String toString() {
+            return new StringBuilder()
+                    .append("LongCastling{color=").append(color).append("}")
+                    .toString();
         }
     }
 }

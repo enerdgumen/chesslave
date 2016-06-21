@@ -3,7 +3,9 @@ package io.chesslave.support;
 /**
  * Utilities to perform assertions.
  */
-public abstract class Ensure {
+public final class Ensure {
+
+    private Ensure() {}
 
     public static <T> T notNull(T t, String message, Object... args) {
         if (t == null) {
