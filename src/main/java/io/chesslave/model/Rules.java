@@ -28,29 +28,28 @@ public final class Rules {
     public static Set<Regular> moves(Position pos, Square from) {
         return pos.at(from)
                 .map(piece -> {
-                    final Predicate<Regular> isAvailable = move
-                            -> isFreeOrWithOpponent(pos, move.to, piece)
-                                && isKingSafe(move.apply(pos), piece.color);
-                    final Function1<Square, Regular> regular = to -> Movement.regular(from, to);
-                    switch (piece.type) {
-                        case PAWN:
-                            return pawnMoves(pos, from);
-                        case KING:
-                            return kingSquares(from).map(regular).filter(isAvailable);
-                        case KNIGHT:
-                            return knightSquares(from).map(regular).filter(isAvailable);
-                        case BISHOP:
-                            return bishopSquares(pos, from).map(regular).filter(isAvailable);
-                        case ROOK:
-                            return rookSquares(pos, from).map(regular).filter(isAvailable);
-                        case QUEEN:
-                            return HashSet.<Square>empty()
-                                    .addAll(bishopSquares(pos, from))
-                                    .addAll(rookSquares(pos, from))
-                                    .map(regular)
-                                    .filter(isAvailable);
-                        default:
-                            return HashSet.<Regular>empty();
+                    if (piece.type == Type.PAWN) {
+                        return pawnMoves(pos, from).filter(move -> isKingSafe(move.apply(pos), piece.color));
+                    } else {
+                        final Function1<Square, Regular> regular = to -> Movement.regular(from, to);
+                        final Predicate<Regular> isAvailable = move ->
+                                isFreeOrWithOpponent(pos, move.to, piece) && isKingSafe(move.apply(pos), piece.color);
+                        switch (piece.type) {
+                            case KING:
+                                return kingSquares(from).map(regular).filter(isAvailable);
+                            case KNIGHT:
+                                return knightSquares(from).map(regular).filter(isAvailable);
+                            case BISHOP:
+                                return bishopSquares(pos, from).map(regular).filter(isAvailable);
+                            case ROOK:
+                                return rookSquares(pos, from).map(regular).filter(isAvailable);
+                            default:
+                                // QUEEN
+                                return HashSet.ofAll(bishopSquares(pos, from))
+                                        .addAll(rookSquares(pos, from))
+                                        .map(regular)
+                                        .filter(isAvailable);
+                        }
                     }
                 })
                 .getOrElse(HashSet.empty());
@@ -72,14 +71,10 @@ public final class Rules {
      * @return True if the given square is under attack by pieces of the specified color.
      */
     public static boolean isTargetForColor(Position position, Square square, Color color) {
-        final Piece rook = Piece.of(Type.ROOK, color);
-        final Piece queen = Piece.of(Type.QUEEN, color);
-        final Piece knight = Piece.of(Type.KNIGHT, color);
-        final Piece bishop = Piece.of(Type.BISHOP, color);
-        final Piece pawn = Piece.of(Type.PAWN, color);
-        final Piece king = Piece.of(Type.KING, color);
         final Set<Piece> maybeKnight = knightSquares(square).flatMap(position::at);
         final Set<Piece> maybeKing = kingSquares(square).flatMap(position::at);
+        final int pawnDir = Pawns.direction(color.opponent());
+        final Set<Piece> maybePawn = square.translateAll(Tuple.of(+1, pawnDir), Tuple.of(-1, pawnDir)).flatMap(position::at);
         final Option<Piece> n = square.walk(+0, +1).flatMap(position::at).headOption();
         final Option<Piece> ne = square.walk(+1, +1).flatMap(position::at).headOption();
         final Option<Piece> e = square.walk(+1, +0).flatMap(position::at).headOption();
@@ -88,13 +83,13 @@ public final class Rules {
         final Option<Piece> sw = square.walk(-1, -1).flatMap(position::at).headOption();
         final Option<Piece> w = square.walk(-1, +0).flatMap(position::at).headOption();
         final Option<Piece> nw = square.walk(-1, +1).flatMap(position::at).headOption();
-        final int pawnDir = Pawns.direction(color);
-        final Set<Piece> maybePawn = square.translateAll(Tuple.of(+1, pawnDir), Tuple.of(-1, pawnDir)).flatMap(position::at);
-        return maybeKnight.exists(knight::equals)
-                || maybePawn.exists(pawn::equals)
-                || maybeKing.exists(king::equals)
-                || List.of(n, e, s, w).flatMap(Function.identity()).exists(List.of(rook, queen)::contains)
-                || List.of(ne, se, sw, nw).flatMap(Function.identity()).exists(List.of(bishop, queen)::contains);
+        return maybeKnight.exists(Piece.of(Type.KNIGHT, color)::equals)
+                || maybePawn.exists(Piece.of(Type.PAWN, color)::equals)
+                || maybeKing.exists(Piece.of(Type.KING, color)::equals)
+                || List.of(n, e, s, w).flatMap(Function.identity())
+                    .exists(List.of(Piece.of(Type.ROOK, color), Piece.of(Type.QUEEN, color))::contains)
+                || List.of(ne, se, sw, nw).flatMap(Function.identity())
+                    .exists(List.of(Piece.of(Type.BISHOP, color), Piece.of(Type.QUEEN, color))::contains);
     }
 
     private static Set<Square> kingSquares(Square from) {

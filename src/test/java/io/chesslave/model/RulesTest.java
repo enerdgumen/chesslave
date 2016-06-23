@@ -3,7 +3,6 @@ package io.chesslave.model;
 import io.chesslave.model.Movement.Regular;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -98,8 +97,6 @@ public class RulesTest {
         assertEquals(expected, got);
     }
 
-    // FIXME pawn cannot move to f4 cause the king is threaten
-    @Ignore
     @Test
     public void pawnMustDefendKingIfCheck() {
         final Position position = Positions.fromText(
@@ -155,7 +152,7 @@ public class RulesTest {
     }
 
     @Test
-    public void kingCannotMoveInOpponentSquares() {
+    public void kingCannotMoveInOpponentPieceSquares() {
         final Position position = Positions.fromText(
                 " | | | |k| | | ",
                 " | | |*| |N| | ",
@@ -167,6 +164,22 @@ public class RulesTest {
                 " | | | | | | | ");
         final Set<Square> got = Rules.moves(position, Square.of("e8")).map(this::target);
         final Set<Square> expected = HashSet.of(Square.of("f7"), Square.of("d7"));
+        assertEquals(expected, got);
+    }
+
+    @Test
+    public void kingCannotMoveInOpponentPawnSquares() {
+        final Position position = Positions.fromText(
+                " | | | | |k| | ",
+                " | | | |*|P| | ",
+                " | | | | | |K| ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        final Set<Square> got = Rules.moves(position, Square.of("f8")).map(this::target);
+        final Set<Square> expected = HashSet.of(Square.of("e7"));
         assertEquals(expected, got);
     }
 
@@ -187,6 +200,22 @@ public class RulesTest {
     }
 
     @Test
+    public void kingsOpposition() {
+        final Position position = Positions.fromText(
+                " | | | |*|k|*| ",
+                " | | | | | | | ",
+                " | | | | |K| | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | |P",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        final Set<Square> got = Rules.moves(position, Square.of("f8")).map(this::target);
+        final Set<Square> expected = HashSet.of(Square.of("e8"), Square.of("g8"));
+        assertEquals(expected, got);
+    }
+
+    @Test
     public void checkmate() {
         final Position position = Positions.fromText(
                 " |R| | |k| | | ",
@@ -198,6 +227,22 @@ public class RulesTest {
                 " | | | | | | | ",
                 " | | | | | | | ");
         final Set<Square> got = Rules.moves(position, Square.of("e8")).map(this::target);
+        final Set<Square> expected = HashSet.empty();
+        assertEquals(expected, got);
+    }
+
+    @Test
+    public void stalemate() {
+        final Position position = Positions.fromText(
+                " | | | | |k| | ",
+                " | | | | |P| | ",
+                " | | | | |K| | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        final Set<Square> got = Rules.moves(position, Square.of("f8")).map(this::target);
         final Set<Square> expected = HashSet.empty();
         assertEquals(expected, got);
     }
