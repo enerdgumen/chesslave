@@ -39,7 +39,7 @@ public class RecognitionTest {
                     .withPiece(Square.of("d3"), Piece.of(Piece.Type.KING, Color.BLACK))
                     .withPiece(Square.of("c2"), Piece.of(Piece.Type.PAWN, Color.BLACK))
                     .build();
-            final BoardImage board = BoardRenderer.render(position, chessSet);
+            final BoardImage board = BoardRenderer.using(chessSet, position).toBoardImage();
             final Set<Square> got = Recognition.filledSquares(board).map(Recognition.SquareGlance::square);
             assertEquals(position.toMap().keySet(), got);
         }
@@ -51,7 +51,7 @@ public class RecognitionTest {
         @Override
         void withPieceOnSquare(Square square, Piece piece) throws Exception {
             final Position position = new Position.Builder().withPiece(square, piece).build();
-            final BoardImage board = BoardRenderer.render(position, chessSet);
+            final BoardImage board = BoardRenderer.using(chessSet, position).toBoardImage();
             final BufferedImage image = board.squareImage(square).image();
             final Color got = Recognition.guessPieceSide(image);
             assertEquals(piece.color, got);
