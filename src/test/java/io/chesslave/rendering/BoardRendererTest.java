@@ -11,7 +11,6 @@ import io.chesslave.model.Square;
 import org.junit.Before;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class BoardRendererTest {
     private static final String DIR_IMAGES = "/images/";
@@ -40,7 +39,6 @@ public class BoardRendererTest {
                 .withBackground(Square.of("e5"), java.awt.Color.YELLOW)
                 .toBoardImage().image();
         final BufferedImage expected = Images.read(DIR_RENDERING + "no-position-with-custom-bg.png");
-        Images.write(got, new File("C:\\Users\\User\\IdeaProjects\\empty.png"));
         assertTrue(Images.areEquals(expected, got));
     }
 
@@ -60,7 +58,6 @@ public class BoardRendererTest {
                 .withBackground(Square.of("h8"), java.awt.Color.BLUE)
                 .toBoardImage().image();
         final BufferedImage expected = Images.read(DIR_RENDERING + "with-position-with-custom-bg.png");
-        Images.write(got, new File("C:\\Users\\User\\IdeaProjects\\position.png"));
         assertTrue(Images.areEquals(expected, got));
     }
 

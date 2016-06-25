@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class BoardImageTest {
     private static final String DIR_IMAGES = "/images/";
@@ -79,9 +78,6 @@ public class BoardImageTest {
 
     private void validateBoardImage(BoardImage boardImage) {
         assertTrue(Images.areEquals(boardImage.image(), boardImage.flipped() ? flippedBoard : unflippedBoard));
-        if (boardImage.flipped()) {
-            Images.write(boardImage.squareImage(Square.of("g1")).image(), new File("C:\\Users\\User\\IdeaProjects\\test.png"));
-        }
         assertTrue(Images.areEquals(boardImage.squareImage(Square.of("g1")).image(), knight));
         assertTrue(Images.areEquals(boardImage.squareImage(Square.of("d7")).image(), pawn));
         assertTrue(Images.areEquals(boardImage.squareImage(Square.of("e4")).image(), lightSquare));
