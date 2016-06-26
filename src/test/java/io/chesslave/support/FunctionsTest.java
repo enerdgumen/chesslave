@@ -1,9 +1,10 @@
 package io.chesslave.support;
 
+import static org.junit.Assert.assertSame;
+
 import javaslang.Function2;
 import javaslang.Function3;
 import org.junit.Test;
-import static org.junit.Assert.assertSame;
 
 public class FunctionsTest {
 

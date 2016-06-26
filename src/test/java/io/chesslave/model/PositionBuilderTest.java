@@ -1,10 +1,10 @@
 package io.chesslave.model;
 
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+
+import org.junit.Test;
 
 public class PositionBuilderTest {
 

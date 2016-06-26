@@ -1,10 +1,10 @@
 package io.chesslave.model;
 
-import javaslang.control.Option;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import javaslang.control.Option;
+import org.junit.Test;
 
 public class MovementTest {
 

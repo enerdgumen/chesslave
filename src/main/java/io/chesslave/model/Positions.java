@@ -4,7 +4,7 @@ import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import javaslang.collection.Map;
-import javaslang.control.Option;
+
 import java.util.function.Function;
 
 public final class Positions {

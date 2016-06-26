@@ -8,6 +8,7 @@ import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
+
 import java.util.function.Function;
 
 /**

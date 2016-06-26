@@ -1,12 +1,5 @@
 package io.chesslave.model;
 
-import javaslang.Tuple;
-import javaslang.collection.List;
-import javaslang.collection.Set;
-import javaslang.collection.Stream;
-import javaslang.control.Option;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
@@ -15,6 +8,13 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import javaslang.Tuple;
+import javaslang.collection.List;
+import javaslang.collection.Set;
+import javaslang.collection.Stream;
+import javaslang.control.Option;
+import org.junit.Test;
 
 public class SquareTest {
 

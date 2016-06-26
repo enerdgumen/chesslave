@@ -3,6 +3,7 @@ package io.chesslave.model;
 import io.chesslave.support.Functions;
 import javaslang.collection.List;
 import javaslang.collection.Set;
+
 import java.util.Objects;
 
 /**

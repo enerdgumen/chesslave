@@ -1,11 +1,12 @@
 package io.chesslave.model;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 public class PositionsTest {
 
-    final Position position = new Position.Builder()
+    private final Position position = new Position.Builder()
             .withPiece(Square.of("a1"), Piece.of(Piece.Type.ROOK, Color.WHITE))
             .withPiece(Square.of("b1"), Piece.of(Piece.Type.KNIGHT, Color.WHITE))
             .withPiece(Square.of("c1"), Piece.of(Piece.Type.BISHOP, Color.WHITE))

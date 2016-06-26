@@ -1,7 +1,8 @@
 package io.chesslave.model;
 
-import javaslang.collection.List;
 import static io.chesslave.model.Piece.Type;
+
+import javaslang.collection.List;
 
 /**
  * An immutable chess match tracker.
@@ -19,7 +20,7 @@ public class Game {
     }
 
     /**
-     * Creates a game from the initial position.
+     * @return a game from the initial position.
      */
     public static Game initialPosition() {
         final Position position = new Position.Builder()
@@ -61,16 +62,25 @@ public class Game {
 
     /**
      * Applies the move to the current position.
-     * @return The resulting game.
+     *
+     * @param move the move to apply to the position
+     * @return the resulting game
      */
     public Game move(Move move) {
         return new Game(initialPosition, moves.append(move), turn.opponent());
     }
 
     /**
-     * Get the current position.
+     * @return the current position.
      */
     public Position position() {
         return moves.foldLeft(initialPosition, (pos, move) -> move.apply(pos));
+    }
+
+    /**
+     * @return the color to move next
+     */
+    public Color turn() {
+        return turn;
     }
 }

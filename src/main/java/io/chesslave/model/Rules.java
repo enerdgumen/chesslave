@@ -1,5 +1,7 @@
 package io.chesslave.model;
 
+import static javaslang.Predicates.is;
+
 import io.chesslave.model.Movement.Regular;
 import io.chesslave.support.Functions;
 import javaslang.Function1;
@@ -10,9 +12,9 @@ import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
+
 import java.util.function.Function;
 import java.util.function.Predicate;
-import static javaslang.Predicates.is;
 
 /**
  * Defines the chess logics.
