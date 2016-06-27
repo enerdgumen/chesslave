@@ -3,6 +3,7 @@ package io.chesslave.visual;
 import io.chesslave.model.Board;
 import io.chesslave.model.Square;
 import javaslang.Lazy;
+
 import java.awt.image.BufferedImage;
 
 public final class SquareImage {

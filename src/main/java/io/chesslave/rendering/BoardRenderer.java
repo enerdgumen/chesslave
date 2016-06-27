@@ -10,31 +10,27 @@ import javaslang.control.Option;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGraphics2DIOException;
-import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 
 /**
  * Given a position and a chess set, creates an image of the board.
  */
-public class BoardRenderer {
+public final class BoardRenderer {
 
     private static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+
+    private BoardRenderer() {}
 
     public static Builder using(ChessSet chessSet) {
         return new Builder(chessSet);
@@ -80,8 +76,11 @@ public class BoardRenderer {
 
     private static BoardImage graphicsToBoardImage(SVGGraphics2D graphics) throws IOException {
         final String svg = graphicsToSvg(graphics);
-        try (final InputStream img = svgToPng(svg)) {
+        final ChessTranscoder transcoder = new ChessTranscoder(svg);
+        try (final ByteArrayInputStream img = new ByteArrayInputStream(transcoder.toPng())) {
             return new BoardImage(ImageIO.read(img));
+        } catch (TranscoderException te) {
+            throw new IOException(te.getMessage(), te);
         }
     }
 
@@ -95,18 +94,6 @@ public class BoardRenderer {
         final StringWriter svg = new StringWriter();
         graphics.stream(svg, false);
         return svg.toString();
-    }
-
-    private static InputStream svgToPng(String svg) throws IOException {
-        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            final TranscoderInput in = new TranscoderInput(new StringReader(svg));
-            final TranscoderOutput out = new TranscoderOutput(baos);
-            final Transcoder transcoder = new PNGTranscoder();
-            transcoder.transcode(in, out);
-            return new ByteArrayInputStream(baos.toByteArray());
-        } catch (TranscoderException te) {
-            throw new IOException(te.getMessage(), te);
-        }
     }
 
     /**

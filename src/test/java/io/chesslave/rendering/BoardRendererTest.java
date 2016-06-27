@@ -10,7 +10,9 @@ import io.chesslave.model.Position;
 import io.chesslave.model.Square;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class BoardRendererTest {
     private static final String DIR_IMAGES = "/images/";
@@ -25,7 +27,7 @@ public class BoardRendererTest {
     }
 
     @Test
-    public void renderEmptyPositionTest() throws Exception {
+    public void renderEmptyPositionTest() throws IOException {
         final BufferedImage got = BoardRenderer.using(chessSet)
                 .toBoardImage().image();
         final BufferedImage expected = Images.read(DIR_RENDERING + "no-position-no-custom-bg.png");
@@ -33,7 +35,7 @@ public class BoardRendererTest {
     }
 
     @Test
-    public void renderEmptyPositionCustomBackgroundTest() throws Exception {
+    public void renderEmptyPositionCustomBackgroundTest() throws IOException {
         final BufferedImage got = BoardRenderer.using(chessSet)
                 .withBackground(Square.of("d4"), java.awt.Color.RED)
                 .withBackground(Square.of("e5"), java.awt.Color.YELLOW)
@@ -43,7 +45,7 @@ public class BoardRendererTest {
     }
 
     @Test
-    public void renderPositionTest() throws Exception {
+    public void renderPositionTest() throws IOException {
         final BufferedImage got = BoardRenderer.using(chessSet)
                 .withPosition(position())
                 .toBoardImage().image();
@@ -52,7 +54,7 @@ public class BoardRendererTest {
     }
 
     @Test
-    public void renderPositionCustomBackgroundTest() throws Exception {
+    public void renderPositionCustomBackgroundTest() throws IOException {
         final BufferedImage got = BoardRenderer.using(chessSet)
                 .withPosition(position())
                 .withBackground(Square.of("h8"), java.awt.Color.BLUE)

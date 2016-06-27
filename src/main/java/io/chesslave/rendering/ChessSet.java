@@ -1,12 +1,13 @@
 package io.chesslave.rendering;
 
-import io.chesslave.visual.BoardImage;
 import io.chesslave.eyes.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
+import io.chesslave.visual.BoardImage;
 import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
+
 import java.awt.image.BufferedImage;
 
 public class ChessSet {
@@ -24,7 +25,7 @@ public class ChessSet {
     public final BoardImage board;
     public final Map<Piece, BufferedImage> pieces;
 
-    public ChessSet(BoardImage board, Map<Piece, BufferedImage> pieces) {
+    private ChessSet(BoardImage board, Map<Piece, BufferedImage> pieces) {
         this.board = board;
         this.pieces = pieces;
     }

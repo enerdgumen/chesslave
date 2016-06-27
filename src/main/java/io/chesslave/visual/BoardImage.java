@@ -1,6 +1,7 @@
 package io.chesslave.visual;
 
 import io.chesslave.model.Square;
+
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 

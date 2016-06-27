@@ -1,8 +1,10 @@
 package io.chesslave.rendering;
 
+import static org.junit.Assert.assertTrue;
+
+import io.chesslave.eyes.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
-import io.chesslave.eyes.Images;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,8 +12,6 @@ import org.junit.runners.Parameterized;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collection;
-
-import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class ChessSetTest {
@@ -34,7 +34,7 @@ public class ChessSetTest {
     }
 
     @Test
-    public void factoryMethodTest() {
+    public void readTest() {
         final BufferedImage expectedBoardImage = Images.read(chessSetPath + "empty-board.png");
         assertTrue(Images.areEquals(chessSet.board.image(), expectedBoardImage));
         chessSet.pieces.forEach((piece, image) -> {
