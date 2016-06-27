@@ -8,10 +8,9 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.sikuli.script.FindFailed;
 import org.sikuli.script.Location;
 import org.sikuli.script.Screen;
@@ -19,7 +18,6 @@ import org.sikuli.script.Screen;
 import java.awt.Desktop;
 import java.awt.Point;
 
-@RunWith(MockitoJUnitRunner.class)
 public class SikuliPointerTest {
 
     @Mock
@@ -33,11 +31,8 @@ public class SikuliPointerTest {
 
     @Before
     public void setUp() {
-        try {
-            assumeTrue(Desktop.isDesktopSupported());
-        } catch (Throwable t) {
-            assumeTrue(false);
-        }
+        assumeTrue(Desktop.isDesktopSupported());
+        MockitoAnnotations.initMocks(this);
 
         realPointer = new SikuliPointer();
         point = new Point(0, 0);

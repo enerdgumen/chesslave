@@ -8,15 +8,13 @@ import static org.mockito.Mockito.doThrow;
 import io.chesslave.model.Square;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.awt.Desktop;
 import java.awt.Point;
 
-@RunWith(MockitoJUnitRunner.class)
 public class FailingDragBotMoverTest {
 
     @Mock
@@ -27,11 +25,8 @@ public class FailingDragBotMoverTest {
 
     @Before
     public void setUp() {
-        try {
-            assumeTrue(Desktop.isDesktopSupported());
-        } catch (Throwable t) {
-            assumeTrue(false);
-        }
+        assumeTrue(Desktop.isDesktopSupported());
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test(expected = RuntimeException.class)
