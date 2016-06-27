@@ -33,7 +33,11 @@ public class SikuliPointerTest {
 
     @Before
     public void setUp() {
-        assumeTrue(Desktop.isDesktopSupported());
+        try {
+            assumeTrue(Desktop.isDesktopSupported());
+        } catch (Throwable t) {
+            assumeTrue(false);
+        }
 
         realPointer = new SikuliPointer();
         point = new Point(0, 0);

@@ -27,7 +27,11 @@ public class FailingDragBotMoverTest {
 
     @Before
     public void setUp() {
-        assumeTrue(Desktop.isDesktopSupported());
+        try {
+            assumeTrue(Desktop.isDesktopSupported());
+        } catch (Throwable t) {
+            assumeTrue(false);
+        }
     }
 
     @Test(expected = RuntimeException.class)
