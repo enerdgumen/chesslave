@@ -1,9 +1,10 @@
 package io.chesslave.hands;
 
-import io.chesslave.visual.BoardImage;
-import io.chesslave.visual.SquareImage;
 import io.chesslave.hands.sikuli.SikuliPointer;
 import io.chesslave.model.Square;
+import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.SquareImage;
+
 import java.awt.Point;
 
 /**

@@ -1,7 +1,7 @@
 package io.chesslave.hands;
 
-import io.chesslave.visual.BoardImage;
 import io.chesslave.model.Square;
+import io.chesslave.visual.BoardImage;
 
 /**
  * A bot able to move pieces through a point and click strategy.

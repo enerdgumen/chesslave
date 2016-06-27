@@ -11,11 +11,14 @@ import java.awt.Point;
  * An abstraction of mouse based on Sikuli.
  */
 public class SikuliPointer implements Pointer {
-    private final Screen screen;
+    private Screen screen;
 
     public SikuliPointer() {
-        // TODO: similar to SikuliScreen, we need to detect the proper screen
         screen = Screen.getPrimaryScreen();
+    }
+
+    public SikuliPointer(final int screenId) {
+        screen = Screen.getScreen(screenId);
     }
 
     @Override
@@ -52,6 +55,10 @@ public class SikuliPointer implements Pointer {
         } catch (FindFailed ff) {
             throw new RuntimeException("Unable to drop at " + coords, ff);
         }
+    }
+
+    int getScreenId() {
+        return screen.getID();
     }
 
     private Location location(Point coords) {

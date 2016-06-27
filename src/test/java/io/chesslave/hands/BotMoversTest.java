@@ -1,7 +1,7 @@
 package io.chesslave.hands;
 
-import static org.junit.Assume.assumeThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assume.assumeThat;
 
 import io.chesslave.eyes.Images;
 import io.chesslave.eyes.Vision;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class BotMoverTest {
+public class BotMoversTest {
     private static final String DIR_IMAGES = "/images/";
     private static final String DIR_HANDS = DIR_IMAGES + "hands/";
     private static final String DIR_VISUAL = DIR_IMAGES + "visual/";
@@ -99,10 +99,7 @@ public class BotMoverTest {
         assumeThat(resetButtonPoint, notNullValue());
 
         pointer = new SikuliPointer();
-    }
 
-    @Test
-    public void someSimpleOpenings() throws Exception {
         // flip board when necessary
         if (flipButtonPoint != null) {
             pointer.click(flipButtonPoint);
@@ -110,18 +107,10 @@ public class BotMoverTest {
 
         // reset board position after each sequence
         pointer.click(resetButtonPoint);
+    }
 
-        // Sicilian
-        botMover.move(Square.of("e2"), Square.of("e4"));
-        botMover.move(Square.of("c7"), Square.of("c5"));
-        botMover.move(Square.of("g1"), Square.of("f3"));
-        botMover.move(Square.of("d7"), Square.of("d6"));
-        botMover.move(Square.of("d2"), Square.of("d4"));
-        botMover.move(Square.of("c5"), Square.of("d4"));
-
-        pointer.click(resetButtonPoint);
-
-        // Spanish
+    @Test
+    public void spanishOpeningTest() throws Exception {
         botMover.move(Square.of("e2"), Square.of("e4"));
         botMover.move(Square.of("e7"), Square.of("e5"));
         botMover.move(Square.of("g1"), Square.of("f3"));
@@ -130,5 +119,9 @@ public class BotMoverTest {
         botMover.move(Square.of("g8"), Square.of("f6"));
         botMover.move(Square.of("e1"), Square.of("g1"));
         botMover.move(Square.of("f8"), Square.of("e7"));
+        botMover.move(Square.of("f1"), Square.of("e1"));
+        botMover.move(Square.of("a7"), Square.of("a6"));
+        // awkward move, but it tests captures ;)
+        botMover.move(Square.of("b5"), Square.of("c6"));
     }
 }
