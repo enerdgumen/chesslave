@@ -21,14 +21,14 @@ public class BoardObserver {
     private final Screen screen;
     private final Vision vision;
     private final PositionRecogniser positionRecogniser;
-    private final MoveRecogniser moveRecogniser;
+    private final MoveRecogniserByPositionDiff moveRecogniser;
 
     public BoardObserver(BoardConfiguration config) {
         this.config = config;
         this.screen = new SikuliScreen();
         this.vision = new SikuliVision();
         this.positionRecogniser = new FullPositionRecogniser(vision, config);
-        this.moveRecogniser = new MoveRecogniser();
+        this.moveRecogniser = new MoveRecogniserByPositionDiff();
     }
 
     public Observable<Game> start(Color color) throws Exception {
