@@ -9,6 +9,8 @@ public interface Vision {
 
     interface Recogniser {
 
+        Option<Match> match(BufferedImage target);
+
         Stream<Match> matches(BufferedImage target);
 
         default Option<Match> bestMatch(BufferedImage target) {

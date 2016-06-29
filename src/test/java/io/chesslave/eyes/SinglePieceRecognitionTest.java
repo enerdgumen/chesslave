@@ -128,5 +128,19 @@ public abstract class SinglePieceRecognitionTest extends BaseRecognitionTest {
         withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.BISHOP, Color.BLACK));
     }
 
-    abstract void withPieceOnSquare(Square square, Piece piece) throws Exception;
+    @Test
+    public void emptyLightSquare() throws Exception {
+        withEmptySquare(Square.of("b1"));
+    }
+
+    @Test
+    public void emptyDarkSquare() throws Exception {
+        withEmptySquare(Square.of("a1"));
+    }
+
+    public void withPieceOnSquare(Square square, Piece piece) throws Exception {
+    }
+
+    public void withEmptySquare(Square square) throws Exception {
+    }
 }

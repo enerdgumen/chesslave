@@ -1,21 +1,15 @@
 package io.chesslave.eyes;
 
-import static org.junit.Assert.assertEquals;
-
 import io.chesslave.eyes.sikuli.SikuliVision;
-import io.chesslave.model.Game;
-import io.chesslave.model.Piece;
-import io.chesslave.model.Position;
-import io.chesslave.model.Positions;
-import io.chesslave.model.Square;
+import io.chesslave.model.*;
 import io.chesslave.rendering.BoardRenderer;
 import io.chesslave.visual.BoardImage;
 import javaslang.control.Option;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import java.util.Optional;
+import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class FullPositionRecogniserTest extends SinglePieceRecognitionTest {
@@ -50,6 +44,6 @@ public class FullPositionRecogniserTest extends SinglePieceRecognitionTest {
         final Position position = new Position.Builder().withPiece(square, piece).build();
         final BoardImage board = BoardRenderer.using(chessSet, position).toBoardImage();
         final Option<Position> got = recogniser.begin(board);
-        assertEquals(Optional.of(position), got);
+        assertEquals(Option.of(position), got);
     }
 }

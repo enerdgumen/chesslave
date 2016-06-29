@@ -20,6 +20,10 @@ public final class SquareImage {
         this.image = Lazy.of(() -> board.getSubimage(left(), top(), size, size));
     }
 
+    public Square square() {
+        return square;
+    }
+
     public BufferedImage image() {
         return image.get();
     }
@@ -58,5 +62,10 @@ public final class SquareImage {
 
     private int verticalOffset(int row) {
         return flipped ? row : Board.SIZE - 1 - row;
+    }
+
+    @Override
+    public String toString() {
+        return square.toString();
     }
 }

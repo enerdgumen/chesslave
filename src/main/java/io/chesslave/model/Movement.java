@@ -12,35 +12,35 @@ public final class Movement {
     /**
      * Moves a piece from a square to another square.
      */
-    static Regular regular(Square from, Square to) {
+    public static Regular regular(Square from, Square to) {
         return new Regular(from, to, false, Option.none());
     }
 
     /**
      * Moves a pawn capturing the opponent pawn en passant.
      */
-    static Regular enPassant(Square from, Square to) {
+    public static Regular enPassant(Square from, Square to) {
         return new Regular(from, to, true, Option.none());
     }
 
     /**
      * Moves a pawn from a square to another square and promotes it to the given piece type.
      */
-    static Regular promotion(Square from, Square to, Piece.Type type) {
+    public static Regular promotion(Square from, Square to, Piece.Type type) {
         return new Regular(from, to, false, Option.some(type));
     }
 
     /**
      * Performs a castling on the king side of the specified color.
      */
-    static ShortCastling shortCastling(Color color) {
+    public static ShortCastling shortCastling(Color color) {
         return new ShortCastling(color);
     }
 
     /**
      * Performs a castling on the queen side of the specified color.
      */
-    static LongCastling longCastling(Color color) {
+    public static LongCastling longCastling(Color color) {
         return new LongCastling(color);
     }
 
