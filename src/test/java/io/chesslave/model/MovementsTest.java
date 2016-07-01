@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import javaslang.control.Option;
 import org.junit.Test;
 
-public class MovementTest {
+public class MovementsTest {
 
     @Test
     public void shortCastleWhiteTest() {
@@ -19,7 +19,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | |K| | |R");
-        Movement.ShortCastling shortCastling = Movement.shortCastling(Color.WHITE);
+        Movements.ShortCastling shortCastling = Movements.shortCastling(Color.WHITE);
         final Position newPosition = shortCastling.apply(position);
 
         final Option<Piece> noPieceOnE1 = newPosition.at(Square.of("e1"));
@@ -45,7 +45,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 "R| | | |K| | | ");
-        Movement.LongCastling longCastling = Movement.longCastling(Color.WHITE);
+        Movements.LongCastling longCastling = Movements.longCastling(Color.WHITE);
         final Position newPosition = longCastling.apply(position);
 
         final Option<Piece> noPieceOnE1 = newPosition.at(Square.of("e1"));
@@ -73,7 +73,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        Movement.ShortCastling shortCastling = Movement.shortCastling(Color.BLACK);
+        Movements.ShortCastling shortCastling = Movements.shortCastling(Color.BLACK);
         final Position newPosition = shortCastling.apply(position);
 
         final Option<Piece> noPieceOnE8 = newPosition.at(Square.of("e8"));
@@ -99,7 +99,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        Movement.LongCastling longCastling = Movement.longCastling(Color.BLACK);
+        Movements.LongCastling longCastling = Movements.longCastling(Color.BLACK);
         final Position newPosition = longCastling.apply(position);
 
         final Option<Piece> noPieceOnE8 = newPosition.at(Square.of("e8"));
@@ -127,7 +127,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        Movement.Regular enPassant = Movement.enPassant(Square.of("d5"), Square.of("c6"));
+        Movements.Regular enPassant = Movements.enPassant(Square.of("d5"), Square.of("c6"));
         final Position newPosition = enPassant.apply(position);
 
         final Option<Piece> noPieceOnD5 = newPosition.at(Square.of("d5"));
@@ -152,7 +152,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        Movement.Regular enPassant = Movement.enPassant(Square.of("g4"), Square.of("f3"));
+        Movements.Regular enPassant = Movements.enPassant(Square.of("g4"), Square.of("f3"));
         final Position newPosition = enPassant.apply(position);
 
         final Option<Piece> noPieceOnG4 = newPosition.at(Square.of("g4"));
@@ -177,7 +177,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        Movement.Regular promotion = Movement.promotion(Square.of("b7"), Square.of("b8"), Piece.Type.QUEEN);
+        Movements.Regular promotion = Movements.promotion(Square.of("b7"), Square.of("b8"), Piece.Type.QUEEN);
         final Position newPosition = promotion.apply(position);
 
         final Option<Piece> noPieceOnB7 = newPosition.at(Square.of("b7"));
@@ -198,7 +198,7 @@ public class MovementTest {
                 " | | | | | | | ",
                 "P|P|P|P|P|P|P|P",
                 "R|N|B|Q|K|B|N|R");
-        Movement.Regular firstMove = Movement.regular(Square.of("e2"), Square.of("e4"));
+        Movements.Regular firstMove = Movements.regular(Square.of("e2"), Square.of("e4"));
         final Position newPosition = firstMove.apply(position);
 
         final Option<Piece> noPieceOnE2 = newPosition.at(Square.of("e2"));
@@ -219,7 +219,7 @@ public class MovementTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q|K| | |R");
-        Movement.Regular bishopTakesKnight = Movement.regular(Square.of("b5"), Square.of("c6"));
+        Movements.Regular bishopTakesKnight = Movements.regular(Square.of("b5"), Square.of("c6"));
         final Position newPosition = bishopTakesKnight.apply(position);
 
         final Option<Piece> noPieceOnB5 = newPosition.at(Square.of("b5"));
@@ -231,11 +231,11 @@ public class MovementTest {
 
     @Test
     public void toStringTest() {
-        final Movement.Regular regular = Movement.regular(Square.of("b5"), Square.of("c6"));
+        final Movements.Regular regular = Movements.regular(Square.of("b5"), Square.of("c6"));
         assertTrue(regular.toString().startsWith("Regular"));
-        final Movement.ShortCastling shortCastling = Movement.shortCastling(Color.WHITE);
+        final Movements.ShortCastling shortCastling = Movements.shortCastling(Color.WHITE);
         assertTrue(shortCastling.toString().startsWith("ShortCastling"));
-        final Movement.LongCastling longCastling = Movement.longCastling(Color.BLACK);
+        final Movements.LongCastling longCastling = Movements.longCastling(Color.BLACK);
         assertTrue(longCastling.toString().startsWith("LongCastling"));
     }
 }
