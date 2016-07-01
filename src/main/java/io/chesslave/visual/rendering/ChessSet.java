@@ -1,6 +1,6 @@
 package io.chesslave.visual.rendering;
 
-import io.chesslave.eyes.Images;
+import io.chesslave.visual.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import io.chesslave.visual.model.BoardImage;

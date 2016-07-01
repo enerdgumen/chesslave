@@ -1,6 +1,7 @@
 package io.chesslave.eyes;
 
 import io.chesslave.model.Piece;
+import io.chesslave.visual.Images;
 import io.chesslave.visual.model.BoardImage;
 import javaslang.collection.List;
 import javaslang.collection.Map;

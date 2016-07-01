@@ -1,8 +1,6 @@
 package io.chesslave.eyes;
 
-import io.chesslave.eyes.BoardAnalyzer;
-import io.chesslave.eyes.BoardConfiguration;
-import io.chesslave.eyes.Images;
+import io.chesslave.visual.Images;
 import org.junit.Test;
 import java.awt.image.BufferedImage;
 import java.io.File;

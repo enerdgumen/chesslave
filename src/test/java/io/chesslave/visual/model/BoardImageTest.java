@@ -4,9 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import io.chesslave.eyes.Images;
+import io.chesslave.visual.Images;
 import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

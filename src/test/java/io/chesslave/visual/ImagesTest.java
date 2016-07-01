@@ -1,4 +1,4 @@
-package io.chesslave.eyes;
+package io.chesslave.visual;
 
 import org.junit.Test;
 import java.awt.Color;

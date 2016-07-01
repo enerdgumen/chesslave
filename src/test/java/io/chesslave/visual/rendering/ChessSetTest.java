@@ -2,7 +2,7 @@ package io.chesslave.visual.rendering;
 
 import static org.junit.Assert.assertTrue;
 
-import io.chesslave.eyes.Images;
+import io.chesslave.visual.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
 import org.junit.Test;

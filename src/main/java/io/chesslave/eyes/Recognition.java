@@ -2,6 +2,7 @@ package io.chesslave.eyes;
 
 import io.chesslave.model.Color;
 import io.chesslave.model.Square;
+import io.chesslave.visual.Images;
 import io.chesslave.visual.model.BoardImage;
 import javaslang.collection.HashSet;
 import javaslang.collection.Iterator;

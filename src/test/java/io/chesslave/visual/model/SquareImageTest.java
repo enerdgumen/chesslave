@@ -3,10 +3,9 @@ package io.chesslave.visual.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import io.chesslave.eyes.Images;
+import io.chesslave.visual.Images;
 import io.chesslave.model.Board;
 import io.chesslave.model.Square;
-import io.chesslave.visual.model.SquareImage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

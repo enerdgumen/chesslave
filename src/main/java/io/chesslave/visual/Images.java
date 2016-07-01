@@ -1,4 +1,4 @@
-package io.chesslave.eyes;
+package io.chesslave.visual;
 
 import javaslang.collection.Iterator;
 import javaslang.collection.Stream;

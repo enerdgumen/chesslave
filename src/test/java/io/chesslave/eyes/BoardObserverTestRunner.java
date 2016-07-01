@@ -2,6 +2,7 @@ package io.chesslave.eyes;
 
 import io.chesslave.model.Color;
 import io.chesslave.model.Game;
+import io.chesslave.visual.Images;
 import org.junit.Ignore;
 import org.junit.Test;
 import rx.Observable;
