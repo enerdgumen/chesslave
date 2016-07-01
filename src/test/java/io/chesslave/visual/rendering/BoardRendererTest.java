@@ -17,7 +17,7 @@ import java.io.IOException;
 public class BoardRendererTest {
     private static final String DIR_IMAGES = "/images/";
     private static final String DIR_CHESS_SET = DIR_IMAGES + "set1/";
-    private static final String DIR_RENDERING = DIR_IMAGES + "rendering/";
+    private static final String DIR_RENDERING = DIR_IMAGES + "visual/rendering/";
 
     private ChessSet chessSet;
 
