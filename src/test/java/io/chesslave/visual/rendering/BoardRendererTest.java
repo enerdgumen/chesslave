@@ -1,4 +1,4 @@
-package io.chesslave.rendering;
+package io.chesslave.visual.rendering;
 
 import static org.junit.Assert.assertTrue;
 

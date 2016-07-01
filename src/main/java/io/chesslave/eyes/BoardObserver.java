@@ -3,7 +3,7 @@ package io.chesslave.eyes;
 import io.chesslave.eyes.sikuli.SikuliScreen;
 import io.chesslave.eyes.sikuli.SikuliVision;
 import io.chesslave.model.*;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.collection.List;

@@ -1,9 +1,9 @@
-package io.chesslave.rendering;
+package io.chesslave.visual.rendering;
 
 import io.chesslave.eyes.Images;
 import io.chesslave.model.Color;
 import io.chesslave.model.Piece;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
 import javaslang.Tuple;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;

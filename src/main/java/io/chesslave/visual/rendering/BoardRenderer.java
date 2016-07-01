@@ -1,9 +1,9 @@
-package io.chesslave.rendering;
+package io.chesslave.visual.rendering;
 
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
-import io.chesslave.visual.BoardImage;
-import io.chesslave.visual.SquareImage;
+import io.chesslave.visual.model.BoardImage;
+import io.chesslave.visual.model.SquareImage;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;

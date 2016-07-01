@@ -1,4 +1,4 @@
-package io.chesslave.rendering;
+package io.chesslave.visual.rendering;
 
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;

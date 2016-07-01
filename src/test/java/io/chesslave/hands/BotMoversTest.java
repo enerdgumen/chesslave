@@ -9,7 +9,7 @@ import io.chesslave.eyes.sikuli.SikuliScreen;
 import io.chesslave.eyes.sikuli.SikuliVision;
 import io.chesslave.hands.sikuli.SikuliPointer;
 import io.chesslave.model.Square;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

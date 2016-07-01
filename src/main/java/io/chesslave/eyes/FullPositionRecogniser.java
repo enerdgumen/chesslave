@@ -4,7 +4,7 @@ import io.chesslave.model.Board;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
 import javaslang.collection.Set;
 import javaslang.control.Option;
 import java.awt.Rectangle;
