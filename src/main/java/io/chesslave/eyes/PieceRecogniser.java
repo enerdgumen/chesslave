@@ -17,7 +17,14 @@ public class PieceRecogniser {
         this.config = config;
     }
 
-    public Option<Piece> recognise(SquareImage square, List<Piece> expectedPieces) {
+    /**
+     * Detects the piece placed in the square.
+     *
+     * @param square         the image of the square
+     * @param expectedPieces the list of the pieces to recognise
+     * @return the detected piece or nothing if none piece was be recognised
+     */
+    public Option<Piece> piece(SquareImage square, List<Piece> expectedPieces) {
         final Vision.Recogniser recogniser = vision.recognise(square.image());
         return expectedPieces.iterator()
                 .map(piece -> {

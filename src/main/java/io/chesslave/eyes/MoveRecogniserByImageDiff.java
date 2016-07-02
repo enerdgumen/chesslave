@@ -53,7 +53,7 @@ public class MoveRecogniserByImageDiff {
             final SquareImage to = changes.remove(from).get();
             final Piece piece = previousPosition.at(from.square()).get();
             if (piece.type == Piece.Type.PAWN && Pawns.inPromotion(piece.color, to.square())) {
-                final Piece promotedPiece = pieceRecogniser.recognise(to,
+                final Piece promotedPiece = pieceRecogniser.piece(to,
                         List.of(piece.color.queen(), piece.color.rook(),
                                 piece.color.knight(), piece.color.bishop()))
                         .getOrElseThrow(() -> new IllegalArgumentException(String.format("Cannot recognise the piece promoted in %s", to.square())));

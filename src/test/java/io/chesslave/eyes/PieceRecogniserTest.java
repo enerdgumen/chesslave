@@ -27,7 +27,7 @@ public class PieceRecogniserTest extends SinglePieceRecognitionTest {
     public void withPieceOnSquare(Square square, Piece piece) throws Exception {
         final Position position = new Position.Builder().withPiece(square, piece).build();
         final BoardImage board = BoardRenderer.using(chessSet, position).toBoardImage();
-        final Option<Piece> got = recogniser.recognise(board.squareImage(square), Piece.all().toList());
+        final Option<Piece> got = recogniser.piece(board.squareImage(square), Piece.all().toList());
         assertEquals(Option.of(piece), got);
     }
 }
