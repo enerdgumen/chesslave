@@ -1,7 +1,7 @@
 package io.chesslave.eyes;
 
 import io.chesslave.model.Piece;
-import io.chesslave.visual.SquareImage;
+import io.chesslave.visual.model.SquareImage;
 import javaslang.collection.List;
 import javaslang.control.Option;
 import java.awt.image.BufferedImage;

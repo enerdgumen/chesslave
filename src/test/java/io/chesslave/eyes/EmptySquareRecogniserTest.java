@@ -3,8 +3,8 @@ package io.chesslave.eyes;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
 import io.chesslave.model.Square;
-import io.chesslave.rendering.BoardRenderer;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
+import io.chesslave.visual.rendering.BoardRenderer;
 import static org.junit.Assert.assertEquals;
 
 public class EmptySquareRecogniserTest extends SinglePieceRecognitionTest {

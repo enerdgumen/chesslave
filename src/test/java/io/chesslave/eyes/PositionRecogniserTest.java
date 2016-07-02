@@ -2,8 +2,8 @@ package io.chesslave.eyes;
 
 import io.chesslave.eyes.sikuli.SikuliVision;
 import io.chesslave.model.*;
-import io.chesslave.rendering.BoardRenderer;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
+import io.chesslave.visual.rendering.BoardRenderer;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

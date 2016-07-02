@@ -1,6 +1,7 @@
 package io.chesslave.eyes;
 
-import io.chesslave.visual.SquareImage;
+import io.chesslave.visual.Images;
+import io.chesslave.visual.model.SquareImage;
 import java.awt.image.BufferedImage;
 
 public class EmptySquareRecogniser {

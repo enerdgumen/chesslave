@@ -2,7 +2,7 @@ package io.chesslave.model;
 
 import static javaslang.Predicates.is;
 
-import io.chesslave.model.Movement.Regular;
+import io.chesslave.model.Movements.Regular;
 import io.chesslave.support.Functions;
 import javaslang.Function1;
 import javaslang.Predicates;
@@ -32,7 +32,7 @@ public final class Rules {
     public static Set<Regular> moves(Position pos, Square from) {
         return pos.at(from)
                 .map(piece -> {
-                    final Function1<Square, Regular> regular = to -> Movement.regular(from, to);
+                    final Function1<Square, Regular> regular = to -> Movements.regular(from, to);
                     final Predicate<Regular> isKingSafeAfterMove = move -> isKingSafe(move.apply(pos), piece.color);
                     final Predicate<Regular> isFreeOrWithOpponent = move -> isFreeOrWithOpponent(pos, move.to, piece);
                     final Predicate<Regular> isAvailable = Predicates.allOf(isKingSafeAfterMove, isFreeOrWithOpponent);
@@ -139,16 +139,16 @@ public final class Rules {
         final Stream<Regular> forward = from.walk(0, direction)
                 .takeWhile(sq -> position.at(sq).isEmpty())
                 .take(push)
-                .map(to -> Movement.regular(from, to));
+                .map(to -> Movements.regular(from, to));
         final Set<Regular> captures = from.translateAll(Tuple.of(-1, direction), Tuple.of(+1, direction))
                 .filter(sq -> position.at(sq).exists(piece::isOpponent))
-                .map(to -> Movement.regular(from, to));
+                .map(to -> Movements.regular(from, to));
         final int enPassantRow = piece.color == Color.WHITE ? 4 : 3;
         final Set<Regular> enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
                 .filter(sq -> sq.row == enPassantRow)
                 .filter(sq -> position.at(sq).exists(is(piece.color.opponent().pawn())))
                 .map(sq -> sq.translate(0, direction).get())
-                .map(to -> Movement.enPassant(from, to));
+                .map(to -> Movements.enPassant(from, to));
         return forward.appendAll(captures).appendAll(enPassantCaptures).toSet();
     }
 

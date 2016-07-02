@@ -1,6 +1,6 @@
 package io.chesslave.eyes;
 
-import io.chesslave.rendering.ChessSet;
+import io.chesslave.visual.rendering.ChessSet;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 

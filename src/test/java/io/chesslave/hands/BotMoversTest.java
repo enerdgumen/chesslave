@@ -3,13 +3,13 @@ package io.chesslave.hands;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assume.assumeThat;
 
-import io.chesslave.eyes.Images;
+import io.chesslave.visual.Images;
 import io.chesslave.eyes.Vision;
 import io.chesslave.eyes.sikuli.SikuliScreen;
 import io.chesslave.eyes.sikuli.SikuliVision;
 import io.chesslave.hands.sikuli.SikuliPointer;
 import io.chesslave.model.Square;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

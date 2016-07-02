@@ -1,4 +1,4 @@
-package io.chesslave.eyes;
+package io.chesslave.visual;
 
 import javaslang.collection.Iterator;
 import javaslang.collection.Stream;
@@ -14,9 +14,11 @@ import java.util.function.Predicate;
 /**
  * Support methods for images.
  */
-public abstract class Images {
+public final class Images {
 
     private static final Logger logger = LoggerFactory.getLogger(Images.class);
+
+    private Images() {}
 
     /**
      * Reads the image from the classpath.
@@ -195,10 +197,9 @@ public abstract class Images {
      * @return True if the two images are *surely* different, false otherwise.
      */
     public static boolean areDifferent(BufferedImage fst, BufferedImage snd) {
-        if (fst.getWidth() != snd.getWidth() || fst.getHeight() != snd.getHeight()) {
-            return true;
-        }
-        return Images.sample(fst, 10, 10).sum().intValue() != Images.sample(snd, 10, 10).sum().intValue();
+        return fst.getWidth() != snd.getWidth() ||
+                fst.getHeight() != snd.getHeight() ||
+                Images.sample(fst, 10, 10).sum().intValue() != Images.sample(snd, 10, 10).sum().intValue();
     }
 
     /**

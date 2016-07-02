@@ -1,4 +1,4 @@
-package io.chesslave.visual;
+package io.chesslave.visual.model;
 
 import io.chesslave.model.Square;
 

@@ -5,9 +5,9 @@ import javaslang.control.Option;
 /**
  * Factory of standard chess moves.
  */
-public final class Movement {
+public final class Movements {
 
-    private Movement() {}
+    private Movements() {}
 
     /**
      * Moves a piece from a square to another square.

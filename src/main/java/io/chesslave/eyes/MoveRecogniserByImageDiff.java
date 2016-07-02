@@ -2,8 +2,9 @@ package io.chesslave.eyes;
 
 import io.chesslave.model.*;
 import io.chesslave.support.Ensure;
-import io.chesslave.visual.BoardImage;
-import io.chesslave.visual.SquareImage;
+import io.chesslave.visual.Images;
+import io.chesslave.visual.model.BoardImage;
+import io.chesslave.visual.model.SquareImage;
 import javaslang.Tuple;
 import javaslang.collection.HashSet;
 import javaslang.collection.List;
@@ -36,16 +37,16 @@ public class MoveRecogniserByImageDiff {
         final Set<SquareImage> changes = changedSquares(previousImage, currentImage);
         final Set<Square> squares = changes.map(it -> it.square());
         if (squares.equals(whiteShortCastlingSquares)) {
-            return Option.of(Movement.shortCastling(Color.WHITE));
+            return Option.of(Movements.shortCastling(Color.WHITE));
         }
         if (squares.equals(whiteLongCastlingSquares)) {
-            return Option.of(Movement.longCastling(Color.WHITE));
+            return Option.of(Movements.longCastling(Color.WHITE));
         }
         if (squares.equals(blackShortCastlingSquares)) {
-            return Option.of(Movement.shortCastling(Color.BLACK));
+            return Option.of(Movements.shortCastling(Color.BLACK));
         }
         if (squares.equals(blackLongCastlingSquares)) {
-            return Option.of(Movement.longCastling(Color.BLACK));
+            return Option.of(Movements.longCastling(Color.BLACK));
         }
         final EmptySquareRecogniser emptySquareRecogniser = new EmptySquareRecogniser();
         if (changes.size() == 2) {
@@ -57,9 +58,9 @@ public class MoveRecogniserByImageDiff {
                         List.of(piece.color.queen(), piece.color.rook(),
                                 piece.color.knight(), piece.color.bishop()))
                         .getOrElseThrow(() -> new IllegalArgumentException(String.format("Cannot recognise the piece promoted in %s", to.square())));
-                return Option.of(Movement.promotion(from.square(), to.square(), promotedPiece.type));
+                return Option.of(Movements.promotion(from.square(), to.square(), promotedPiece.type));
             }
-            return Option.of(Movement.regular(from.square(), to.square()));
+            return Option.of(Movements.regular(from.square(), to.square()));
         }
         if (changes.size() == 3) {
             // en passant
@@ -76,7 +77,7 @@ public class MoveRecogniserByImageDiff {
             Ensure.isTrue(capturedPiece.equals(movedPiece.color.opponent().pawn()),
                     "Expected en-passant of %s from %s to %s, found %s in %s",
                     movedPiece, from.square(), to.square(), capturedPiece, captured.square());
-            return Option.of(Movement.enPassant(from.square(), to.square()));
+            return Option.of(Movements.enPassant(from.square(), to.square()));
         }
         // TODO: ensure that position is not changed
         return Option.none();

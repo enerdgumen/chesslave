@@ -2,7 +2,7 @@ package io.chesslave.model;
 
 import static org.junit.Assert.assertEquals;
 
-import io.chesslave.model.Movement.Regular;
+import io.chesslave.model.Movements.Regular;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
 import org.junit.Test;

@@ -4,7 +4,7 @@ import io.chesslave.model.Color;
 import io.chesslave.model.Game;
 import io.chesslave.model.Move;
 import io.chesslave.model.Position;
-import io.chesslave.visual.BoardImage;
+import io.chesslave.visual.model.BoardImage;
 import javaslang.collection.List;
 import javaslang.control.Option;
 import javaslang.control.Try;
