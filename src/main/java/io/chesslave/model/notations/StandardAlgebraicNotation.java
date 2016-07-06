@@ -61,23 +61,20 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
     }
 
     private Set<Square> ambiguousSquares(Piece movingPiece, Regular regularMove, Position position) {
-        final Predicate<Square> friendSamePieceType = sqr -> position.at(sqr).isDefined()
-                && position.at(sqr).get().color.equals(movingPiece.color)
-                && position.at(sqr).get().type.equals(movingPiece.type)
-                && !sqr.equals(regularMove.from);
+        final Predicate<Square> notSameSquare = sqr -> !sqr.equals(regularMove.from);
         switch (movingPiece.type) {
             case PAWN:
                 return regularMove.from.col != regularMove.to.col ?
-                        Rules.attackingSquaresForPawn(movingPiece.color, regularMove.to).filter(friendSamePieceType) :
+                        Rules.attackingPawnSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare) :
                         HashSet.empty();
             case KNIGHT:
-                return Rules.attackingSquaresForKnight(regularMove.to).filter(friendSamePieceType);
+                return Rules.attackingKnightSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
             case BISHOP:
-                return Rules.attackingSquaresForBishop(regularMove.to, position).filter(friendSamePieceType);
+                return Rules.attackingBishopSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
             case ROOK:
-                return Rules.attackingSquaresForRook(regularMove.to, position).filter(friendSamePieceType);
+                return Rules.attackingRookSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
             case QUEEN:
-                return Rules.attackingSquaresForQueen(regularMove.to, position).filter(friendSamePieceType);
+                return Rules.attackingQueenSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
             case KING:
             default:
                 return HashSet.empty();

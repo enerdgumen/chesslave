@@ -8,7 +8,6 @@ import javaslang.Function1;
 import javaslang.Predicates;
 import javaslang.Tuple;
 import javaslang.collection.HashSet;
-import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
@@ -73,62 +72,77 @@ public final class Rules {
      * @return true if the given square is under attack by pieces of the specified color.
      */
     public static boolean isTargetForColor(Position position, Square square, Color color) {
-        final Set<Piece> maybeKnight = knightSquares(square).flatMap(position::at);
-        final Set<Piece> maybeKing = kingSquares(square).flatMap(position::at);
-        final int pawnDir = Pawns.direction(color.opponent());
-        final Set<Piece> maybePawn = square.translateAll(Tuple.of(+1, pawnDir), Tuple.of(-1, pawnDir)).flatMap(position::at);
-        final Option<Piece> n = square.walk(+0, +1).flatMap(position::at).headOption();
-        final Option<Piece> ne = square.walk(+1, +1).flatMap(position::at).headOption();
-        final Option<Piece> e = square.walk(+1, +0).flatMap(position::at).headOption();
-        final Option<Piece> se = square.walk(+1, -1).flatMap(position::at).headOption();
-        final Option<Piece> s = square.walk(+0, -1).flatMap(position::at).headOption();
-        final Option<Piece> sw = square.walk(-1, -1).flatMap(position::at).headOption();
-        final Option<Piece> w = square.walk(-1, +0).flatMap(position::at).headOption();
-        final Option<Piece> nw = square.walk(-1, +1).flatMap(position::at).headOption();
-        final Set<Piece> maybeRookOrQueen = HashSet.of(n, e, s, w).flatMap(Function.identity());
-        final Set<Piece> maybeBishopOrQueen = HashSet.of(ne, se, sw, nw).flatMap(Function.identity());
-        return maybeKnight.exists(is(color.knight()))
-                || maybePawn.exists(is(color.pawn()))
-                || maybeKing.exists(is(color.king()))
-                || maybeRookOrQueen.exists(List.of(color.rook(), color.queen())::contains)
-                || maybeBishopOrQueen.exists(List.of(color.bishop(), color.queen())::contains);
+        return attackingKnightSquares(square, color, position).nonEmpty()
+                || attackingBishopSquares(square, color, position).nonEmpty()
+                || attackingRookSquares(square, color, position).nonEmpty()
+                || attackingQueenSquares(square, color, position).nonEmpty()
+                || attackingKingSquares(square, color, position).nonEmpty()
+                || attackingPawnSquares(square, color, position).nonEmpty();
     }
 
-    public static Set<Square> attackingSquaresForPawn(Color color, Square to) {
+    public static Set<Square> attackingPawnSquares(Square target, Color color, Position position) {
         final int pawnDirection = Pawns.direction(color.opponent());
-        Set<Square> squares = to.translateAll(Tuple.of(-1, pawnDirection), Tuple.of(+1, pawnDirection));
-        if (to.row == (color == Color.WHITE ? 4 : 3)) {
-            squares.addAll(to.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0)));
+        Set<Square> squares = target.translateAll(Tuple.of(-1, pawnDirection), Tuple.of(+1, pawnDirection));
+        if (target.row == (color == Color.WHITE ? 4 : 3)) {
+            squares.addAll(target.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0)));
         }
-        return squares;
+        return squares.filter(square -> position.at(square).isDefined()
+                && color.equals(position.at(square).get().color)
+                && Piece.Type.PAWN.equals(position.at(square).get().type));
     }
 
-    public static Set<Square> attackingSquaresForKing(Square to) {
-        return kingSquares(to);
+    public static Set<Square> attackingKingSquares(Square target, Color color, Position position) {
+        return kingSquares(target)
+                .filter(square -> position.at(square).isDefined()
+                        && color.equals(position.at(square).get().color)
+                        && Piece.Type.KING.equals(position.at(square).get().type));
     }
 
-    public static Set<Square> attackingSquaresForKnight(Square to) {
-        return knightSquares(to);
+    public static Set<Square> attackingKnightSquares(Square target, Color color, Position position) {
+        return knightSquares(target)
+                .filter(square -> position.at(square).isDefined()
+                        && color.equals(position.at(square).get().color)
+                        && Piece.Type.KNIGHT.equals(position.at(square).get().type));
     }
 
-    public static Set<Square> attackingSquaresForBishop(Square to, Position position) {
+    public static Set<Square> attackingBishopSquares(Square target, Color color, Position position) {
+        return baseAttackingBishopSquares(target, position)
+                .filter(square -> position.at(square).isDefined()
+                        && color.equals(position.at(square).get().color)
+                        && Piece.Type.BISHOP.equals(position.at(square).get().type));
+    }
+
+    public static Set<Square> attackingRookSquares(Square target, Color color, Position position) {
+        return baseAttackingRookSquares(target, position)
+                .filter(square -> position.at(square).isDefined()
+                        && color.equals(position.at(square).get().color)
+                        && Piece.Type.ROOK.equals(position.at(square).get().type));
+    }
+
+    public static Set<Square> attackingQueenSquares(Square target, Color color, Position position) {
+        return baseAttackingBishopSquares(target, position)
+                .addAll(baseAttackingRookSquares(target, position))
+                .filter(square -> position.at(square).isDefined()
+                        && color.equals(position.at(square).get().color)
+                        && Piece.Type.QUEEN.equals(position.at(square).get().type));
+    }
+
+    private static Set<Square> baseAttackingBishopSquares(Square target, Position position) {
         final Predicate<Square> pieceIsFound = square -> position.at(square).isDefined();
-        return to.walk(+1, +1).takeUntil(pieceIsFound)
-                .appendAll(to.walk(+1, -1).takeUntil(pieceIsFound))
-                .appendAll(to.walk(-1, +1).takeUntil(pieceIsFound))
-                .appendAll(to.walk(-1, -1).takeUntil(pieceIsFound)).toSet();
+        final Option<Square> ne = target.walk(+1, +1).filter(pieceIsFound).headOption();
+        final Option<Square> se = target.walk(+1, -1).filter(pieceIsFound).headOption();
+        final Option<Square> sw = target.walk(-1, -1).filter(pieceIsFound).headOption();
+        final Option<Square> nw = target.walk(-1, +1).filter(pieceIsFound).headOption();
+        return HashSet.of(ne, se, sw, nw).flatMap(Function.identity());
     }
 
-    public static Set<Square> attackingSquaresForRook(Square to, Position position) {
+    private static Set<Square> baseAttackingRookSquares(Square target, Position position) {
         final Predicate<Square> pieceIsFound = square -> position.at(square).isDefined();
-        return to.walk(+1, 0).takeUntil(pieceIsFound)
-                .appendAll(to.walk(0, +1).takeUntil(pieceIsFound))
-                .appendAll(to.walk(-1, 0).takeUntil(pieceIsFound))
-                .appendAll(to.walk(0, -1).takeUntil(pieceIsFound)).toSet();
-    }
-
-    public static Set<Square> attackingSquaresForQueen(Square to, Position position) {
-        return attackingSquaresForBishop(to, position).addAll(attackingSquaresForRook(to, position));
+        final Option<Square> n = target.walk(0, +1).filter(pieceIsFound).headOption();
+        final Option<Square> s = target.walk(0, -1).filter(pieceIsFound).headOption();
+        final Option<Square> w = target.walk(+1, 0).filter(pieceIsFound).headOption();
+        final Option<Square> e = target.walk(-1, 0).filter(pieceIsFound).headOption();
+        return HashSet.of(n, s, w, e).flatMap(Function.identity());
     }
 
     private static Set<Square> kingSquares(Square from) {
