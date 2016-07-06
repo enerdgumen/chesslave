@@ -3,8 +3,11 @@ package io.chesslave.eyes.sikuli;
 import io.chesslave.eyes.Vision;
 import javaslang.Lazy;
 import javaslang.collection.Stream;
+import javaslang.control.Option;
+import org.sikuli.basics.Settings;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Image;
+import org.sikuli.script.Pattern;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -16,6 +19,13 @@ public class SikuliVision implements Vision {
 
         public SikuliRecogniser(BufferedImage source) {
             this.source = source;
+        }
+
+        @Override
+        public Option<Match> match(BufferedImage target) {
+            final Finder matches = new Finder(source);
+            matches.find(new Image(target));
+            return Stream.ofAll(() -> matches).<Match>map(m -> new SikuliMatch(source, m)).headOption();
         }
 
         @Override

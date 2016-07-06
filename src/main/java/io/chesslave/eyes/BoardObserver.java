@@ -2,12 +2,14 @@ package io.chesslave.eyes;
 
 import io.chesslave.eyes.sikuli.SikuliScreen;
 import io.chesslave.eyes.sikuli.SikuliVision;
-import io.chesslave.model.*;
+import io.chesslave.model.Color;
+import io.chesslave.model.Game;
+import io.chesslave.model.Move;
 import io.chesslave.visual.Images;
 import io.chesslave.visual.model.BoardImage;
 import javaslang.Tuple;
 import javaslang.Tuple2;
-import javaslang.collection.List;
+import javaslang.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
@@ -21,24 +23,24 @@ public class BoardObserver {
     private final BoardConfiguration config;
     private final Screen screen;
     private final Vision vision;
-    private final PositionRecogniser positionRecogniser;
-    private final MoveRecogniser moveRecogniser;
+    private final GameRecogniser recogniser;
 
     public BoardObserver(BoardConfiguration config) {
         this.config = config;
         this.screen = new SikuliScreen();
         this.vision = new SikuliVision();
-        this.positionRecogniser = new FullPositionRecogniser(vision, config);
-        this.moveRecogniser = new MoveRecogniser();
+        this.recogniser = new GameRecogniser(
+                new PositionRecogniser(vision, config),
+                new MoveRecogniserByImageDiff(new PieceRecogniser(vision, config)),
+                new MoveRecogniserByPositionDiff());
     }
 
     public Observable<Game> start(Color color) throws Exception {
         // detecting initial position
         final Vision.Match match = findBoardInDesktop(config.board);
         final BoardImage initImage = new BoardImage(match.image(), match.region().getLocation());
-        final Position initPosition = positionRecogniser.begin(initImage).get();
-        final Game initGame = new Game(initPosition, List.empty(), color);
-        logger.debug("initial position:\n{}", initPosition);
+        final Game initGame = recogniser.begin(initImage, color);
+        logger.debug("initial position:\n{}", initGame.position());
         // following game
         final Observable<Tuple2<BoardImage, BoardImage>> boards = captureBoards(match.region());
         return observeGame(initGame, boards);
@@ -61,15 +63,15 @@ public class BoardObserver {
 
     private Observable<Game> observeGame(Game initGame, Observable<Tuple2<BoardImage, BoardImage>> boards) {
         return boards.scan(initGame, (game, images) -> {
-            final Position position = positionRecogniser.next(game.position(), images._1, images._2).get();
-            logger.debug("current position:\n{}", Positions.toText(position));
-            if (game.position().equals(position)) {
+            // TODO: restore from eventual exception
+            final Option<Move> move = recogniser.next(game, images._1, images._2);
+            if (move.isEmpty()) {
                 logger.debug("nothing is changed");
                 return game;
             }
-            final Move move = moveRecogniser.detect(game.position(), position);
-            logger.info("detected move {}", move);
-            return game.move(move);
+            // TODO: validate move
+            logger.debug("detective move:\n{}", move);
+            return game.move(move.get());
         });
     }
 }
