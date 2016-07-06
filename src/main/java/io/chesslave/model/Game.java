@@ -83,4 +83,11 @@ public class Game {
     public Color turn() {
         return turn;
     }
+
+    /**
+     * @return the list of moves
+     */
+    public List<Move> moves() {
+        return List.ofAll(moves);
+    }
 }

@@ -1,8 +1,8 @@
 package io.chesslave.model;
 
+import static io.chesslave.model.Movements.Regular;
 import static javaslang.Predicates.is;
 
-import io.chesslave.model.Movements.Regular;
 import io.chesslave.support.Functions;
 import javaslang.Function1;
 import javaslang.Predicates;
@@ -27,7 +27,7 @@ public final class Rules {
     /**
      * TODO: Handle pawn promotion.
      *
-     * @return All the available moves (excluding castling) of the piece placed at the given square for the specified position.
+     * @return all the available moves (excluding castling) of the piece placed at the given square for the specified position.
      */
     public static Set<Regular> moves(Position pos, Square from) {
         return pos.at(from)
@@ -49,8 +49,7 @@ public final class Rules {
                             return rookSquares(pos, from).map(regular).filter(isAvailable);
                         case QUEEN:
                         default:
-                            return bishopSquares(pos, from)
-                                    .addAll(rookSquares(pos, from))
+                            return queenSquares(pos, from)
                                     .map(regular)
                                     .filter(isAvailable);
                     }
@@ -63,15 +62,15 @@ public final class Rules {
     }
 
     /**
-     * @return True if the king of the given color is not under attack.
+     * @return true if the king of the given color is not under attack.
      */
     public static boolean isKingSafe(Position position, Color color) {
-        final Square king = Square.all().find(sq -> position.at(sq).exists(is(color.king()))).get();
-        return !isTargetForColor(position, king, color.opponent());
+        final Square kingSquare = Square.all().find(sq -> position.at(sq).exists(is(color.king()))).get();
+        return !isTargetForColor(position, kingSquare, color.opponent());
     }
 
     /**
-     * @return True if the given square is under attack by pieces of the specified color.
+     * @return true if the given square is under attack by pieces of the specified color.
      */
     public static boolean isTargetForColor(Position position, Square square, Color color) {
         final Set<Piece> maybeKnight = knightSquares(square).flatMap(position::at);
@@ -93,6 +92,43 @@ public final class Rules {
                 || maybeKing.exists(is(color.king()))
                 || maybeRookOrQueen.exists(List.of(color.rook(), color.queen())::contains)
                 || maybeBishopOrQueen.exists(List.of(color.bishop(), color.queen())::contains);
+    }
+
+    public static Set<Square> attackingSquaresForPawn(Color color, Square to) {
+        final int pawnDirection = Pawns.direction(color.opponent());
+        Set<Square> squares = to.translateAll(Tuple.of(-1, pawnDirection), Tuple.of(+1, pawnDirection));
+        if (to.row == (color == Color.WHITE ? 4 : 3)) {
+            squares.addAll(to.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0)));
+        }
+        return squares;
+    }
+
+    public static Set<Square> attackingSquaresForKing(Square to) {
+        return kingSquares(to);
+    }
+
+    public static Set<Square> attackingSquaresForKnight(Square to) {
+        return knightSquares(to);
+    }
+
+    public static Set<Square> attackingSquaresForBishop(Square to, Position position) {
+        final Predicate<Square> pieceIsFound = square -> position.at(square).isDefined();
+        return to.walk(+1, +1).takeUntil(pieceIsFound)
+                .appendAll(to.walk(+1, -1).takeUntil(pieceIsFound))
+                .appendAll(to.walk(-1, +1).takeUntil(pieceIsFound))
+                .appendAll(to.walk(-1, -1).takeUntil(pieceIsFound)).toSet();
+    }
+
+    public static Set<Square> attackingSquaresForRook(Square to, Position position) {
+        final Predicate<Square> pieceIsFound = square -> position.at(square).isDefined();
+        return to.walk(+1, 0).takeUntil(pieceIsFound)
+                .appendAll(to.walk(0, +1).takeUntil(pieceIsFound))
+                .appendAll(to.walk(-1, 0).takeUntil(pieceIsFound))
+                .appendAll(to.walk(0, -1).takeUntil(pieceIsFound)).toSet();
+    }
+
+    public static Set<Square> attackingSquaresForQueen(Square to, Position position) {
+        return attackingSquaresForBishop(to, position).addAll(attackingSquaresForRook(to, position));
     }
 
     private static Set<Square> kingSquares(Square from) {
@@ -131,6 +167,10 @@ public final class Rules {
                 .flatMap(Functions.of(Rules::takeWhileFreeOrWithOpponent).apply(position, piece));
     }
 
+    private static Set<Square> queenSquares(Position position, Square from) {
+        return bishopSquares(position, from).addAll(rookSquares(position, from));
+    }
+
     private static Set<Regular> pawnMoves(Position position, Square from) {
         final Piece piece = position.at(from).get();
         final int direction = Pawns.direction(piece.color);
@@ -155,9 +195,8 @@ public final class Rules {
     private static Stream<Square> takeWhileFreeOrWithOpponent(Position position, Piece moving, Stream<Square> walk) {
         return walk
                 .splitAt(sq -> position.at(sq).isDefined())
-                .map(
-                        sqs -> sqs,
-                        sqs -> sqs.headOption().filter(sq -> moving.isOpponent(position.at(sq).get())).toList())
+                .map(sqs -> sqs,
+                     sqs -> sqs.headOption().filter(sq -> moving.isOpponent(position.at(sq).get())).toList())
                 .transform(Stream::appendAll);
     }
 }
