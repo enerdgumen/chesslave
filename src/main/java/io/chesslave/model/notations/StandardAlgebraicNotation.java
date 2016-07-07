@@ -5,6 +5,7 @@ import static io.chesslave.model.Movements.Regular;
 import io.chesslave.model.Color;
 import io.chesslave.model.Move;
 import io.chesslave.model.Movements;
+import io.chesslave.model.Pawns;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
 import io.chesslave.model.Rules;
@@ -36,7 +37,7 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
 
             notationBuilder.append(pieceNotation(movingPiece));
             notationBuilder.append(disambiguatingSymbol(regularMove, position));
-            notationBuilder.append(captureNotation(position.at(regularMove.to)));
+            notationBuilder.append(captureNotation(regularMove, position));
             notationBuilder.append(regularMove.to.name());
         }
         notationBuilder.append(checkNotation(move, position, color.opponent()));
@@ -54,7 +55,8 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
             } else {
                 return regularMove.from.name();
             }
-        } else if (Piece.Type.PAWN.equals(movingPiece.type) && position.at(regularMove.to).isDefined()) {
+        } else if (regularMove.enPassant ||
+                Piece.Type.PAWN.equals(movingPiece.type) && position.at(regularMove.to).isDefined()) {
             return String.valueOf((char) ('a' + regularMove.from.col));
         }
         return "";
@@ -64,7 +66,7 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
         final Predicate<Square> notSameSquare = sqr -> !sqr.equals(regularMove.from);
         switch (movingPiece.type) {
             case PAWN:
-                return regularMove.from.col != regularMove.to.col ?
+                return Pawns.isCapture(regularMove) ?
                         Rules.attackingPawnSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare) :
                         HashSet.empty();
             case KNIGHT:

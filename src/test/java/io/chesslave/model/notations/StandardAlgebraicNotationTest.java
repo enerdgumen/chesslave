@@ -9,7 +9,6 @@ import io.chesslave.model.Position;
 import io.chesslave.model.Positions;
 import io.chesslave.model.Square;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class StandardAlgebraicNotationTest {
@@ -53,6 +52,21 @@ public class StandardAlgebraicNotationTest {
                 "P|P|P| | |P|P|P",
                 "R|N|B|Q|K|B| |R");
         assertEquals("cxd4", algebraicNotation.print(move, position));
+    }
+
+    @Test
+    public void printEnPassantPawnMove() {
+        final Move move = Movements.enPassant(Square.of("d5"), Square.of("c6"));
+        final Position position = Positions.fromText(
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " |k|p|P| | | | ",
+                " | | | | | | | ",
+                " | |K| | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        assertEquals("dxc6", algebraicNotation.print(move, position));
     }
 
     @Test
@@ -115,16 +129,14 @@ public class StandardAlgebraicNotationTest {
         assertEquals("cxd5+", algebraicNotation.print(move, position));
     }
 
-    // FIXME en passant notation has to be fixed
-    @Ignore
     @Test
     public void printAmbiguousEnPassantPawnMove() {
-        final Move move = Movements.regular(Square.of("d5"), Square.of("c6"));
+        final Move move = Movements.enPassant(Square.of("d5"), Square.of("c6"));
         final Position position = Positions.fromText(
                 " | | | | | | | ",
                 " | | | | | | | ",
-                " | | | | | | | ",
-                " |k|p|P| | | | ",
+                " | | | | | |k| ",
+                " |P|p|P| | | | ",
                 " | | |P| | | | ",
                 " | |K| | | | | ",
                 " | | | | | | | ",
@@ -400,6 +412,21 @@ public class StandardAlgebraicNotationTest {
     }
 
     @Test
+    public void printExtremeAmbiguousRookMove() {
+        final Move move = Movements.regular(Square.of("b1"), Square.of("b2"));
+        final Position position = Positions.fromText(
+                " |r| | | | | | ",
+                " | | |k| | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | |K| | | | ",
+                " | | | | | | | ",
+                " | |r| | | | | ",
+                " |r| | | | | | ");
+        assertEquals("Rb1b2", algebraicNotation.print(move, position));
+    }
+
+    @Test
     public void printAmbiguousCheckmateRookMove() {
         final Move move = Movements.regular(Square.of("c2"), Square.of("b2"));
         final Position position = Positions.fromText(
@@ -521,6 +548,21 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ");
         assertEquals("Qbe8+", algebraicNotation.print(move, position));
+    }
+
+    @Test
+    public void printExtremeAmbiguousCheckQueenMove() {
+        final Move move = Movements.regular(Square.of("b5"), Square.of("e8"));
+        final Position position = Positions.fromText(
+                " |Q| | | | |Q| ",
+                " | | | |k| | | ",
+                " | | | |p| | | ",
+                " |Q| | | | | | ",
+                " | |K| | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        assertEquals("Qb5e8+", algebraicNotation.print(move, position));
     }
 
     /*

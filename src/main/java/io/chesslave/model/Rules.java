@@ -56,10 +56,6 @@ public final class Rules {
                 .getOrElse(HashSet.empty());
     }
 
-    private static boolean isFreeOrWithOpponent(Position position, Square square, Piece piece) {
-        return !position.at(square).exists(piece::isFriend);
-    }
-
     /**
      * @return true if the king of the given color is not under attack.
      */
@@ -80,51 +76,42 @@ public final class Rules {
                 || attackingPawnSquares(square, color, position).nonEmpty();
     }
 
-    public static Set<Square> attackingPawnSquares(Square target, Color color, Position position) {
-        final int pawnDirection = Pawns.direction(color.opponent());
+    public static Set<Square> attackingPawnSquares(Square target, Color attackingColor, Position position) {
+        final int pawnDirection = Pawns.direction(attackingColor.opponent());
         Set<Square> squares = target.translateAll(Tuple.of(-1, pawnDirection), Tuple.of(+1, pawnDirection));
-        if (target.row == (color == Color.WHITE ? 4 : 3)) {
-            squares.addAll(target.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0)));
+
+        final Option<Piece> targetPiece = position.at(target);
+        if (targetPiece.isDefined() && Piece.Type.PAWN.equals(targetPiece.get().type)) {
+            squares = squares.addAll(target.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
+                    .filter(square -> Pawns.isEnPassantAvailable(square, position)));
         }
-        return squares.filter(square -> position.at(square).isDefined()
-                && color.equals(position.at(square).get().color)
-                && Piece.Type.PAWN.equals(position.at(square).get().type));
+        return squares.filter(new FindPiece(Piece.Type.PAWN, attackingColor, position));
     }
 
-    public static Set<Square> attackingKingSquares(Square target, Color color, Position position) {
+    public static Set<Square> attackingKingSquares(Square target, Color attackingColor, Position position) {
         return kingSquares(target)
-                .filter(square -> position.at(square).isDefined()
-                        && color.equals(position.at(square).get().color)
-                        && Piece.Type.KING.equals(position.at(square).get().type));
+                .filter(new FindPiece(Piece.Type.KING, attackingColor, position));
     }
 
-    public static Set<Square> attackingKnightSquares(Square target, Color color, Position position) {
+    public static Set<Square> attackingKnightSquares(Square target, Color attackingColor, Position position) {
         return knightSquares(target)
-                .filter(square -> position.at(square).isDefined()
-                        && color.equals(position.at(square).get().color)
-                        && Piece.Type.KNIGHT.equals(position.at(square).get().type));
+                .filter(new FindPiece(Piece.Type.KNIGHT, attackingColor, position));
     }
 
-    public static Set<Square> attackingBishopSquares(Square target, Color color, Position position) {
+    public static Set<Square> attackingBishopSquares(Square target, Color attackingColor, Position position) {
         return baseAttackingBishopSquares(target, position)
-                .filter(square -> position.at(square).isDefined()
-                        && color.equals(position.at(square).get().color)
-                        && Piece.Type.BISHOP.equals(position.at(square).get().type));
+                .filter(new FindPiece(Piece.Type.BISHOP, attackingColor, position));
     }
 
-    public static Set<Square> attackingRookSquares(Square target, Color color, Position position) {
+    public static Set<Square> attackingRookSquares(Square target, Color attackingColor, Position position) {
         return baseAttackingRookSquares(target, position)
-                .filter(square -> position.at(square).isDefined()
-                        && color.equals(position.at(square).get().color)
-                        && Piece.Type.ROOK.equals(position.at(square).get().type));
+                .filter(new FindPiece(Piece.Type.ROOK, attackingColor, position));
     }
 
-    public static Set<Square> attackingQueenSquares(Square target, Color color, Position position) {
+    public static Set<Square> attackingQueenSquares(Square target, Color attackingColor, Position position) {
         return baseAttackingBishopSquares(target, position)
                 .addAll(baseAttackingRookSquares(target, position))
-                .filter(square -> position.at(square).isDefined()
-                        && color.equals(position.at(square).get().color)
-                        && Piece.Type.QUEEN.equals(position.at(square).get().type));
+                .filter(new FindPiece(Piece.Type.QUEEN, attackingColor, position));
     }
 
     private static Set<Square> baseAttackingBishopSquares(Square target, Position position) {
@@ -143,6 +130,10 @@ public final class Rules {
         final Option<Square> w = target.walk(+1, 0).filter(pieceIsFound).headOption();
         final Option<Square> e = target.walk(-1, 0).filter(pieceIsFound).headOption();
         return HashSet.of(n, s, w, e).flatMap(Function.identity());
+    }
+
+    private static boolean isFreeOrWithOpponent(Position position, Square square, Piece piece) {
+        return !position.at(square).exists(piece::isFriend);
     }
 
     private static Set<Square> kingSquares(Square from) {
@@ -197,12 +188,14 @@ public final class Rules {
         final Set<Regular> captures = from.translateAll(Tuple.of(-1, direction), Tuple.of(+1, direction))
                 .filter(sq -> position.at(sq).exists(piece::isOpponent))
                 .map(to -> Movements.regular(from, to));
-        final int enPassantRow = piece.color == Color.WHITE ? 4 : 3;
-        final Set<Regular> enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
-                .filter(sq -> sq.row == enPassantRow)
-                .filter(sq -> position.at(sq).exists(is(piece.color.opponent().pawn())))
-                .map(sq -> sq.translate(0, direction).get())
-                .map(to -> Movements.enPassant(from, to));
+
+        Set<Regular> enPassantCaptures = HashSet.empty();
+        if (Pawns.isEnPassantAvailable(from, position)) {
+            enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
+                    .filter(sq -> position.at(sq).exists(is(piece.color.opponent().pawn())))
+                    .map(sq -> sq.translate(0, direction).get())
+                    .map(to -> Movements.enPassant(from, to));
+        }
         return forward.appendAll(captures).appendAll(enPassantCaptures).toSet();
     }
 
@@ -212,5 +205,24 @@ public final class Rules {
                 .map(sqs -> sqs,
                      sqs -> sqs.headOption().filter(sq -> moving.isOpponent(position.at(sq).get())).toList())
                 .transform(Stream::appendAll);
+    }
+
+    private static class FindPiece implements Predicate<Square> {
+        private final Piece.Type type;
+        private final Color color;
+        private final Position position;
+
+        public FindPiece(Piece.Type type, Color color, Position position) {
+            this.type = type;
+            this.color = color;
+            this.position = position;
+        }
+
+        @Override
+        public boolean test(Square square) {
+            return position.at(square).isDefined()
+                    && color.equals(position.at(square).get().color)
+                    && type.equals(position.at(square).get().type);
+        }
     }
 }

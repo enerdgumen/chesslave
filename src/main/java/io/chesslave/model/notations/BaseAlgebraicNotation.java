@@ -2,6 +2,7 @@ package io.chesslave.model.notations;
 
 import io.chesslave.model.Color;
 import io.chesslave.model.Move;
+import io.chesslave.model.Movements;
 import io.chesslave.model.Piece;
 import io.chesslave.model.Position;
 import io.chesslave.model.Rules;
@@ -34,8 +35,8 @@ public abstract class BaseAlgebraicNotation implements MoveNotation {
         return PIECE_NAMES.apply(piece.type);
     }
 
-    protected String captureNotation(Option<Piece> capturedPiece) {
-        return capturedPiece.isDefined() ? CAPTURE_SYMBOL : "";
+    protected String captureNotation(Movements.Regular move, Position position) {
+        return move.enPassant || position.at(move.to).isDefined() ? CAPTURE_SYMBOL : "";
     }
 
     protected String checkNotation(Move move, Position position, Color opponentColor) {
