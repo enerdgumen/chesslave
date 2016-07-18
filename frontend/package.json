@@ -3,6 +3,8 @@
   "version": "0.1",
   "main": "src/main.js",
   "devDependencies": {
-    "electron-prebuilt": "^1.2.6"
+    "electron-connect": "^0.4.2",
+    "electron-prebuilt": "^1.2.6",
+    "gulp": "^3.9.1"
   }
 }
