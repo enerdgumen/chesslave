@@ -1,8 +1,7 @@
 package io.chesslave.model;
 
-import static io.chesslave.model.Piece.Type;
-
 import javaslang.collection.List;
+import static io.chesslave.model.Piece.Type;
 
 /**
  * An immutable chess match tracker.
@@ -88,6 +87,6 @@ public class Game {
      * @return the list of moves
      */
     public List<Move> moves() {
-        return List.ofAll(moves);
+        return moves;
     }
 }
