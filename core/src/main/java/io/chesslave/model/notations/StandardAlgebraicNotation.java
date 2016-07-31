@@ -3,11 +3,9 @@ package io.chesslave.model.notations;
 import io.chesslave.model.*;
 import io.chesslave.model.Piece.Type;
 import javaslang.collection.HashMap;
-import javaslang.collection.HashSet;
 import javaslang.collection.Map;
 import javaslang.collection.Set;
 import java.util.Optional;
-import java.util.function.Predicate;
 import static io.chesslave.model.Movements.Regular;
 
 /**
@@ -71,24 +69,11 @@ public class StandardAlgebraicNotation implements MoveNotation {
     }
 
     private Set<Square> ambiguousSquares(Piece movingPiece, Regular regularMove, Position position) {
-        final Predicate<Square> notSameSquare = sqr -> !sqr.equals(regularMove.from);
-        switch (movingPiece.type) {
-            case PAWN:
-                return Pawns.isCapture(regularMove)
-                        ? Rules.attackingPawnSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare)
-                        : HashSet.empty();
-            case KNIGHT:
-                return Rules.attackingKnightSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
-            case BISHOP:
-                return Rules.attackingBishopSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
-            case ROOK:
-                return Rules.attackingRookSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
-            case QUEEN:
-                return Rules.attackingQueenSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
-            case KING:
-            default:
-                return HashSet.empty();
-        }
+        return position.toSet()
+                .filter(square -> !square._1.equals(regularMove.from) && square._2.equals(movingPiece))
+                .flatMap(square -> Rules.moves(position, square._1))
+                .filter(move -> move.to.equals(regularMove.to))
+                .map(move -> move.from);
     }
 
     private String pieceNotation(Piece piece) {

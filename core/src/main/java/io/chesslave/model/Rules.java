@@ -1,20 +1,17 @@
 package io.chesslave.model;
 
-import static io.chesslave.model.Movements.Regular;
-import static javaslang.Predicates.is;
-
 import io.chesslave.support.Functions;
 import javaslang.Function1;
 import javaslang.Predicates;
 import javaslang.Tuple;
-import javaslang.Tuple2;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
-
 import java.util.function.Function;
 import java.util.function.Predicate;
+import static io.chesslave.model.Movements.Regular;
+import static javaslang.Predicates.is;
 
 /**
  * Defines the chess logics.
@@ -98,27 +95,27 @@ public final class Rules {
         return squares.filter(new FindPiece(Piece.Type.PAWN, attackingColor, position));
     }
 
-    public static Set<Square> attackingKingSquares(Square target, Color attackingColor, Position position) {
+    private static Set<Square> attackingKingSquares(Square target, Color attackingColor, Position position) {
         return kingSquares(target)
                 .filter(new FindPiece(Piece.Type.KING, attackingColor, position));
     }
 
-    public static Set<Square> attackingKnightSquares(Square target, Color attackingColor, Position position) {
+    private static Set<Square> attackingKnightSquares(Square target, Color attackingColor, Position position) {
         return knightSquares(target)
                 .filter(new FindPiece(Piece.Type.KNIGHT, attackingColor, position));
     }
 
-    public static Set<Square> attackingBishopSquares(Square target, Color attackingColor, Position position) {
+    private static Set<Square> attackingBishopSquares(Square target, Color attackingColor, Position position) {
         return baseAttackingBishopSquares(target, position)
                 .filter(new FindPiece(Piece.Type.BISHOP, attackingColor, position));
     }
 
-    public static Set<Square> attackingRookSquares(Square target, Color attackingColor, Position position) {
+    private static Set<Square> attackingRookSquares(Square target, Color attackingColor, Position position) {
         return baseAttackingRookSquares(target, position)
                 .filter(new FindPiece(Piece.Type.ROOK, attackingColor, position));
     }
 
-    public static Set<Square> attackingQueenSquares(Square target, Color attackingColor, Position position) {
+    private static Set<Square> attackingQueenSquares(Square target, Color attackingColor, Position position) {
         return baseAttackingBishopSquares(target, position)
                 .addAll(baseAttackingRookSquares(target, position))
                 .filter(new FindPiece(Piece.Type.QUEEN, attackingColor, position));
@@ -213,7 +210,7 @@ public final class Rules {
         return walk
                 .splitAt(sq -> position.at(sq).isDefined())
                 .map(sqs -> sqs,
-                     sqs -> sqs.headOption().filter(sq -> moving.isOpponent(position.at(sq).get())).toList())
+                        sqs -> sqs.headOption().filter(sq -> moving.isOpponent(position.at(sq).get())).toList())
                 .transform(Stream::appendAll);
     }
 

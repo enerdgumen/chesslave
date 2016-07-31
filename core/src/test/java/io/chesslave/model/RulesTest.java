@@ -278,22 +278,6 @@ public class RulesTest {
         assertEquals(expected, got);
     }
 
-    @Test
-    public void attackingKingSquares() {
-        final Position position = Positions.fromText(
-                " | | | | | | | ",
-                " | | | | | | | ",
-                " | | |P|k| | | ",
-                " | | |*|N| | | ",
-                " | |p| |P| | | ",
-                " | | | | | |K| ",
-                " | | | | | | | ",
-                " | | | | | | | ");
-        final Set<Square> got = Rules.attackingKingSquares(Square.of("d5"), Color.BLACK, position);
-        final Set<Square> expected = HashSet.of(Square.of("e6"));
-        assertEquals(expected, got);
-    }
-
     /*
      * Knight behaviour
      */
@@ -364,22 +348,6 @@ public class RulesTest {
         assertEquals(expected, got);
     }
 
-    @Test
-    public void attackingKnightSquares() {
-        final Position position = Positions.fromText(
-                " | | | | | | | ",
-                " | | | |N| | | ",
-                " |n| | | | | | ",
-                " | | |*|n| | | ",
-                " | |p| |P| | | ",
-                " | | | | | |K| ",
-                " |k| | | | | | ",
-                " | | | | | | | ");
-        final Set<Square> got = Rules.attackingKnightSquares(Square.of("d5"), Color.BLACK, position);
-        final Set<Square> expected = HashSet.of(Square.of("b6"));
-        assertEquals(expected, got);
-    }
-
     /*
      * Bishop behaviour
      */
@@ -399,22 +367,6 @@ public class RulesTest {
         final Set<Square> expected = HashSet.of(
                 Square.of("f5"), Square.of("g6"), Square.of("f3"), Square.of("d3"),
                 Square.of("c2"), Square.of("b1"), Square.of("d5"), Square.of("c6"));
-        assertEquals(expected, got);
-    }
-
-    @Test
-    public void attackingBishopSquares() {
-        final Position position = Positions.fromText(
-                " | | | | | | | ",
-                " | | |k|p| | | ",
-                " |n| | | | | | ",
-                " | | |*| | | | ",
-                " |B| | |P| | | ",
-                " | | | | | |K| ",
-                " | | | | | |B| ",
-                " | | | | | | | ");
-        final Set<Square> got = Rules.attackingBishopSquares(Square.of("d5"), Color.WHITE, position);
-        final Set<Square> expected = HashSet.empty();
         assertEquals(expected, got);
     }
 
@@ -441,22 +393,6 @@ public class RulesTest {
         assertEquals(expected, got);
     }
 
-    @Test
-    public void attackingRookSquares() {
-        final Position position = Positions.fromText(
-                " | | | | | | | ",
-                " | |k| |p| | | ",
-                " |n| | | | | | ",
-                " | | |*| | |R| ",
-                " |B| | |P| | | ",
-                " | | | | | |K| ",
-                " | | |R| | | | ",
-                " | | |R| | | | ");
-        final Set<Square> got = Rules.attackingRookSquares(Square.of("d5"), Color.WHITE, position);
-        final Set<Square> expected = HashSet.of(Square.of("d2"), Square.of("g5"));
-        assertEquals(expected, got);
-    }
-
     /*
      * Queen behaviour
      */
@@ -479,22 +415,6 @@ public class RulesTest {
                 Square.of("f3"), Square.of("e3"), Square.of("e2"), Square.of("d3"),
                 Square.of("c2"), Square.of("b1"), Square.of("d4"), Square.of("d5"),
                 Square.of("c6"));
-        assertEquals(expected, got);
-    }
-
-    @Test
-    public void attackingQueenSquares() {
-        final Position position = Positions.fromText(
-                " |Q| | | | | | ",
-                " | | | |p| |k| ",
-                " | | | | | | | ",
-                " | |q|*| | | | ",
-                " | | | |P| | | ",
-                " | | | | | |K| ",
-                "Q| | |Q| | |Q| ",
-                " | | | | | | | ");
-        final Set<Square> got = Rules.attackingQueenSquares(Square.of("d5"), Color.WHITE, position);
-        final Set<Square> expected = HashSet.of(Square.of("d2"), Square.of("a2"));
         assertEquals(expected, got);
     }
 
