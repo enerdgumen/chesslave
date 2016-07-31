@@ -1,19 +1,11 @@
 package io.chesslave.model.notations;
 
-import static io.chesslave.model.Movements.Regular;
-
-import io.chesslave.model.Color;
-import io.chesslave.model.Move;
-import io.chesslave.model.Movements;
-import io.chesslave.model.Pawns;
-import io.chesslave.model.Piece;
-import io.chesslave.model.Position;
-import io.chesslave.model.Rules;
-import io.chesslave.model.Square;
+import io.chesslave.model.*;
+import io.chesslave.model.Piece.Type;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
-
 import java.util.function.Predicate;
+import static io.chesslave.model.Movements.Regular;
 
 /**
  * Implementation of the standard Algebraic Notation.
@@ -22,42 +14,41 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
 
     @Override
     public String print(Move move, Position position) {
-        StringBuilder notationBuilder = new StringBuilder();
-        Color color;
+        final StringBuilder notation = new StringBuilder();
+        final Color color;
         if (move instanceof Movements.ShortCastling) {
             color = ((Movements.ShortCastling) move).color;
-            notationBuilder.append(SHORT_CASTLING);
+            notation.append(SHORT_CASTLING);
         } else if (move instanceof Movements.LongCastling) {
             color = ((Movements.LongCastling) move).color;
-            notationBuilder.append(LONG_CASTLING);
+            notation.append(LONG_CASTLING);
         } else {
-            Regular regularMove = (Regular) move;
+            final Regular regularMove = (Regular) move;
             final Piece movingPiece = position.at(regularMove.from).get();
             color = movingPiece.color;
-
-            notationBuilder.append(pieceNotation(movingPiece));
-            notationBuilder.append(disambiguatingSymbol(regularMove, position));
-            notationBuilder.append(captureNotation(regularMove, position));
-            notationBuilder.append(regularMove.to.name());
+            notation.append(pieceNotation(movingPiece));
+            notation.append(disambiguatingSymbol(regularMove, position));
+            notation.append(captureNotation(regularMove, position));
+            notation.append(regularMove.to.name());
         }
-        notationBuilder.append(checkNotation(move, position, color.opponent()).orElse(""));
-        return notationBuilder.toString();
+        notation.append(checkNotation(move, position, color.opponent()).orElse(""));
+        return notation.toString();
     }
 
-    private String disambiguatingSymbol(Regular regularMove, Position position) {
-        final Piece movingPiece = position.at(regularMove.from).get();
-        final Set<Square> ambiguousSquares = ambiguousSquares(movingPiece, regularMove, position);
+    private String disambiguatingSymbol(Regular move, Position position) {
+        final Piece movingPiece = position.at(move.from).get();
+        final Set<Square> ambiguousSquares = ambiguousSquares(movingPiece, move, position);
         if (!ambiguousSquares.isEmpty()) {
             if (ambiguousSquares.size() == 1) {
-                return ambiguousSquares.head().col != regularMove.from.col ?
-                        String.valueOf((char) ('a' + regularMove.from.col)) :
-                        String.valueOf(regularMove.from.row + 1);
+                return ambiguousSquares.head().col != move.from.col ?
+                        String.valueOf((char) ('a' + move.from.col)) :
+                        String.valueOf(move.from.row + 1);
             } else {
-                return regularMove.from.name();
+                return move.from.name();
             }
-        } else if (regularMove.enPassant ||
-                Piece.Type.PAWN.equals(movingPiece.type) && position.at(regularMove.to).isDefined()) {
-            return String.valueOf((char) ('a' + regularMove.from.col));
+        } else if (move.enPassant ||
+                Type.PAWN.equals(movingPiece.type) && position.at(move.to).isDefined()) {
+            return String.valueOf((char) ('a' + move.from.col));
         }
         return "";
     }
@@ -66,9 +57,9 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
         final Predicate<Square> notSameSquare = sqr -> !sqr.equals(regularMove.from);
         switch (movingPiece.type) {
             case PAWN:
-                return Pawns.isCapture(regularMove) ?
-                        Rules.attackingPawnSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare) :
-                        HashSet.empty();
+                return Pawns.isCapture(regularMove)
+                        ? Rules.attackingPawnSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare)
+                        : HashSet.empty();
             case KNIGHT:
                 return Rules.attackingKnightSquares(regularMove.to, movingPiece.color, position).filter(notSameSquare);
             case BISHOP:
