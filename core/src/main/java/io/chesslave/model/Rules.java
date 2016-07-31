@@ -58,6 +58,15 @@ public final class Rules {
     }
 
     /**
+     * @return all the moves available for the specified color.
+     */
+    public static Stream<Regular> allMoves(Position position, Color color) {
+        return position.toSet().toStream()
+                .filter(squareAndPiece -> squareAndPiece._2.color.equals(color))
+                .flatMap(squareAndPiece -> Rules.moves(position, squareAndPiece._1));
+    }
+
+    /**
      * @return true if the king of the given color is not under attack.
      */
     public static boolean isKingSafe(Position position, Color color) {

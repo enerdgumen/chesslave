@@ -40,7 +40,7 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
             notationBuilder.append(captureNotation(regularMove, position));
             notationBuilder.append(regularMove.to.name());
         }
-        notationBuilder.append(checkNotation(move, position, color.opponent()));
+        notationBuilder.append(checkNotation(move, position, color.opponent()).orElse(""));
         return notationBuilder.toString();
     }
 

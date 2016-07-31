@@ -1,13 +1,15 @@
 package io.chesslave.model;
 
 import javaslang.control.Option;
+import java.util.Objects;
 
 /**
  * Factory of standard chess moves.
  */
 public final class Movements {
 
-    private Movements() {}
+    private Movements() {
+    }
 
     /**
      * Moves a piece from a square to another square.
@@ -76,6 +78,26 @@ public final class Movements {
                     .append(", enPassant=").append(enPassant)
                     .append(", promotion=").append(promotion).append("}")
                     .toString();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (other instanceof Regular == false) {
+                return false;
+            }
+            final Regular that = (Regular) other;
+            return this.enPassant == that.enPassant &&
+                    Objects.equals(this.from, that.from) &&
+                    Objects.equals(this.to, that.to) &&
+                    Objects.equals(this.promotion, that.promotion);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(from, to, enPassant, promotion);
         }
     }
 

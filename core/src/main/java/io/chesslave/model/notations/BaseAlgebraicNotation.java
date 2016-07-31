@@ -10,6 +10,7 @@ import javaslang.Tuple2;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
+import java.util.Optional;
 
 /**
  * Base Algebraic Notation. This class can be used to implements variations of the algebraic notation.
@@ -39,15 +40,12 @@ public abstract class BaseAlgebraicNotation implements MoveNotation {
         return move.enPassant || position.at(move.to).isDefined() ? CAPTURE_SYMBOL : "";
     }
 
-    protected String checkNotation(Move move, Position position, Color opponentColor) {
+    protected Optional<String> checkNotation(Move move, Position position, Color opponentColor) {
         final Position resultingPosition = move.apply(position);
-        if (!Rules.isKingSafe(resultingPosition, opponentColor)) {
-            boolean canMove = resultingPosition.toSet()
-                    .filter(tuple -> tuple._2.color.equals(opponentColor))
-                    .map(Tuple2::_1)
-                    .exists(square -> Rules.moves(resultingPosition, square).nonEmpty());
-            return canMove ? CHECK_SYMBOL : CHECKMATE_SYMBOL;
+        if (Rules.isKingSafe(resultingPosition, opponentColor)) {
+            return Optional.empty();
         }
-        return "";
+        final boolean checkmate = Rules.allMoves(resultingPosition, opponentColor).isEmpty();
+        return Optional.of(checkmate ? CHECKMATE_SYMBOL : CHECK_SYMBOL);
     }
 }

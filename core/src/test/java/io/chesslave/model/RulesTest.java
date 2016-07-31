@@ -1,11 +1,10 @@
 package io.chesslave.model;
 
-import static org.junit.Assert.assertEquals;
-
 import io.chesslave.model.Movements.Regular;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class RulesTest {
 
@@ -496,6 +495,33 @@ public class RulesTest {
                 " | | | | | | | ");
         final Set<Square> got = Rules.attackingQueenSquares(Square.of("d5"), Color.WHITE, position);
         final Set<Square> expected = HashSet.of(Square.of("d2"), Square.of("a2"));
+        assertEquals(expected, got);
+    }
+
+    /*
+     * All moves
+     */
+
+    @Test
+    public void allMoves() {
+        final Position position = Positions.fromText(
+                " | |r| | | | | ",
+                " |P| |k| | | | ",
+                " | | | | | | | ",
+                " | |K| |N| | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        final Set<Regular> got = Rules.allMoves(position, Color.WHITE).toSet();
+        final Set<Regular> expected = HashSet.of(
+                Movements.regular(Square.of("c5"), Square.of("b4")),
+                Movements.regular(Square.of("c5"), Square.of("b5")),
+                Movements.regular(Square.of("c5"), Square.of("b6")),
+                Movements.regular(Square.of("c5"), Square.of("d4")),
+                Movements.regular(Square.of("c5"), Square.of("d5")),
+                Movements.regular(Square.of("b7"), Square.of("c8")),
+                Movements.regular(Square.of("e5"), Square.of("c6")));
         assertEquals(expected, got);
     }
 
