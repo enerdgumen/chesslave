@@ -24,12 +24,12 @@ public class StandardAlgebraicNotation implements MoveNotation {
     private static final String CHECK_SYMBOL = "+";
     private static final String CHECKMATE_SYMBOL = "#";
     private static final Map<Type, String> PIECE_NAMES = HashMap.of(
-            Piece.Type.PAWN, "",
-            Piece.Type.KNIGHT, "N",
-            Piece.Type.BISHOP, "B",
-            Piece.Type.ROOK, "R",
-            Piece.Type.QUEEN, "Q",
-            Piece.Type.KING, "K"
+            Type.PAWN, "",
+            Type.KNIGHT, "N",
+            Type.BISHOP, "B",
+            Type.ROOK, "R",
+            Type.QUEEN, "Q",
+            Type.KING, "K"
     );
 
     @Override
@@ -61,8 +61,8 @@ public class StandardAlgebraicNotation implements MoveNotation {
     }
 
     private String disambiguatingSymbol(Regular move, Position position) {
-        final Piece movingPiece = position.at(move.from).get();
-        final Set<Square> ambiguousSquares = ambiguousSquares(movingPiece, move, position);
+        final Piece piece = position.at(move.from).get();
+        final Set<Square> ambiguousSquares = ambiguousSquares(piece, move, position);
         if (!ambiguousSquares.isEmpty()) {
             if (ambiguousSquares.size() == 1) {
                 return ambiguousSquares.head().col != move.from.col ?
@@ -72,18 +72,18 @@ public class StandardAlgebraicNotation implements MoveNotation {
                 return move.from.name();
             }
         } else if (move.enPassant ||
-                Type.PAWN.equals(movingPiece.type) && position.at(move.to).isDefined()) {
+                Type.PAWN.equals(piece.type) && position.at(move.to).isDefined()) {
             return String.valueOf((char) ('a' + move.from.col));
         }
         return "";
     }
 
-    private Set<Square> ambiguousSquares(Piece movingPiece, Regular regularMove, Position position) {
+    private Set<Square> ambiguousSquares(Piece piece, Regular move, Position position) {
         return position.toSet()
-                .filter(square -> !square._1.equals(regularMove.from) && square._2.equals(movingPiece))
+                .filter(square -> !square._1.equals(move.from) && square._2.equals(piece))
                 .flatMap(square -> Rules.moves(position, square._1))
-                .filter(move -> move.to.equals(regularMove.to))
-                .map(move -> move.from);
+                .filter(mv -> mv.to.equals(move.to))
+                .map(mv -> mv.from);
     }
 
     private String pieceNotation(Piece piece) {
