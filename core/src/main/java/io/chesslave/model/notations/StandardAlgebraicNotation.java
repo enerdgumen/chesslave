@@ -1,12 +1,17 @@
 package io.chesslave.model.notations;
 
 import io.chesslave.model.*;
+import io.chesslave.model.Movements.LongCastling;
+import io.chesslave.model.Movements.ShortCastling;
 import io.chesslave.model.Piece.Type;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.collection.Set;
 import java.util.Optional;
 import static io.chesslave.model.Movements.Regular;
+import static javaslang.API.Case;
+import static javaslang.API.Match;
+import static javaslang.Predicates.instanceOf;
 
 /**
  * Implementation of the standard Algebraic Notation.
@@ -29,25 +34,30 @@ public class StandardAlgebraicNotation implements MoveNotation {
 
     @Override
     public String print(Move move, Position position) {
-        final StringBuilder notation = new StringBuilder();
-        final Color color;
-        if (move instanceof Movements.ShortCastling) {
-            color = ((Movements.ShortCastling) move).color;
-            notation.append(SHORT_CASTLING);
-        } else if (move instanceof Movements.LongCastling) {
-            color = ((Movements.LongCastling) move).color;
-            notation.append(LONG_CASTLING);
-        } else {
-            final Regular regularMove = (Regular) move;
-            final Piece movingPiece = position.at(regularMove.from).get();
-            color = movingPiece.color;
-            notation.append(pieceNotation(movingPiece));
-            notation.append(disambiguatingSymbol(regularMove, position));
-            notation.append(captureNotation(regularMove, position));
-            notation.append(regularMove.to.name());
-        }
-        notation.append(checkNotation(move, position, color.opponent()).orElse(""));
-        return notation.toString();
+        return Match(move).of(
+                Case(instanceOf(ShortCastling.class), mv -> {
+                    final StringBuilder notation = new StringBuilder();
+                    notation.append(SHORT_CASTLING);
+                    notation.append(checkNotation(move, position, mv.color.opponent()).orElse(""));
+                    return notation.toString();
+                }),
+                Case(instanceOf(LongCastling.class), mv -> {
+                    final StringBuilder notation = new StringBuilder();
+                    notation.append(LONG_CASTLING);
+                    notation.append(checkNotation(move, position, mv.color.opponent()).orElse(""));
+                    return notation.toString();
+                }),
+                Case(instanceOf(Regular.class), mv -> {
+                    final Piece piece = position.at(mv.from).get();
+                    final StringBuilder notation = new StringBuilder();
+                    notation.append(pieceNotation(piece));
+                    notation.append(disambiguatingSymbol(mv, position));
+                    notation.append(captureNotation(mv, position));
+                    notation.append(mv.to.name());
+                    notation.append(checkNotation(move, position, piece.color.opponent()).orElse(""));
+                    return notation.toString();
+                })
+        );
     }
 
     private String disambiguatingSymbol(Regular move, Position position) {
