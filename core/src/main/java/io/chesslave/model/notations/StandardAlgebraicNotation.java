@@ -65,14 +65,14 @@ public class StandardAlgebraicNotation implements MoveNotation {
         if (!ambiguousSquares.isEmpty()) {
             if (ambiguousSquares.size() == 1) {
                 return Option.of(ambiguousSquares.head().col != move.from.col
-                        ? String.valueOf((char) ('a' + move.from.col))
-                        : String.valueOf(move.from.row + 1));
+                        ? move.from.columnName()
+                        : move.from.rowName());
             } else {
                 return Option.of(move.from.name());
             }
         } else if (move.enPassant ||
                 Type.PAWN.equals(piece.type) && position.at(move.to).isDefined()) {
-            return Option.of(String.valueOf((char) ('a' + move.from.col)));
+            return Option.of(move.from.columnName());
         }
         return Option.none();
     }

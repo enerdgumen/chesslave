@@ -1,20 +1,14 @@
 package io.chesslave.model;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import javaslang.Tuple;
 import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
 import org.junit.Test;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.*;
 
 public class SquareTest {
 
@@ -94,6 +88,26 @@ public class SquareTest {
         assertEquals("g6", g6.name());
         final Square f3 = new Square(5, 2);
         assertEquals("f3", f3.name());
+    }
+
+    @Test
+    public void columnNameTest() {
+        final Square a1 = Square.of("a1");
+        assertEquals("a", a1.columnName());
+        final Square g6 = Square.of("G6");
+        assertEquals("g", g6.columnName());
+        final Square f3 = new Square(5, 2);
+        assertEquals("f", f3.columnName());
+    }
+
+    @Test
+    public void rowNameTest() {
+        final Square a1 = Square.of("a1");
+        assertEquals("1", a1.rowName());
+        final Square g6 = Square.of("G6");
+        assertEquals("6", g6.rowName());
+        final Square f3 = new Square(5, 2);
+        assertEquals("3", f3.rowName());
     }
 
     @Test

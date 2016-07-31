@@ -8,7 +8,6 @@ import javaslang.collection.List;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
-
 import java.util.function.Function;
 
 /**
@@ -57,6 +56,20 @@ public class Square {
                 .append((char) ('a' + col))
                 .append((char) ('1' + row))
                 .toString();
+    }
+
+    /**
+     * @return The common name of the square column (a-h)
+     */
+    public String columnName() {
+        return Character.toString((char) ('a' + col));
+    }
+
+    /**
+     * @return The common name of the square row (1-8)
+     */
+    public String rowName() {
+        return Character.toString((char) ('1' + row));
     }
 
     /**
