@@ -2,15 +2,32 @@ package io.chesslave.model.notations;
 
 import io.chesslave.model.*;
 import io.chesslave.model.Piece.Type;
+import javaslang.collection.HashMap;
 import javaslang.collection.HashSet;
+import javaslang.collection.Map;
 import javaslang.collection.Set;
+import java.util.Optional;
 import java.util.function.Predicate;
 import static io.chesslave.model.Movements.Regular;
 
 /**
  * Implementation of the standard Algebraic Notation.
  */
-public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
+public class StandardAlgebraicNotation implements MoveNotation {
+
+    private static final String SHORT_CASTLING = "0-0";
+    private static final String LONG_CASTLING = "0-0-0";
+    private static final String CAPTURE_SYMBOL = "x";
+    private static final String CHECK_SYMBOL = "+";
+    private static final String CHECKMATE_SYMBOL = "#";
+    private static final Map<Type, String> PIECE_NAMES = HashMap.of(
+            Piece.Type.PAWN, "",
+            Piece.Type.KNIGHT, "N",
+            Piece.Type.BISHOP, "B",
+            Piece.Type.ROOK, "R",
+            Piece.Type.QUEEN, "Q",
+            Piece.Type.KING, "K"
+    );
 
     @Override
     public String print(Move move, Position position) {
@@ -72,5 +89,22 @@ public class StandardAlgebraicNotation extends BaseAlgebraicNotation {
             default:
                 return HashSet.empty();
         }
+    }
+
+    private String pieceNotation(Piece piece) {
+        return PIECE_NAMES.apply(piece.type);
+    }
+
+    private String captureNotation(Movements.Regular move, Position position) {
+        return move.enPassant || position.at(move.to).isDefined() ? CAPTURE_SYMBOL : "";
+    }
+
+    private Optional<String> checkNotation(Move move, Position position, Color opponentColor) {
+        final Position resultingPosition = move.apply(position);
+        if (Rules.isKingSafe(resultingPosition, opponentColor)) {
+            return Optional.empty();
+        }
+        final boolean checkmate = Rules.allMoves(resultingPosition, opponentColor).isEmpty();
+        return Optional.of(checkmate ? CHECKMATE_SYMBOL : CHECK_SYMBOL);
     }
 }
