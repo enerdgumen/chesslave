@@ -7,6 +7,7 @@ import io.chesslave.support.Functions;
 import javaslang.Function1;
 import javaslang.Predicates;
 import javaslang.Tuple;
+import javaslang.Tuple2;
 import javaslang.collection.HashSet;
 import javaslang.collection.Set;
 import javaslang.collection.Stream;
@@ -32,9 +33,9 @@ public final class Rules {
         return pos.at(from)
                 .map(piece -> {
                     final Function1<Square, Regular> regular = to -> Movements.regular(from, to);
-                    final Predicate<Regular> isKingSafeAfterMove = move -> isKingSafe(move.apply(pos), piece.color);
                     final Predicate<Regular> isFreeOrWithOpponent = move -> isFreeOrWithOpponent(pos, move.to, piece);
-                    final Predicate<Regular> isAvailable = Predicates.allOf(isKingSafeAfterMove, isFreeOrWithOpponent);
+                    final Predicate<Regular> isKingSafeAfterMove = move -> isKingSafe(move.apply(pos), piece.color);
+                    final Predicate<Regular> isAvailable = Predicates.allOf(isFreeOrWithOpponent, isKingSafeAfterMove);
                     switch (piece.type) {
                         case PAWN:
                             return pawnMoves(pos, from).filter(isKingSafeAfterMove);

@@ -498,4 +498,38 @@ public class RulesTest {
         final Set<Square> expected = HashSet.of(Square.of("d2"), Square.of("a2"));
         assertEquals(expected, got);
     }
+
+    /*
+     * Corner cases
+     */
+
+    @Test
+    public void noMovesIfPieceCannotSolveCheck() {
+        final Position position = Positions.fromText(
+                " | |r| | | | | ",
+                " | | |k| | | | ",
+                " | | | | | | | ",
+                " | |K| | | | | ",
+                " | | | |N| | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ");
+        final Set<Regular> moves = Rules.moves(position, Square.of("e4"));
+        assertEquals(HashSet.empty(), moves);
+    }
+
+    @Test
+    public void noMovesOnEmptySquare() {
+        final Position position = Positions.fromText(
+                " | | | |k| | | ",
+                " | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | | | | | ",
+                " | | | |K| | | ");
+        final Set<Regular> moves = Rules.moves(position, Square.of("a2"));
+        assertEquals(HashSet.empty(), moves);
+    }
 }
