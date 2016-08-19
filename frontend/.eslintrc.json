@@ -9,6 +9,7 @@
         "indent": ["error", 4],
         "linebreak-style": ["error", "unix"],
         "quotes": ["warn", "single"],
-        "semi": ["warn", "never"]
+        "semi": ["warn", "never"],
+        "no-unused-vars": ["warn"]
     }
 }
