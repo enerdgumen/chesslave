@@ -1,0 +1,11 @@
+@import "../../node_modules/bootstrap/dist/css/bootstrap.css";
+
+body {
+    background-image: url('background.png');
+}
+
+.container {
+    margin-top: 1em;
+    padding: 1em;
+    background-color: rgba(47,47,47,0.7);
+}
