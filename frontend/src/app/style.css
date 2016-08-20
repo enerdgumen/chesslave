@@ -5,7 +5,11 @@ body {
 }
 
 .container {
-    margin-top: 1em;
-    padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
     background-color: rgba(47,47,47,0.7);
+}
+
+.panel-body > div:not(:last-child) {
+    margin-bottom: 0.6em;
 }
