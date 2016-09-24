@@ -9,14 +9,14 @@ import rx.Observer;
 import rx.subjects.PublishSubject;
 import java.io.IOException;
 
-public class EventSocket extends WebSocketAdapter {
+public class RxWebSocket extends WebSocketAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventSocket.class);
+    private static final Logger logger = LoggerFactory.getLogger(RxWebSocket.class);
     private final Converter<Event> converter;
     private final PublishSubject<Event> input;
     private final PublishSubject<Event> output;
 
-    public EventSocket(Converter<Event> converter) {
+    public RxWebSocket(Converter<Event> converter) {
         this.converter = converter;
         this.input = PublishSubject.create();
         this.output = PublishSubject.create();
@@ -58,6 +58,7 @@ public class EventSocket extends WebSocketAdapter {
         logger.debug("Socket Closed: [{}] {}", statusCode, reason);
         super.onWebSocketClose(statusCode, reason);
         input.onCompleted();
+        output.onCompleted();
     }
 
     private void writeEvent(Event event) {
@@ -66,7 +67,7 @@ public class EventSocket extends WebSocketAdapter {
             logger.debug("Sending TEXT message: {}", message);
             getRemote().sendString(message);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            output.onError(ex);
         }
     }
 }

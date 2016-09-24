@@ -1,9 +1,10 @@
 window.jQuery = require('jquery') // needed by boostrap :-(
 require('bootstrap')
 
-const events = require('./events')
+const EventBus = require('./events')
+const events = new EventBus()
 const boardSelector = require('./board-selector').create(events)
-const game = require('./game').create()
+const game = require('./game').create(events)
 
 const container = document.querySelector('.container')
 container.appendChild(game.el)

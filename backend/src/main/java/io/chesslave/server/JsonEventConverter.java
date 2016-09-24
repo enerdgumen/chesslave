@@ -1,11 +1,17 @@
 package io.chesslave.server;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 public class JsonEventConverter implements Converter<Event> {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper;
+
+    public JsonEventConverter() {
+        this.mapper =   new ObjectMapper();
+        this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
 
     @Override
     public String asString(Event event) throws IOException {

@@ -3,13 +3,22 @@ package io.chesslave.server;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Application {
 
     public static void main(String[] args) throws Exception {
-        final EventSocket socket = new EventSocket(new JsonEventConverter());
-        socket.input().subscribe(e -> socket.output().onNext(e)); // echo
-        final ServletHolder holder = new ServletHolder("ws-events", new EventServlet(socket));
+        final Logger logger = LoggerFactory.getLogger(Application.class);
+        final WebSocketCreator creator = (req, resp) -> {
+            final RxWebSocket socket = new RxWebSocket(new JsonEventConverter());
+            socket.input().subscribe(e -> {
+                logger.info("Received event: {}", e.name);
+            });
+            return socket;
+        };
+        final ServletHolder holder = new ServletHolder("ws", new EventServlet(creator));
         final ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         context.addServlet(holder, "/events/*");

@@ -1,18 +1,19 @@
 package io.chesslave.server;
 
+import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 public class EventServlet extends WebSocketServlet {
 
-    private final EventSocket socket;
+    private final WebSocketCreator creator;
 
-    public EventServlet(EventSocket socket) {
-        this.socket = socket;
+    public EventServlet(WebSocketCreator creator) {
+        this.creator = creator;
     }
 
     @Override
     public void configure(WebSocketServletFactory factory) {
-        factory.setCreator((req, resp) -> socket);
+        factory.setCreator(creator);
     }
 }
