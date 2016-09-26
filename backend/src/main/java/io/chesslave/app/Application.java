@@ -1,4 +1,4 @@
-package io.chesslave.server;
+package io.chesslave.app;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;

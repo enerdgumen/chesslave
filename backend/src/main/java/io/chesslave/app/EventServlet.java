@@ -1,4 +1,4 @@
-package io.chesslave.server;
+package io.chesslave.app;
 
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;

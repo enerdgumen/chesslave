@@ -21,7 +21,6 @@
     </properties>
 
     <modules>
-        <module>core</module>
         <module>backend</module>
         <module>frontend</module>
     </modules>
@@ -50,6 +49,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>

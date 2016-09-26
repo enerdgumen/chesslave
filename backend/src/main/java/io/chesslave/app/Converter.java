@@ -1,4 +1,4 @@
-package io.chesslave.server;
+package io.chesslave.app;
 
 import java.io.IOException;
 
