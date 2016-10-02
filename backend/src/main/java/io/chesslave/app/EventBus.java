@@ -17,7 +17,7 @@ public class EventBus {
         return input.filter(e -> event.equals(e.name));
     }
 
-    public void fire(String event, Object payload) {
-        output.onNext(Event.of(event, payload));
+    public void fire(Event event) {
+        output.onNext(event);
     }
 }

@@ -11,4 +11,8 @@ public class Event {
         event.payload = payload;
         return event;
     }
+
+    public static Event of(String name) {
+        return of(name, null);
+    }
 }
