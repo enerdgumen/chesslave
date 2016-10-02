@@ -1,5 +1,5 @@
 const players = require('./player')
-const starter = require('./start-game')
+const startGame = require('./start-game')
 
 function create(events) {
     const whitePlayer = players.create({
@@ -10,6 +10,7 @@ function create(events) {
         label: 'Black player:',
         active: players.COMPUTER
     })
+    const starter = startGame.create()
     const el = document.createElement('div')
     el.innerHTML = `
         <div class="panel panel-primary">
@@ -19,7 +20,11 @@ function create(events) {
     const body = el.querySelector('.panel-body')
     body.appendChild(whitePlayer.el)
     body.appendChild(blackPlayer.el)
-    body.appendChild(starter.create(events).el)
+    body.appendChild(starter.el)
+    starter.action
+        .withLatestFrom(whitePlayer.status, blackPlayer.status,
+            (turn, white, black) => events.fire('start-game', {turn, white, black}))
+        .subscribe()
     return {el}
 }
 

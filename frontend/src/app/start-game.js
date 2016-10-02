@@ -1,4 +1,6 @@
-function create(events) {
+const Observable = require('rxjs/Observable').Observable
+
+function create() {
     const el = document.createElement('div')
     el.innerHTML = `
         <div class="btn-group">
@@ -9,14 +11,15 @@ function create(events) {
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="#">White</a></li>
-            <li><a href="#">Black</a></li>
+            <li><a href="#" data-turn="white">White</a></li>
+            <li><a href="#" data-turn="black">Black</a></li>
           </ul>
         </div>`
     const button = el.querySelector('button')
-    button.addEventListener('click',  () => events.fire('start-game'))
+    const action = Observable.fromEvent(el.querySelectorAll('a'), 'click').map(e => e.target.dataset.turn)
     return {
         el,
+        action,
         enable: () => button.removeAttribute('disabled'),
         disable: () => button.setAttribute('disabled', true)
     }
