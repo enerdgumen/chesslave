@@ -7,8 +7,8 @@ const boardSelector = require('./board-selector').create(events)
 const game = require('./game').create(events)
 
 const container = document.querySelector('.container')
-container.appendChild(game.el)
 container.appendChild(boardSelector.el)
+container.appendChild(game.el)
 
 events.on('select-board')
     .subscribe(() => {
