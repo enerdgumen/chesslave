@@ -1,6 +1,6 @@
 {
   "name": "chesslave",
-  "version": "0.1",
+  "private": "true",
   "main": "src/main.js",
   "devDependencies": {
     "electron-connect": "0.4.2",
