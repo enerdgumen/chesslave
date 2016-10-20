@@ -18,6 +18,18 @@
         <batik.version>1.7</batik.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>jxgrabkey</groupId>
+                <artifactId>jxgrabkey</artifactId>
+                <version>1.0</version>
+                <scope>system</scope>
+                <systemPath>${project.basedir}/libs/jxgrabkey-1.0.jar</systemPath>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- Core dependencies -->
         <dependency>
@@ -151,14 +163,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <!-- to resolve jxgrabkey:jxgrabkey:jar:1.0 -->
-    <repositories>
-        <repository>
-            <id>jxgrabkey-repo</id>
-            <url>http://mvn.is.inf.uni-due.de:8081/nexus/content/repositories/atunes-dependencies/</url>
-        </repository>
-    </repositories>
 
     <profiles>
         <profile>
