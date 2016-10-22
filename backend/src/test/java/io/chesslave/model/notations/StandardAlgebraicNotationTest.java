@@ -2,24 +2,18 @@ package io.chesslave.model.notations;
 
 import static org.junit.Assert.assertEquals;
 
-import io.chesslave.model.Color;
-import io.chesslave.model.Move;
-import io.chesslave.model.Movements;
-import io.chesslave.model.Position;
-import io.chesslave.model.Positions;
-import io.chesslave.model.Square;
-import org.junit.Before;
+import io.chesslave.model.*;
 import org.junit.Test;
 
+// TODO: test it without use MoveDescriptor
 public class StandardAlgebraicNotationTest {
 
-    private StandardAlgebraicNotation algebraicNotation;
-
-    @Before
-    public void setUp() {
-        algebraicNotation = new StandardAlgebraicNotation();
+    private String notation(Move move, Position position) {
+        final MoveDescription description = new MoveDescriptor().describe(move, position);
+        final StandardAlgebraicNotation notation = new StandardAlgebraicNotation();
+        return notation.print(description);
     }
-
+    
     /*
     * Pawn moves.
     */
@@ -36,7 +30,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 "P|P|P|P|P|P|P|P",
                 "R|N|B|Q|K|B|N|R");
-        assertEquals("e4", algebraicNotation.print(move, position));
+        assertEquals("e4", notation(move, position));
     }
 
     @Test
@@ -51,7 +45,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P| | |P|P|P",
                 "R|N|B|Q|K|B| |R");
-        assertEquals("cxd4", algebraicNotation.print(move, position));
+        assertEquals("cxd4", notation(move, position));
     }
 
     @Test
@@ -66,7 +60,7 @@ public class StandardAlgebraicNotationTest {
                 " | |K| | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("dxc6", algebraicNotation.print(move, position));
+        assertEquals("dxc6", notation(move, position));
     }
 
     @Test
@@ -81,7 +75,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | |K|P",
                 " | | | | | | | ");
-        assertEquals("h3+", algebraicNotation.print(move, position));
+        assertEquals("h3+", notation(move, position));
     }
 
     @Test
@@ -96,7 +90,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | |K|P",
                 " | | | | | | | ");
-        assertEquals("h3#", algebraicNotation.print(move, position));
+        assertEquals("h3#", notation(move, position));
     }
 
     @Test
@@ -111,7 +105,7 @@ public class StandardAlgebraicNotationTest {
                 " | |K| | | | |p",
                 " | | | | | | |P",
                 " | | | | | | | ");
-        assertEquals("cxd5", algebraicNotation.print(move, position));
+        assertEquals("cxd5", notation(move, position));
     }
 
     @Test
@@ -126,7 +120,7 @@ public class StandardAlgebraicNotationTest {
                 " | |K| | | | |p",
                 " | | | | | | |P",
                 " | | | | | | | ");
-        assertEquals("cxd5+", algebraicNotation.print(move, position));
+        assertEquals("cxd5+", notation(move, position));
     }
 
     @Test
@@ -141,7 +135,7 @@ public class StandardAlgebraicNotationTest {
                 " | |K| | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("dxc6", algebraicNotation.print(move, position));
+        assertEquals("dxc6", notation(move, position));
     }
 
     @Test
@@ -156,7 +150,7 @@ public class StandardAlgebraicNotationTest {
                 " | |K| | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("dxc5", algebraicNotation.print(move, position));
+        assertEquals("dxc5", notation(move, position));
     }
 
     /*
@@ -175,7 +169,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 "P|P|P|P|P|P|P|P",
                 "R|N|B|Q|K|B|N|R");
-        assertEquals("Nf3", algebraicNotation.print(move, position));
+        assertEquals("Nf3", notation(move, position));
     }
 
     @Test
@@ -190,7 +184,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P| | |P|P|P",
                 "R|N|B|Q|K|B| |R");
-        assertEquals("Nxd4", algebraicNotation.print(move, position));
+        assertEquals("Nxd4", notation(move, position));
     }
 
     @Test
@@ -205,7 +199,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Nf6+", algebraicNotation.print(move, position));
+        assertEquals("Nf6+", notation(move, position));
     }
 
     @Test
@@ -220,7 +214,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Nf7#", algebraicNotation.print(move, position));
+        assertEquals("Nf7#", notation(move, position));
     }
 
     @Test
@@ -235,7 +229,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | |N| ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("N3e4", algebraicNotation.print(move, position));
+        assertEquals("N3e4", notation(move, position));
     }
 
     @Test
@@ -250,7 +244,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | |N| | | | ",
                 " | | | | | | | ");
-        assertEquals("Ndxe4", algebraicNotation.print(move, position));
+        assertEquals("Ndxe4", notation(move, position));
     }
 
     @Test
@@ -265,7 +259,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Ngf7#", algebraicNotation.print(move, position));
+        assertEquals("Ngf7#", notation(move, position));
     }
 
     /*
@@ -284,7 +278,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q|K|B| |R");
-        assertEquals("Bb5", algebraicNotation.print(move, position));
+        assertEquals("Bb5", notation(move, position));
     }
 
     @Test
@@ -299,7 +293,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q|K| | |R");
-        assertEquals("Bxc6", algebraicNotation.print(move, position));
+        assertEquals("Bxc6", notation(move, position));
     }
 
     @Test
@@ -314,7 +308,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q|K|B| |R");
-        assertEquals("Bb5+", algebraicNotation.print(move, position));
+        assertEquals("Bb5+", notation(move, position));
     }
 
     @Test
@@ -329,7 +323,7 @@ public class StandardAlgebraicNotationTest {
                 " |P|N| | |N| | ",
                 "P| |P|P| |P|P|P",
                 "R| | | |K|B| |R");
-        assertEquals("Bb5#", algebraicNotation.print(move, position));
+        assertEquals("Bb5#", notation(move, position));
     }
 
     /*
@@ -348,7 +342,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q| |R|K| ");
-        assertEquals("Re1", algebraicNotation.print(move, position));
+        assertEquals("Re1", notation(move, position));
     }
 
     @Test
@@ -363,7 +357,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Rxb5", algebraicNotation.print(move, position));
+        assertEquals("Rxb5", notation(move, position));
     }
 
     @Test
@@ -378,7 +372,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Rc8+", algebraicNotation.print(move, position));
+        assertEquals("Rc8+", notation(move, position));
     }
 
     @Test
@@ -393,7 +387,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | |r| | | | | ",
                 " | | | | | | | ");
-        assertEquals("Ra2#", algebraicNotation.print(move, position));
+        assertEquals("Ra2#", notation(move, position));
     }
 
     @Test
@@ -408,7 +402,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | |r| | | | | ",
                 " | | | | |K| | ");
-        assertEquals("Rbb2", algebraicNotation.print(move, position));
+        assertEquals("Rbb2", notation(move, position));
     }
 
     @Test
@@ -423,7 +417,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | |r| | | | | ",
                 " |r| | | | | | ");
-        assertEquals("Rb1b2", algebraicNotation.print(move, position));
+        assertEquals("Rb1b2", notation(move, position));
     }
 
     @Test
@@ -438,7 +432,7 @@ public class StandardAlgebraicNotationTest {
                 "P| | | | | | | ",
                 "K|P|r| | | | | ",
                 " | | | | | | |q");
-        assertEquals("Rcxb2#", algebraicNotation.print(move, position));
+        assertEquals("Rcxb2#", notation(move, position));
     }
 
     /*
@@ -457,7 +451,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q| |R|K| ");
-        assertEquals("Qe2", algebraicNotation.print(move, position));
+        assertEquals("Qe2", notation(move, position));
     }
 
     @Test
@@ -472,7 +466,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q|K| | |R");
-        assertEquals("Qxd7", algebraicNotation.print(move, position));
+        assertEquals("Qxd7", notation(move, position));
     }
 
     @Test
@@ -487,7 +481,7 @@ public class StandardAlgebraicNotationTest {
                 " | |P|Q|P| |P| ",
                 " | |B| | |P| |P",
                 "R| | | | | |K| ");
-        assertEquals("Qh7+", algebraicNotation.print(move, position));
+        assertEquals("Qh7+", notation(move, position));
     }
 
     @Test
@@ -502,7 +496,7 @@ public class StandardAlgebraicNotationTest {
                 " | |P|Q|P| |P| ",
                 " | |B| | |P| |P",
                 "R| | | | | |K| ");
-        assertEquals("Qh7#", algebraicNotation.print(move, position));
+        assertEquals("Qh7#", notation(move, position));
     }
 
     @Test
@@ -517,7 +511,7 @@ public class StandardAlgebraicNotationTest {
                 " | |P|Q|P| |P| ",
                 " | |B| | |P| |P",
                 "R| | | | | |K| ");
-        assertEquals("Qxh7#", algebraicNotation.print(move, position));
+        assertEquals("Qxh7#", notation(move, position));
     }
 
     @Test
@@ -532,7 +526,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Qgb8", algebraicNotation.print(move, position));
+        assertEquals("Qgb8", notation(move, position));
     }
 
     @Test
@@ -547,7 +541,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Qbe8+", algebraicNotation.print(move, position));
+        assertEquals("Qbe8+", notation(move, position));
     }
 
     @Test
@@ -562,7 +556,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Qb5e8+", algebraicNotation.print(move, position));
+        assertEquals("Qb5e8+", notation(move, position));
     }
 
     /*
@@ -581,7 +575,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q| |R|K| ");
-        assertEquals("Kh1", algebraicNotation.print(move, position));
+        assertEquals("Kh1", notation(move, position));
     }
 
     @Test
@@ -596,7 +590,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 " | | | | | | | ",
                 " | | | | | | | ");
-        assertEquals("Kxb5", algebraicNotation.print(move, position));
+        assertEquals("Kxb5", notation(move, position));
     }
 
     @Test
@@ -611,7 +605,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q|K| | |R");
-        assertEquals("0-0", algebraicNotation.print(move, position));
+        assertEquals("0-0", notation(move, position));
     }
 
     @Test
@@ -626,7 +620,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | |N| | ",
                 "P|P|P|P| |P|P|P",
                 "R|N|B|Q| |R|K| ");
-        assertEquals("0-0", algebraicNotation.print(move, position));
+        assertEquals("0-0", notation(move, position));
     }
 
     @Test
@@ -641,7 +635,7 @@ public class StandardAlgebraicNotationTest {
                 " | |N| | |Q| | ",
                 "P|P|P| | | |P|P",
                 "R| | | |K|B| |R");
-        assertEquals("0-0-0", algebraicNotation.print(move, position));
+        assertEquals("0-0-0", notation(move, position));
     }
 
     @Test
@@ -656,7 +650,7 @@ public class StandardAlgebraicNotationTest {
                 " | | |P| |N| | ",
                 "P|P|P|N| |P|P|P",
                 "R| |B|Q| |R|K| ");
-        assertEquals("0-0-0", algebraicNotation.print(move, position));
+        assertEquals("0-0-0", notation(move, position));
     }
 
     @Test
@@ -671,7 +665,7 @@ public class StandardAlgebraicNotationTest {
                 " | | | | | | | ",
                 "P| | | | | |P|P",
                 " | |R| |K| | |R");
-        assertEquals("0-0+", algebraicNotation.print(move, position));
+        assertEquals("0-0+", notation(move, position));
     }
 
     @Test
@@ -686,7 +680,7 @@ public class StandardAlgebraicNotationTest {
                 " | |N| | |Q| | ",
                 "P|P|P| | | |P|P",
                 "R| | | |K| | |R");
-        assertEquals("0-0-0+", algebraicNotation.print(move, position));
+        assertEquals("0-0-0+", notation(move, position));
     }
 
     @Test
@@ -701,7 +695,7 @@ public class StandardAlgebraicNotationTest {
                 " | |B| | | | | ",
                 "P| | | |R| |P|P",
                 " | | | |K| | |R");
-        assertEquals("0-0#", algebraicNotation.print(move, position));
+        assertEquals("0-0#", notation(move, position));
     }
 
     @Test
@@ -716,6 +710,6 @@ public class StandardAlgebraicNotationTest {
                 " | |N| | | | | ",
                 "P|P|P| | | |P|P",
                 "R| | | |K| | |R");
-        assertEquals("0-0-0#", algebraicNotation.print(move, position));
+        assertEquals("0-0-0#", notation(move, position));
     }
 }
