@@ -3,6 +3,7 @@ package io.chesslave.hands
 import io.chesslave.hands.sikuli.SikuliPointer
 import io.chesslave.model.Square
 import io.chesslave.visual.model.BoardImage
+import org.sikuli.script.Screen
 import java.awt.Point
 
 /**
@@ -10,7 +11,7 @@ import java.awt.Point
  */
 abstract class BaseBotMover(private val board: BoardImage) : Mover {
 
-    protected val pointer: Pointer = SikuliPointer()
+    protected val pointer: Pointer = SikuliPointer(Screen.getPrimaryScreen())
 
     protected fun getSquareCoords(square: Square): Point {
         val squareImage = board.squareImage(square)

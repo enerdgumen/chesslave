@@ -13,6 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import org.sikuli.script.Screen
 import java.awt.Desktop
 import java.awt.Point
 import java.net.URI
@@ -45,7 +46,7 @@ class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val
                     .map { with(it.region()) { Point(centerX.toInt(), centerY.toInt()) } }
                     .get()
                 if (flipPoint != null) {
-                    SikuliPointer().click(flipPoint)
+                    SikuliPointer(Screen.getPrimaryScreen()).click(flipPoint)
                 }
                 // wait webapp's response
                 Thread.sleep(500)
@@ -71,7 +72,7 @@ class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val
         assumeThat(botMover, notNullValue())
         assumeThat(resetButtonPoint, notNullValue())
 
-        val pointer = SikuliPointer()
+        val pointer = SikuliPointer(Screen.getPrimaryScreen())
 
         // flip board when necessary
         if (flipButtonPoint != null) {

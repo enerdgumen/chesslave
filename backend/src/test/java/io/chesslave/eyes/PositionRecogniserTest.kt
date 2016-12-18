@@ -10,7 +10,6 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.Assert.assertEquals
 
-//@Ignore
 class PositionRecogniserTest(chessSet: ChessSet) : SinglePieceRecognitionTest(chessSet) {
 
     lateinit var recogniser: PositionRecogniser
