@@ -46,12 +46,6 @@
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.immutables</groupId>
-            <artifactId>value</artifactId>
-            <version>2.3.7</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- Image recognition dependencies -->
         <dependency>
             <groupId>com.sikulix</groupId>
@@ -225,8 +219,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <!-- Prevents an endPosTable exception during compilation -->
-                    <useIncrementalCompilation>false</useIncrementalCompilation>
                 </configuration>
                 <executions>
                     <execution>

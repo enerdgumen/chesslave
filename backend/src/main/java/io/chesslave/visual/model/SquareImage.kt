@@ -1,71 +1,42 @@
-package io.chesslave.visual.model;
+package io.chesslave.visual.model
 
-import io.chesslave.model.Board;
-import io.chesslave.model.Square;
-import javaslang.Lazy;
+import io.chesslave.model.Board
+import io.chesslave.model.Square
+import javaslang.Lazy
 
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage
 
-public final class SquareImage {
+class SquareImage(board: BufferedImage, private val square: Square, private val flipped: Boolean) {
 
-    private final Lazy<BufferedImage> image;
-    private final Square square;
-    private final boolean flipped;
-    private final int size;
+    private val image: Lazy<BufferedImage>
+    private val size: Int
 
-    public SquareImage(BufferedImage board, Square square, boolean flipped) {
-        this.square = square;
-        this.flipped = flipped;
-        this.size = board.getWidth() / Board.SIZE;
-        this.image = Lazy.of(() -> board.getSubimage(left(), top(), size, size));
+    init {
+        this.size = board.width / Board.SIZE
+        this.image = Lazy.of { board.getSubimage(left(), top(), size, size) }
     }
 
-    public Square square() {
-        return square;
-    }
+    fun square(): Square = square
 
-    public BufferedImage image() {
-        return image.get();
-    }
+    fun image(): BufferedImage = image.get()
 
-    public int size() {
-        return size;
-    }
+    fun size(): Int = size
 
-    public int left() {
-        return size * horizontalOffset(square.col);
-    }
+    fun left(): Int = size * horizontalOffset(square.col)
 
-    public int right() {
-        return size * (horizontalOffset(square.col) + 1);
-    }
+    fun right(): Int = size * (horizontalOffset(square.col) + 1)
 
-    public int top() {
-        return size * verticalOffset(square.row);
-    }
+    fun top(): Int = size * verticalOffset(square.row)
 
-    public int bottom() {
-        return size * (verticalOffset(square.row) + 1);
-    }
+    fun bottom(): Int = size * (verticalOffset(square.row) + 1)
 
-    public int middleX() {
-        return left() + size / 2;
-    }
+    fun middleX(): Int = left() + size / 2
 
-    public int middleY() {
-        return top() + size / 2;
-    }
+    fun middleY(): Int = top() + size / 2
 
-    private int horizontalOffset(int col) {
-        return flipped ? Board.SIZE - 1 - col : col;
-    }
+    private fun horizontalOffset(col: Int): Int = if (flipped) Board.SIZE - 1 - col else col
 
-    private int verticalOffset(int row) {
-        return flipped ? row : Board.SIZE - 1 - row;
-    }
+    private fun verticalOffset(row: Int): Int = if (flipped) row else Board.SIZE - 1 - row
 
-    @Override
-    public String toString() {
-        return square.toString();
-    }
+    override fun toString() = square.toString()
 }

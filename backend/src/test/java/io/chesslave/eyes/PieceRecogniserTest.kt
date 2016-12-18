@@ -1,33 +1,33 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.eyes.sikuli.SikuliVision;
-import io.chesslave.model.Game;
-import io.chesslave.model.Piece;
-import io.chesslave.model.Position;
-import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
-import io.chesslave.visual.rendering.BoardRenderer;
-import javaslang.control.Option;
-import org.junit.Before;
-import static org.junit.Assert.assertEquals;
+import io.chesslave.eyes.sikuli.SikuliVision
+import io.chesslave.model.Game
+import io.chesslave.model.Piece
+import io.chesslave.model.Position
+import io.chesslave.model.Square
+import io.chesslave.visual.model.BoardImage
+import io.chesslave.visual.rendering.BoardRenderer
+import io.chesslave.visual.rendering.ChessSet
+import javaslang.control.Option
+import org.junit.Before
+import org.junit.Assert.assertEquals
 
-public class PieceRecogniserTest extends SinglePieceRecognitionTest {
+class PieceRecogniserTest(chessSet: ChessSet) : SinglePieceRecognitionTest(chessSet) {
 
-    private PieceRecogniser recogniser;
+    lateinit var recogniser: PieceRecogniser
 
     @Before
-    public void setUp() throws Exception {
-        final Position initialPosition = Game.initialPosition().position();
-        final BoardImage initialBoard = BoardRenderer.using(chessSet, initialPosition).toBoardImage();
-        final BoardConfiguration config = new BoardAnalyzer().analyze(initialBoard.image());
-        this.recogniser = new PieceRecogniser(new SikuliVision(), config);
+    fun setUp() {
+        val initialPosition = Game.initialPosition().position()
+        val initialBoard = BoardRenderer.using(chessSet, initialPosition).toBoardImage()
+        val config = BoardAnalyzer().analyze(initialBoard.image())
+        this.recogniser = PieceRecogniser(SikuliVision(), config)
     }
 
-    @Override
-    public void withPieceOnSquare(Square square, Piece piece) throws Exception {
-        final Position position = new Position.Builder().withPiece(square, piece).build();
-        final BoardImage board = BoardRenderer.using(chessSet, position).toBoardImage();
-        final Option<Piece> got = recogniser.piece(board.squareImage(square), Piece.all().toList());
-        assertEquals(Option.of(piece), got);
+    override fun withPieceOnSquare(square: Square, piece: Piece) {
+        val position = Position.Builder().withPiece(square, piece).build()
+        val board = BoardRenderer.using(chessSet, position).toBoardImage()
+        val got = recogniser.piece(board.squareImage(square), Piece.all().toList())
+        assertEquals(Option.of(piece), got)
     }
 }

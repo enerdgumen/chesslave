@@ -1,28 +1,22 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
-import org.junit.Before;
-import org.junit.Test;
+class MoverExceptionTest {
 
-public class MoverExceptionTest {
-    private Throwable throwable;
-
-    @Before
-    public void setUp() {
-        throwable = new Exception("boooom!");
+    @Test
+    fun testCauseConstructor() {
+        val throwable = Exception()
+        val moverException = MoverException(throwable)
+        assertEquals(throwable, moverException.cause)
     }
 
     @Test
-    public void testCauseConstructor() {
-        final MoverException moverException = new MoverException(throwable);
-        assertEquals(throwable, moverException.getCause());
-    }
-
-    @Test
-    public void testCauseAndMessageConstructor() {
-        final MoverException moverException = new MoverException("useless message", throwable);
-        assertEquals(throwable, moverException.getCause());
-        assertEquals("useless message", moverException.getMessage());
+    fun testCauseAndMessageConstructor() {
+        val throwable = Exception()
+        val moverException = MoverException("useless message", throwable)
+        assertEquals(throwable, moverException.cause)
+        assertEquals("useless message", moverException.message)
     }
 }

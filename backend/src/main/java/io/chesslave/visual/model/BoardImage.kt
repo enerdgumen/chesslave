@@ -1,47 +1,25 @@
-package io.chesslave.visual.model;
+package io.chesslave.visual.model
 
-import io.chesslave.model.Square;
+import io.chesslave.model.Square
 
-import java.awt.Point;
-import java.awt.image.BufferedImage;
+import java.awt.Point
+import java.awt.image.BufferedImage
 
-public final class BoardImage {
+class BoardImage @JvmOverloads constructor(
+    private val image: BufferedImage,
+    private val offset: Point = Point(0, 0),
+    private val flipped: Boolean = false) {
 
-    private final BufferedImage image;
-    private final Point offset;
-    private final boolean flipped;
-
-    public BoardImage(BufferedImage image) {
-        this(image, new Point(0, 0), false);
+    constructor(image: BufferedImage, flipped: Boolean) : this(image, Point(0, 0), flipped) {
     }
 
-    public BoardImage(BufferedImage image, Point offset) {
-        this(image, offset, false);
-    }
+    fun image(): BufferedImage = image
 
-    public BoardImage(BufferedImage image, boolean flipped) {
-        this(image, new Point(0, 0), flipped);
-    }
+    fun offset(): Point = offset
 
-    public BoardImage(BufferedImage image, Point offset, boolean flipped) {
-        this.image = image;
-        this.offset = offset;
-        this.flipped = flipped;
-    }
+    fun flipped(): Boolean = flipped
 
-    public BufferedImage image() {
-        return image;
-    }
-
-    public Point offset() {
-        return offset;
-    }
-
-    public boolean flipped() {
-        return flipped;
-    }
-
-    public SquareImage squareImage(Square square) {
-        return new SquareImage(image, square, flipped);
+    fun squareImage(square: Square): SquareImage {
+        return SquareImage(image, square, flipped)
     }
 }

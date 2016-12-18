@@ -1,21 +1,11 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.model.Piece;
-import io.chesslave.visual.model.SquareImage;
-import javaslang.collection.List;
-import javaslang.control.Option;
-import java.awt.image.BufferedImage;
-import java.util.function.Function;
+import io.chesslave.model.Piece
+import io.chesslave.visual.model.SquareImage
+import javaslang.collection.List
+import javaslang.control.Option
 
-public class PieceRecogniser {
-
-    private final Vision vision;
-    private final BoardConfiguration config;
-
-    public PieceRecogniser(Vision vision, BoardConfiguration config) {
-        this.vision = vision;
-        this.config = config;
-    }
+class PieceRecogniser(private val vision: Vision, private val config: BoardConfiguration) {
 
     /**
      * Detects the piece placed in the square.
@@ -24,15 +14,15 @@ public class PieceRecogniser {
      * @param expectedPieces the list of the pieces to recognise
      * @return the detected piece or nothing if none piece was be recognised
      */
-    public Option<Piece> piece(SquareImage square, List<Piece> expectedPieces) {
-        final Vision.Recogniser recogniser = vision.recognise(square.image());
+    fun piece(square: SquareImage, expectedPieces: List<Piece>): Option<Piece> {
+        val recogniser = vision.recognise(square.image())
         return expectedPieces.iterator()
-                .map(piece -> {
-                    final BufferedImage image = config.pieces.apply(piece);
-                    return recogniser.match(image).<Piece>map(it -> piece);
-                })
-                .filter(Option::isDefined)
-                .flatMap(Function.identity())
-                .headOption();
+            .map { piece ->
+                val image = config.pieces.apply(piece)
+                recogniser.match(image).map { piece }
+            }
+            .filter { it.isDefined }
+            .flatMap { it }
+            .headOption()
     }
 }

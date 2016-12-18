@@ -1,39 +1,32 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-import javaslang.control.Option;
+object Pawns {
 
-public final class Pawns {
-
-    private Pawns() {
+    @JvmStatic fun direction(color: Color): Int = when (color) {
+        Color.WHITE -> +1
+        Color.BLACK -> -1
     }
 
-    public static int direction(Color color) {
-        return color == Color.WHITE ? +1 : -1;
-    }
+    @JvmStatic fun inPromotion(color: Color, square: Square): Boolean =
+        square.row == (if (color === Color.WHITE) 7 else 0)
 
-    public static boolean inPromotion(Color color, Square square) {
-        return color == Color.WHITE
-                ? square.row == 7
-                : square.row == 0;
-    }
+    // TODO: check
+    @JvmStatic fun isCapture(pawnMove: Movements.Regular): Boolean =
+        pawnMove.enPassant || pawnMove.from.col != pawnMove.to.col
 
-    public static boolean isCapture(Movements.Regular pawnMove) {
-        return pawnMove.enPassant || pawnMove.from.col != pawnMove.to.col;
-    }
-
-    public static boolean isEnPassantAvailable(Square pawnSquare, Position position) {
-        Option<Piece> piece = position.at(pawnSquare);
-        return piece.isDefined() && Piece.Type.PAWN.equals(piece.get().type)
-                && (Color.WHITE.equals(piece.get().color) && pawnSquare.row == 4
-                || Color.BLACK.equals(piece.get().color) && pawnSquare.row == 3)
-                && (pawnSquare.translate(-1, 0).flatMap(position::at)
-                    .contains(piece.get().color.opponent().pawn())
-                    && pawnSquare.translate(-1, Pawns.direction(piece.get().color))
-                    .flatMap(position::at).isEmpty()
-                || pawnSquare.translate(+1, 0).flatMap(position::at)
-                    .contains(piece.get().color.opponent().pawn())
-                    && pawnSquare.translate(+1, Pawns.direction(piece.get().color))
-                    .flatMap(position::at).isEmpty()
-                );
+    // TODO: review this code
+    @JvmStatic fun isEnPassantAvailable(pawnSquare: Square, position: Position): Boolean {
+        val piece = position.at(pawnSquare)
+        return piece.isDefined && Piece.Type.PAWN == piece.get().type
+            && (Color.WHITE == piece.get().color && pawnSquare.row == 4
+            || Color.BLACK == piece.get().color && pawnSquare.row == 3)
+            && (pawnSquare.translate(-1, 0).flatMap { position.at(it) }
+            .contains(piece.get().color.opponent().pawn())
+            && pawnSquare.translate(-1, direction(piece.get().color))
+            .flatMap { position.at(it) }.isEmpty
+            || pawnSquare.translate(+1, 0).flatMap { position.at(it) }
+            .contains(piece.get().color.opponent().pawn())
+            && pawnSquare.translate(+1, direction(piece.get().color))
+            .flatMap { position.at(it) }.isEmpty)
     }
 }

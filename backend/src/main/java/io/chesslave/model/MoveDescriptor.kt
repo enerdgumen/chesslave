@@ -1,94 +1,71 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-import io.chesslave.model.Movements.LongCastling;
-import io.chesslave.model.Movements.ShortCastling;
-import io.chesslave.model.Piece.Type;
-import javaslang.collection.Set;
-import static io.chesslave.model.Movements.Regular;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import io.chesslave.model.Movements.Regular
+import io.chesslave.model.Piece.Type
 
-public class MoveDescriptor {
+class MoveDescriptor {
 
     /**
      * Describe a move in a minimal non-ambiguous way.
-     *
+
      * @param move     the move to made
+     * *
      * @param position the position before the move
+     * *
      * @return the move's description
      */
-    public MoveDescription describe(Move move, Position position) {
-        return Match(move).of(
-                Case(instanceOf(ShortCastling.class), mv ->
-                        ImmutableMoveDescription.Castling.builder()
-                                .isShort(true)
-                                .status(status(move, position, mv.color.opponent()))
-                                .build()),
-                Case(instanceOf(LongCastling.class), mv ->
-                        ImmutableMoveDescription.Castling.builder()
-                                .isShort(false)
-                                .status(status(move, position, mv.color.opponent()))
-                                .build()),
-                Case(instanceOf(Regular.class), mv ->
-                        ImmutableMoveDescription.Regular.builder()
-                                .fromSquare(fromSquareDescription(mv, position))
-                                .toSquare(toSquareDescription(mv.to))
-                                .capture(isCapture(mv, position))
-                                .enPassant(mv.enPassant)
-                                .promotion(mv.promotion.toJavaOptional())
-                                .status(status(move, position, position.at(mv.from).get().color.opponent()))
-                                .build())
-        );
+    fun describe(move: Move, position: Position): MoveDescription = when (move) {
+        is Movements.ShortCastling ->
+            MoveDescription.Castling(short = true, status = status(move, position, move.color.opponent()))
+        is Movements.LongCastling ->
+            MoveDescription.Castling(short = false, status = status(move, position, move.color.opponent()))
+        is Movements.Regular ->
+            MoveDescription.Regular(
+                fromSquare = fromSquareDescription(move, position),
+                toSquare = toSquareDescription(move.to),
+                capture = isCapture(move, position),
+                enPassant = move.enPassant,
+                promotion = move.promotion.getOrElse(null as Piece.Type?),
+                status = status(move, position, position.at(move.from).get().color.opponent()))
+        else -> TODO("Moves should be an algebraic data type")
     }
 
-    private MoveDescription.Square fromSquareDescription(Regular move, Position position) {
-        final Piece piece = position.at(move.from).get();
-        final Set<Square> ambiguousSquares = ambiguousSquares(piece, move, position);
-        final ImmutableMoveDescription.Square.Builder des = ImmutableMoveDescription.Square.builder();
-        des.piece(piece.type);
-        if (ambiguousSquares.size() == 1) {
-            if (ambiguousSquares.head().col == move.from.col) {
-                des.row(move.from.row);
-            } else {
-                des.col(move.from.col);
+    private fun fromSquareDescription(move: Regular, position: Position): MoveDescription.Square {
+        val piece = position.at(move.from).get()
+        val ambiguousSquares = ambiguousSquares(piece, move, position)
+        return when {
+            ambiguousSquares.size() == 1 -> {
+                if (ambiguousSquares.head().col == move.from.col)
+                    MoveDescription.Square(piece = piece.type, row = move.from.row)
+                else
+                    MoveDescription.Square(piece = piece.type, col = move.from.col)
             }
-        } else if (ambiguousSquares.size() > 1) {
-            des.row(move.from.row);
-            des.col(move.from.col);
-        } else if (move.enPassant || (Type.PAWN.equals(piece.type) && position.at(move.to).isDefined())) {
-            des.col(move.from.col);
+            move.enPassant || Type.PAWN == piece.type && position.at(move.to).isDefined ->
+                MoveDescription.Square(piece = piece.type, col = move.from.col)
+            else ->
+                MoveDescription.Square(piece = piece.type, row = move.from.row, col = move.from.col)
         }
-        return des.build();
     }
 
-    private MoveDescription.Square toSquareDescription(Square square) {
-        return ImmutableMoveDescription.Square.builder()
-                .row(square.row)
-                .col(square.col)
-                .build();
-    }
+    private fun toSquareDescription(square: Square) =
+        MoveDescription.Square(row = square.row, col = square.col)
 
-    private Set<Square> ambiguousSquares(Piece piece, Regular move, Position position) {
-        return position.toSet()
-                .filter(square -> !square._1.equals(move.from) && square._2.equals(piece))
-                .flatMap(square -> Rules.moves(position, square._1))
-                .filter(mv -> mv.to.equals(move.to))
-                .map(mv -> mv.from);
-    }
+    private fun ambiguousSquares(piece: Piece, move: Regular, position: Position) =
+        position.toSet()
+            .filter { it._1 != move.from && it._2 == piece }
+            .flatMap { Rules.moves(position, it._1) }
+            .filter { it.to == move.to }
+            .map { it.from }
 
-    private boolean isCapture(Movements.Regular move, Position position) {
-        return move.enPassant || position.at(move.to).isDefined();
-    }
+    private fun isCapture(move: Movements.Regular, position: Position) =
+        move.enPassant || position.at(move.to).isDefined
 
-    private MoveDescription.Status status(Move move, Position position, Color opponentColor) {
-        final Position nextPosition = move.apply(position);
-        if (Rules.isKingSafe(nextPosition, opponentColor)) {
-            return MoveDescription.Status.RELAX;
+    private fun status(move: Move, position: Position, opponentColor: Color) =
+        move.apply(position).let { nextPosition ->
+            when {
+                Rules.isKingSafe(nextPosition, opponentColor) -> MoveDescription.Status.RELAX
+                Rules.allMoves(nextPosition, opponentColor).isEmpty -> MoveDescription.Status.CHECKMATE
+                else -> MoveDescription.Status.CHECK
+            }
         }
-        if (Rules.allMoves(nextPosition, opponentColor).isEmpty()) {
-            return MoveDescription.Status.CHECKMATE;
-        }
-        return MoveDescription.Status.CHECK;
-    }
 }

@@ -1,51 +1,49 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.model.Color;
-import io.chesslave.model.Piece;
-import io.chesslave.model.Square;
-import io.chesslave.support.Ensure;
-import io.chesslave.visual.Images;
-import io.chesslave.visual.model.BoardImage;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import java.awt.image.BufferedImage;
+import io.chesslave.model.Color
+import io.chesslave.model.Piece
+import io.chesslave.model.Piece.Type
+import io.chesslave.model.Square
+import io.chesslave.visual.Images
+import io.chesslave.visual.model.BoardImage
+import javaslang.collection.HashMap
+import java.awt.image.BufferedImage
 
-public class BoardAnalyzer {
+class BoardAnalyzer {
 
-    public BoardConfiguration analyze(BufferedImage userImage) {
-        final int bgColor = userImage.getRGB(0, 0);
-        final BufferedImage withoutBackground = Images.crop(userImage, color -> color == bgColor);
-        final BoardConfiguration.Characteristics chars = detectCharacteristics(withoutBackground);
-        final BufferedImage withoutBorder = Images.crop(withoutBackground,
-                color -> color != chars.whiteColor && color != chars.blackColor);
-        final BoardImage board = new BoardImage(withoutBorder);
-        final Map<Piece, BufferedImage> pieces = HashMap.of(
-                Piece.of(Piece.Type.PAWN, Color.BLACK), cropPiece(board, Square.of("b7")),
-                Piece.of(Piece.Type.KNIGHT, Color.BLACK), cropPiece(board, Square.of("g8")),
-                Piece.of(Piece.Type.BISHOP, Color.BLACK), cropPiece(board, Square.of("c8")),
-                Piece.of(Piece.Type.ROOK, Color.BLACK), cropPiece(board, Square.of("a8")),
-                Piece.of(Piece.Type.QUEEN, Color.BLACK), Images.fillOuterBackground(cropPiece(board, Square.of("d8")), chars.whiteColor),
-                Piece.of(Piece.Type.KING, Color.BLACK), cropPiece(board, Square.of("e8")),
-                Piece.of(Piece.Type.PAWN, Color.WHITE), cropPiece(board, Square.of("b2")),
-                Piece.of(Piece.Type.KNIGHT, Color.WHITE), cropPiece(board, Square.of("g1")),
-                Piece.of(Piece.Type.BISHOP, Color.WHITE), cropPiece(board, Square.of("c1")),
-                Piece.of(Piece.Type.ROOK, Color.WHITE), cropPiece(board, Square.of("a1")),
-                Piece.of(Piece.Type.QUEEN, Color.WHITE), Images.fillOuterBackground(cropPiece(board, Square.of("d1")), chars.blackColor),
-                Piece.of(Piece.Type.KING, Color.WHITE), cropPiece(board, Square.of("e1")));
-        return new BoardConfiguration(board, pieces, chars, false);
+    fun analyze(userImage: BufferedImage): BoardConfiguration {
+        val bgColor = userImage.getRGB(0, 0)
+        val withoutBackground = Images.crop(userImage) { it === bgColor }
+        val chars = detectCharacteristics(withoutBackground)
+        val withoutBorder = Images.crop(withoutBackground) { it !== chars.whiteColor && it !== chars.blackColor }
+        val board = BoardImage(withoutBorder)
+        val pieces = HashMap.of<Piece, BufferedImage>(
+            Piece(Type.PAWN, Color.BLACK), cropPiece(board, Square.of("b7")),
+            Piece(Type.KNIGHT, Color.BLACK), cropPiece(board, Square.of("g8")),
+            Piece(Type.BISHOP, Color.BLACK), cropPiece(board, Square.of("c8")),
+            Piece(Type.ROOK, Color.BLACK), cropPiece(board, Square.of("a8")),
+            Piece(Type.QUEEN, Color.BLACK), Images.fillOuterBackground(cropPiece(board, Square.of("d8")), chars.whiteColor),
+            Piece(Type.KING, Color.BLACK), cropPiece(board, Square.of("e8")),
+            Piece(Type.PAWN, Color.WHITE), cropPiece(board, Square.of("b2")),
+            Piece(Type.KNIGHT, Color.WHITE), cropPiece(board, Square.of("g1")),
+            Piece(Type.BISHOP, Color.WHITE), cropPiece(board, Square.of("c1")),
+            Piece(Type.ROOK, Color.WHITE), cropPiece(board, Square.of("a1")),
+            Piece(Type.QUEEN, Color.WHITE), Images.fillOuterBackground(cropPiece(board, Square.of("d1")), chars.blackColor),
+            Piece(Type.KING, Color.WHITE), cropPiece(board, Square.of("e1")))
+        return BoardConfiguration(board, pieces, chars, false)
     }
 
-    private static BoardConfiguration.Characteristics detectCharacteristics(BufferedImage board) {
-        final int cellWidth = board.getWidth() / 8;
-        final int cellHeight = board.getHeight() / 8;
-        final int whiteColor = board.getRGB(cellWidth / 2, (int) (cellHeight * 4.5));
-        final int blackColor = board.getRGB(cellWidth / 2, (int) (cellHeight * 3.5));
-        Ensure.isTrue(whiteColor != blackColor, "White and black cells should be different, found %s", whiteColor);
-        return new BoardConfiguration.Characteristics(cellWidth, cellHeight, whiteColor, blackColor);
+    private fun detectCharacteristics(board: BufferedImage): BoardConfiguration.Characteristics {
+        val cellWidth = board.width / 8
+        val cellHeight = board.height / 8
+        val whiteColor = board.getRGB(cellWidth / 2, (cellHeight * 4.5).toInt())
+        val blackColor = board.getRGB(cellWidth / 2, (cellHeight * 3.5).toInt())
+        assert(whiteColor != blackColor) { "White and black cells should be different, found ${whiteColor}" }
+        return BoardConfiguration.Characteristics(cellWidth, cellHeight, whiteColor, blackColor)
     }
 
-    private static BufferedImage cropPiece(BoardImage board, Square square) {
-        final BufferedImage squareImage = board.squareImage(square).image();
-        return Images.crop(squareImage, color -> color == squareImage.getRGB(0, 0));
+    private fun cropPiece(board: BoardImage, square: Square): BufferedImage {
+        val squareImage = board.squareImage(square).image()
+        return Images.crop(squareImage) { it === squareImage.getRGB(0, 0) }
     }
 }

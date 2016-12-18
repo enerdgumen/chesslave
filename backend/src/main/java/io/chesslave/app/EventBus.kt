@@ -1,23 +1,13 @@
-package io.chesslave.app;
+package io.chesslave.app
 
-import rx.Observable;
-import rx.Observer;
+import rx.Observable
+import rx.Observer
 
-public class EventBus {
+class EventBus(
+    private val input: Observable<Event>,
+    private val output: Observer<Event>) {
 
-    private final Observable<Event> input;
-    private final Observer<Event> output;
+    fun on(event: String): Observable<Event> = input.filter { event == it.name }
 
-    public EventBus(Observable<Event> input, Observer<Event> output) {
-        this.input = input;
-        this.output = output;
-    }
-
-    public Observable<Event> on(String event) {
-        return input.filter(e -> event.equals(e.name));
-    }
-
-    public void fire(Event event) {
-        output.onNext(event);
-    }
+    fun fire(event: Event) = output.onNext(event)
 }

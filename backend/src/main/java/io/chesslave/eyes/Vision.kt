@@ -1,36 +1,32 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import javaslang.collection.Stream;
-import javaslang.control.Option;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import javaslang.collection.Stream
+import javaslang.control.Option
+import java.awt.Rectangle
+import java.awt.image.BufferedImage
 
-public interface Vision {
+interface Vision {
 
     interface Recogniser {
 
-        Option<Match> match(BufferedImage target);
+        fun match(target: BufferedImage): Option<Match>
 
-        Stream<Match> matches(BufferedImage target);
+        fun matches(target: BufferedImage): Stream<Match>
 
-        default Option<Match> bestMatch(BufferedImage target) {
-            return matches(target)
-                    .toList()
-                    .sortBy(Match::similarity)
-                    .lastOption();
-        }
+        fun bestMatch(target: BufferedImage): Option<Match> =
+                matches(target).toList().sortBy { it.similarity() }.lastOption()
     }
 
     interface Match {
 
-        double similarity();
+        fun similarity(): Double
 
-        Rectangle region();
+        fun region(): Rectangle
 
-        BufferedImage source();
+        fun source(): BufferedImage
 
-        BufferedImage image();
+        fun image(): BufferedImage
     }
 
-    Recogniser recognise(BufferedImage image);
+    fun recognise(image: BufferedImage): Recogniser
 }

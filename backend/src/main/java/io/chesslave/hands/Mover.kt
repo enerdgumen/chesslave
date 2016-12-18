@@ -1,11 +1,11 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-import io.chesslave.model.Square;
+import io.chesslave.model.Square
 
 /**
  * An entity able to move pieces on the board.
  */
-public interface Mover {
+interface Mover {
 
     /**
      * Move a piece.
@@ -14,5 +14,5 @@ public interface Mover {
      * @param to destination square
      * @throws MoverException if something goes wrong executing the move
      */
-    void move(Square from, Square to) throws MoverException;
+    fun move(from: Square, to: Square)
 }

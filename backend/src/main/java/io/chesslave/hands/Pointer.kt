@@ -1,14 +1,14 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-import java.awt.Point;
+import java.awt.Point
 
-public interface Pointer {
+interface Pointer {
 
-    void moveTo(Point coords);
+    fun moveTo(coords: Point)
 
-    void click(Point coords);
+    fun click(coords: Point)
 
-    void dragFrom(Point coords);
+    fun dragFrom(coords: Point)
 
-    void dropAt(Point coords);
+    fun dropAt(coords: Point)
 }

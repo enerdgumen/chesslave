@@ -1,42 +1,34 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.model.Board;
-import io.chesslave.model.Piece;
-import io.chesslave.model.Position;
-import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
-import javaslang.collection.Set;
-import java.awt.Rectangle;
+import io.chesslave.model.Board
+import io.chesslave.model.Piece
+import io.chesslave.model.Position
+import io.chesslave.model.Square
+import io.chesslave.visual.model.BoardImage
 
-public class PositionRecogniser {
-
-    private final Vision vision;
-    private final BoardConfiguration config;
-
-    public PositionRecogniser(Vision vision, BoardConfiguration config) {
-        this.vision = vision;
-        this.config = config;
-    }
+class PositionRecogniser(private val vision: Vision, private val config: BoardConfiguration) {
 
     /**
      * Detects the position represented by the given board image.
      */
-    public Position position(BoardImage board) {
-        final Vision.Recogniser recogniser = vision.recognise(board.image());
-        final Position.Builder position = new Position.Builder();
-        Piece.all().forEach(piece -> findAllPieces(recogniser, piece)
-                .forEach(square -> position.withPiece(square, piece)));
-        return position.build();
+    fun position(board: BoardImage): Position {
+        val recogniser = vision.recognise(board.image())
+        val position = Position.Builder()
+        Piece.all().forEach { piece ->
+            findAllPieces(recogniser, piece).forEach { square ->
+                position.withPiece(square, piece)
+            }
+        }
+        return position.build()
     }
 
-    private Set<Square> findAllPieces(Vision.Recogniser recogniser, Piece piece) {
-        return recogniser.matches(config.pieces.apply(piece))
-                .map(match -> {
-                    final Rectangle region = match.region();
-                    final int col = (int) (Board.SIZE * region.getCenterX() / match.source().getWidth());
-                    final int row = Board.SIZE - (int) (Board.SIZE * region.getCenterY() / match.source().getHeight());
-                    return new Square(col, row - 1);
-                })
-                .toSet();
-    }
+    private fun findAllPieces(recogniser: Vision.Recogniser, piece: Piece) =
+        recogniser.matches(config.pieces.apply(piece))
+            .map { match ->
+                val region = match.region()
+                val col = (Board.SIZE * region.getCenterX() / match.source().getWidth()).toInt()
+                val row = Board.SIZE - (Board.SIZE * region.getCenterY() / match.source().getHeight()).toInt()
+                Square(col, row - 1)
+            }
+            .toSet()
 }

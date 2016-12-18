@@ -1,103 +1,76 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-import io.chesslave.support.Ensure;
-import javaslang.Tuple2;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.collection.Set;
-import javaslang.control.Option;
+import javaslang.Tuple2
+import javaslang.collection.HashMap
+import javaslang.collection.Map
+import javaslang.collection.Set
+import javaslang.control.Option
 
 /**
  * An immutable chess position.
  */
-public class Position {
+class Position(private val position: Map<Square, Piece>) {
 
-    public static class Builder {
+    class Builder {
 
-        private Map<Square, Piece> position = HashMap.empty();
+        private var position: Map<Square, Piece> = HashMap.empty<Square, Piece>()
 
         /**
          * Puts the piece at the specified square.
          */
-        public Builder withPiece(Square square, Piece piece) {
-            Ensure.isTrue(!position.containsKey(square), "cannot place %s into %s: square already used", piece, square);
-            position = position.put(square, piece);
-            return this;
+        fun withPiece(square: Square, piece: Piece): Builder {
+            assert(!position.containsKey(square), { "cannot place $piece into $square: square already used" })
+            position = position.put(square, piece)
+            return this
         }
 
-        public Position build() {
-            return new Position(position);
+        fun build(): Position {
+            return Position(position)
         }
-    }
-
-    private final Map<Square, Piece> position;
-
-    Position(Map<Square, Piece> position) {
-        this.position = position;
     }
 
     /**
      * @return The piece placed at the given square or nothing if the square is empty.
      */
-    public Option<Piece> at(Square square) {
-        return position.get(square);
-    }
+    fun at(square: Square): Option<Piece> = position.get(square)
 
     /**
      * @return A new position having the given piece placed to the given square.
      */
-    public Position put(Square square, Piece piece) {
-        return new Position(position.put(square, piece));
-    }
+    fun put(square: Square, piece: Piece): Position = Position(position.put(square, piece))
 
     /**
      * @return A new position gets removing the piece at the given square.
      */
-    public Position remove(Square square) {
-        return new Position(position.remove(square));
-    }
+    fun remove(square: Square): Position = Position(position.remove(square))
 
     /**
-     * @return A new position gets moving the piece at the {@code from} square to the {@code to} square.
+     * @return A new position gets moving the piece at the `from` square to the `to` square.
      */
-    public Position move(Square from, Square to) {
-        final Piece piece = position.apply(from);
-        return new Position(position.remove(from).put(to, piece));
+    fun move(from: Square, to: Square): Position {
+        val piece = position.apply(from)
+        return Position(position.remove(from).put(to, piece))
     }
 
     /**
      * @return A map having as keys the filled squares and as values the relative pieces.
      */
-    public Map<Square, Piece> toMap() {
-        return position;
-    }
+    fun toMap(): Map<Square, Piece> = position
 
     /**
      * @return A set with all filled squares and the relative pieces.
      */
-    public Set<Tuple2<Square, Piece>> toSet() {
-        return position.toSet();
+    fun toSet(): Set<Tuple2<Square, Piece>> = position.toSet()
+
+    override fun toString(): String = Positions.toText(this)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Position) return false
+        return this.position == other.position
     }
 
-    @Override
-    public String toString() {
-        return Positions.toText(this);
-    }
-
-    @Override
-    public boolean equals(Object rhs) {
-        if (this == rhs) {
-            return true;
-        }
-        if (!(rhs instanceof Position)) {
-            return false;
-        }
-        final Position other = (Position) rhs;
-        return this.position.equals(other.position);
-    }
-
-    @Override
-    public int hashCode() {
-        return position.hashCode();
+    override fun hashCode(): Int {
+        return position.hashCode()
     }
 }

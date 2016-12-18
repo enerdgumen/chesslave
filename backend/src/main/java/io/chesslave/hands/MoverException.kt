@@ -1,13 +1,14 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-public class MoverException extends RuntimeException {
-    private static final long serialVersionUID = 2338005287898395747L;
+class MoverException : RuntimeException {
 
-    public MoverException(Throwable cause) {
-        super(cause);
+    constructor(cause: Throwable) : super(cause) {
     }
 
-    public MoverException(String message, Throwable cause) {
-        super(message, cause);
+    constructor(message: String, cause: Throwable) : super(message, cause) {
+    }
+
+    companion object {
+        private val serialVersionUID = 2338005287898395747L
     }
 }

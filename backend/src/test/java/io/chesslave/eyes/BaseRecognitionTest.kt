@@ -1,34 +1,25 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.visual.rendering.ChessSet;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import java.awt.Desktop;
-import java.util.Arrays;
-import java.util.Collection;
+import io.chesslave.visual.rendering.ChessSet
+import org.junit.Assume
+import org.junit.Before
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import java.awt.Desktop
 
-@RunWith(Parameterized.class)
-public abstract class BaseRecognitionTest {
+@RunWith(Parameterized::class)
+abstract class BaseRecognitionTest(val chessSet: ChessSet) {
 
-    private static final String DIR_IMAGES = "/images/";
-    private static final String PATH_CHESS_SET_1 = DIR_IMAGES + "set1/";
-    private static final String PATH_CHESS_SET_3 = DIR_IMAGES + "set3/";
-
-    @Before
-    public void assumeIsDesktopSupported() {
-        Assume.assumeTrue(Desktop.isDesktopSupported());
+    companion object {
+        @Parameterized.Parameters
+        @JvmStatic fun data(): Collection<Array<Any>> = listOf(
+            arrayOf<Any>(ChessSet.read("/images/set1/")),
+            arrayOf<Any>(ChessSet.read("/images/set3/"))
+        )
     }
 
-    @Parameterized.Parameter
-    public ChessSet chessSet;
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {ChessSet.read(PATH_CHESS_SET_1)},
-                {ChessSet.read(PATH_CHESS_SET_3)}
-        });
+    @Before
+    fun assumeIsDesktopSupported() {
+        Assume.assumeTrue(Desktop.isDesktopSupported())
     }
 }

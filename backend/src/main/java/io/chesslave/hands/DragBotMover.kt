@@ -1,24 +1,19 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
+import io.chesslave.model.Square
+import io.chesslave.visual.model.BoardImage
 
 /**
  * A bot able to move pieces through a drag and drop strategy.
  */
-public class DragBotMover extends BaseBotMover {
+class DragBotMover(board: BoardImage) : BaseBotMover(board) {
 
-    public DragBotMover(BoardImage board) {
-        super(board);
-    }
-
-    @Override
-    public void move(Square from, Square to) throws MoverException {
+    override fun move(from: Square, to: Square) {
         try {
-            pointer.dragFrom(getSquareCoords(from));
-            pointer.dropAt(getSquareCoords(to));
-        } catch (RuntimeException re) {
-            throw new MoverException(re);
+            pointer.dragFrom(getSquareCoords(from))
+            pointer.dropAt(getSquareCoords(to))
+        } catch (re: RuntimeException) {
+            throw MoverException(re)
         }
     }
 }

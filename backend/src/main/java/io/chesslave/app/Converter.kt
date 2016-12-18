@@ -1,10 +1,8 @@
-package io.chesslave.app;
+package io.chesslave.app
 
-import java.io.IOException;
+interface Converter<T> {
 
-public interface Converter<T> {
+    fun asString(value: T): String
 
-    String asString(T value) throws IOException;
-
-    T fromString(String text) throws IOException;
+    fun fromString(text: String): T
 }

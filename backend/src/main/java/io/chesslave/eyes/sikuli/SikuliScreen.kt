@@ -1,43 +1,34 @@
-package io.chesslave.eyes.sikuli;
+package io.chesslave.eyes.sikuli
 
-import io.chesslave.eyes.Screen;
-import org.sikuli.script.Location;
-import org.sikuli.util.OverlayCapturePrompt;
-import org.sikuli.util.ScreenHighlighter;
-import rx.Observable;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.TimeUnit;
+import io.chesslave.eyes.Screen
+import org.sikuli.script.Location
+import org.sikuli.util.OverlayCapturePrompt
+import org.sikuli.util.ScreenHighlighter
+import rx.Observable
+import java.awt.Rectangle
+import java.awt.image.BufferedImage
+import java.util.concurrent.TimeUnit
 
-public class SikuliScreen implements Screen {
+class SikuliScreen : Screen {
 
-    private final org.sikuli.script.Screen screen = org.sikuli.script.Screen.all();
+    private val screen = org.sikuli.script.Screen.all()
 
-    @Override
-    public BufferedImage captureAll() {
-        return screen.capture().getImage();
-    }
+    override fun captureAll() = screen.capture().image!!
 
-    @Override
-    public BufferedImage capture(Rectangle region) {
-        return screen.capture(region).getImage();
-    }
+    override fun capture(region: Rectangle) = screen.capture(region).image!!
 
-    @Override
-    public Observable<BufferedImage> select(String message) {
-        return Observable.create(result -> {
-            final OverlayCapturePrompt overlay = new OverlayCapturePrompt(screen, subject -> {
-                final OverlayCapturePrompt me = (OverlayCapturePrompt) subject;
-                result.onNext(me.getSelection().getImage());
-            });
-            overlay.prompt(message);
-        });
-    }
+    override fun select(message: String) =
+        Observable.create<BufferedImage> { result ->
+            val overlay = OverlayCapturePrompt(screen) { subject ->
+                val me = subject as OverlayCapturePrompt
+                result.onNext(me.selection.image)
+            }
+            overlay.prompt(message)
+        }!!
 
-    @Override
-    public void highlight(Rectangle region, long time, TimeUnit unit) {
-        final ScreenHighlighter overlay = new ScreenHighlighter(screen, null);
-        overlay.highlight(screen.newRegion(new Location(region.x, region.y), region.width, region.height),
-                unit.convert(time, TimeUnit.SECONDS));
+    override fun highlight(region: Rectangle, time: Long, unit: TimeUnit) {
+        val overlay = ScreenHighlighter(screen, null)
+        overlay.highlight(screen.newRegion(Location(region.x, region.y), region.width, region.height),
+            unit.convert(time, TimeUnit.SECONDS).toFloat())
     }
 }

@@ -1,45 +1,22 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.model.Piece;
-import io.chesslave.visual.Images;
-import io.chesslave.visual.model.BoardImage;
-import javaslang.collection.List;
-import javaslang.collection.Map;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import io.chesslave.model.Piece
+import io.chesslave.visual.Images
+import io.chesslave.visual.model.BoardImage
+import javaslang.collection.Map
+import java.awt.image.BufferedImage
+import java.io.File
 
-public class BoardConfiguration {
+class BoardConfiguration(
+    val board: BoardImage,
+    val pieces: Map<Piece, BufferedImage>,
+    val characteristics: BoardConfiguration.Characteristics,
+    val reversed: Boolean) {
 
-    public final BoardImage board;
-    public final Map<Piece, BufferedImage> pieces;
-    public final Characteristics characteristics;
-    public final boolean reversed;
+    class Characteristics(val cellWidth: Int, val cellHeight: Int, val whiteColor: Int, val blackColor: Int)
 
-    public static class Characteristics {
-        public final int cellWidth;
-        public final int cellHeight;
-        public final int whiteColor;
-        public final int blackColor;
-
-        public Characteristics(int cellWidth, int cellHeight, int whiteColor, int blackColor) {
-            this.cellWidth = cellWidth;
-            this.cellHeight = cellHeight;
-            this.whiteColor = whiteColor;
-            this.blackColor = blackColor;
-        }
-    }
-
-    public BoardConfiguration(BoardImage board, Map<Piece, BufferedImage> pieces, Characteristics characteristics, boolean reversed) {
-        this.board = board;
-        this.pieces = pieces;
-        this.characteristics = characteristics;
-        this.reversed = reversed;
-    }
-
-    public void save(File dir) {
-        Images.write(board.image(), new File(dir, "board.png"));
-        pieces.forEach((piece, image) -> {
-            Images.write(image, new File(dir, List.of(piece.type.name(), "_", piece.color.name(), ".png").reduce(String::concat)));
-        });
+    fun save(dir: File) {
+        Images.write(board.image(), File(dir, "board.png"))
+        pieces.forEach { (type, color), image -> Images.write(image, File(dir, "${type}_${color}.png")) }
     }
 }

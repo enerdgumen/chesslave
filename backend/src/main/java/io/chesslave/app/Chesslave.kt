@@ -1,31 +1,24 @@
-package io.chesslave.app;
+package io.chesslave.app
 
-import io.chesslave.eyes.BoardAnalyzer;
-import io.chesslave.eyes.BoardConfiguration;
-import io.chesslave.eyes.Screen;
-import io.chesslave.eyes.sikuli.SikuliScreen;
-import io.chesslave.mouth.ImmutableUtterance;
-import io.chesslave.mouth.SpeechSynthesis;
-import io.chesslave.mouth.WebSpeechSynthesis;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import rx.Observable;
+import io.chesslave.eyes.BoardAnalyzer
+import io.chesslave.eyes.sikuli.SikuliScreen
+import io.chesslave.mouth.Utterance
+import io.chesslave.mouth.WebSpeechSynthesis
 
-public class Chesslave {
+object Chesslave {
 
-    private static final Logger logger = LoggerFactory.getLogger(Chesslave.class);
-
-    public static void configure(EventBus events) {
-        final Screen screen = new SikuliScreen();
-        final SpeechSynthesis speechSynthesis = new WebSpeechSynthesis(events);
-        final Observable<BoardConfiguration> config = events
-                .on("select-board")
-                .flatMap(e -> screen.select("Select board...").map(new BoardAnalyzer()::analyze));
-        config.subscribe(
-                value -> {
-                    events.fire(Event.of("board-selected"));
-                    speechSynthesis.speak(ImmutableUtterance.builder().text("Scacchiera selezionata").build());
+    fun configure(events: EventBus) {
+        val screen = SikuliScreen()
+        val speechSynthesis = WebSpeechSynthesis(events)
+        events
+            .on("select-board")
+            .flatMap { screen.select("Select board...").map { BoardAnalyzer().analyze(it) } }
+            .subscribe(
+                {
+                    events.fire(Event("board-selected"))
+                    speechSynthesis.speak(Utterance("Scacchiera selezionata"))
                 },
-                ex -> events.fire(Event.of("board-selection-failed")));
+                { events.fire(Event("board-selection-failed")) }
+            )
     }
 }

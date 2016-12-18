@@ -1,19 +1,9 @@
-package io.chesslave.mouth;
+package io.chesslave.mouth
 
+import io.chesslave.app.Event
+import io.chesslave.app.EventBus
 
-import io.chesslave.app.Event;
-import io.chesslave.app.EventBus;
+class WebSpeechSynthesis(val events: EventBus) : SpeechSynthesis {
 
-public class WebSpeechSynthesis implements SpeechSynthesis {
-
-    private final EventBus events;
-
-    public WebSpeechSynthesis(EventBus events) {
-        this.events = events;
-    }
-
-    @Override
-    public void speak(Utterance utterance) {
-        events.fire(Event.of("speak", utterance));
-    }
+    override fun speak(utterance: Utterance) = events.fire(Event("speak", utterance))
 }

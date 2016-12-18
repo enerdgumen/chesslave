@@ -1,54 +1,24 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-import io.chesslave.support.Ensure;
-import org.immutables.value.Value;
-import java.util.Optional;
+sealed class MoveDescription {
 
-@Value.Enclosing
-public interface MoveDescription {
+    data class Regular(val fromSquare: Square, val toSquare: Square,
+                       val capture: Boolean, val enPassant: Boolean,
+                       val promotion: Piece.Type?, val status: Status) : MoveDescription()
 
-    @Value.Immutable
-    interface Square {
+    data class Castling(val short: Boolean, val status: Status) : MoveDescription()
 
-        Optional<Piece.Type> piece();
-
-        Optional<Integer> col();
-
-        Optional<Integer> row();
-
-        @Value.Check
-        default void check() {
-            Ensure.isTrue(piece().isPresent() || col().isPresent() || row().isPresent(), "Wrong square description!");
+    data class Square(val piece: Piece.Type? = null,
+                      val col: Int? = null,
+                      val row: Int? = null) {
+        init {
+            assert(piece != null || col != null || row != null) { "Wrong square description!" }
         }
     }
 
-    enum Status {
+    enum class Status {
         RELAX,
         CHECK,
         CHECKMATE
-    }
-
-    @Value.Immutable
-    interface Regular extends MoveDescription {
-
-        Square fromSquare();
-
-        Square toSquare();
-
-        boolean capture();
-
-        boolean enPassant();
-
-        Optional<Piece.Type> promotion();
-
-        Status status();
-    }
-
-    @Value.Immutable
-    interface Castling extends MoveDescription {
-
-        boolean isShort();
-
-        Status status();
     }
 }

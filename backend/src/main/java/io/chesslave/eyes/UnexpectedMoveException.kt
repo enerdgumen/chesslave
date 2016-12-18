@@ -1,8 +1,3 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-public class UnexpectedMoveException extends RuntimeException {
-    
-    public UnexpectedMoveException(String message) {
-        super(message);
-    }
-}
+class UnexpectedMoveException(message: String) : RuntimeException(message)

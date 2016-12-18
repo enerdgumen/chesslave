@@ -1,7 +1,6 @@
-package io.chesslave.mouth;
+package io.chesslave.mouth
 
+interface SpeechSynthesis {
 
-public interface SpeechSynthesis {
-
-    void speak(Utterance utterance);
+    fun speak(utterance: Utterance)
 }

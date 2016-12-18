@@ -1,67 +1,48 @@
-package io.chesslave.hands.sikuli;
+package io.chesslave.hands.sikuli
 
-import io.chesslave.hands.Pointer;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Location;
-import org.sikuli.script.Screen;
+import io.chesslave.hands.Pointer
+import org.sikuli.script.FindFailed
+import org.sikuli.script.Location
+import org.sikuli.script.Screen
 
-import java.awt.Point;
+import java.awt.Point
 
 /**
  * An abstraction of mouse based on Sikuli.
  */
-public class SikuliPointer implements Pointer {
-    private Screen screen;
+class SikuliPointer(private val screen: Screen = Screen.getPrimaryScreen()) : Pointer {
 
-    public SikuliPointer() {
-        screen = Screen.getPrimaryScreen();
-    }
-
-    public SikuliPointer(final int screenId) {
-        screen = Screen.getScreen(screenId);
-    }
-
-    @Override
-    public void moveTo(Point coords) {
+    override fun moveTo(coords: Point) {
         try {
-            screen.mouseMove(location(coords));
-        } catch (FindFailed ff) {
-            throw new RuntimeException("Unable to move to " + coords, ff);
+            screen.mouseMove(location(coords))
+        } catch (ff: FindFailed) {
+            throw RuntimeException("Unable to move to " + coords, ff)
         }
     }
 
-    @Override
-    public void click(Point coords) {
+    override fun click(coords: Point) {
         try {
-            screen.click(location(coords));
-        } catch (FindFailed ff) {
-            throw new RuntimeException("Unable to click on " + coords, ff);
+            screen.click(location(coords))
+        } catch (ff: FindFailed) {
+            throw RuntimeException("Unable to click on " + coords, ff)
         }
     }
 
-    @Override
-    public void dragFrom(Point coords) {
+    override fun dragFrom(coords: Point) {
         try {
-            screen.drag(location(coords));
-        } catch (FindFailed ff) {
-            throw new RuntimeException("Unable to drag starting at " + coords, ff);
+            screen.drag(location(coords))
+        } catch (ff: FindFailed) {
+            throw RuntimeException("Unable to drag starting at " + coords, ff)
         }
     }
 
-    @Override
-    public void dropAt(Point coords) {
+    override fun dropAt(coords: Point) {
         try {
-            screen.dropAt(location(coords));
-        } catch (FindFailed ff) {
-            throw new RuntimeException("Unable to drop at " + coords, ff);
+            screen.dropAt(location(coords))
+        } catch (ff: FindFailed) {
+            throw RuntimeException("Unable to drop at " + coords, ff)
         }
     }
 
-    int getScreenId() {
-        return screen.getID();
-    }
-
-    private Location location(Point coords) {
-        return new Location(coords.x, coords.y);
-    }
+    private fun location(coords: Point) = Location(coords.x, coords.y)
 }

@@ -1,97 +1,75 @@
-package io.chesslave.visual.model;
+package io.chesslave.visual.model
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import io.chesslave.model.Board
+import io.chesslave.model.Square
+import io.chesslave.visual.Images
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import java.awt.image.BufferedImage
 
-import io.chesslave.visual.Images;
-import io.chesslave.model.Board;
-import io.chesslave.model.Square;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+// TODO: these tests are too much logic, simplify!
+@RunWith(Parameterized::class)
+class SquareImageTest(val board: BufferedImage, val flipped: Boolean) {
 
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
-
-@RunWith(Parameterized.class)
-public class SquareImageTest {
-    private static final String DIR_IMAGES = "/images/";
-    private static final String DIR_RESOURCES = DIR_IMAGES + "visual/";
-    private static final String IMAGE_UNFLIPPED_BOARD = DIR_RESOURCES + "board.png";
-    private static final String IMAGE_FLIPPED_BOARD = DIR_RESOURCES + "flipped-board.png";
-    private static final String IMAGE_KNIGHT = DIR_RESOURCES + "knight-dark-square.png";
-
-    private SquareImage squareImage;
-    private Square square;
-
-    @Parameterized.Parameter
-    public BufferedImage board;
-
-    @Parameterized.Parameter(value = 1)
-    public boolean flipped;
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {Images.read(IMAGE_UNFLIPPED_BOARD), false},
-                {Images.read(IMAGE_FLIPPED_BOARD), true}
-        });
+    companion object {
+        @Parameterized.Parameters
+        @JvmStatic
+        fun data(): Collection<Array<Any>> =
+            listOf(
+                arrayOf(Images.read("/images/visual/board.png"), false),
+                arrayOf(Images.read("/images/visual/flipped-board.png"), true))
     }
 
-    @Before
-    public void setUp() {
-        square = Square.of("g1");
-        squareImage = new SquareImage(board, square, flipped);
+    val square = Square.of("g1")
+    val squareImage = SquareImage(board, square, flipped)
+
+    @Test
+    fun imageTest() {
+        val knight = Images.read("/images/visual/knight-dark-square.png")
+        assertTrue(Images.areEquals(knight, squareImage.image()))
     }
 
     @Test
-    public void imageTest() {
-        final BufferedImage knight = Images.read(IMAGE_KNIGHT);
-        assertTrue(Images.areEquals(knight, squareImage.image()));
+    fun sizeTest() {
+        assertEquals((board.width / Board.SIZE).toLong(), squareImage.size().toLong())
     }
 
     @Test
-    public void sizeTest() {
-        assertEquals(board.getWidth() / Board.SIZE, squareImage.size());
+    fun leftTest() {
+        assertEquals((squareImage.size() * horizontalOffset(square.col)).toLong(), squareImage.left().toLong())
     }
 
     @Test
-    public void leftTest() {
-        assertEquals(squareImage.size() * horizontalOffset(square.col), squareImage.left());
+    fun rightTest() {
+        assertEquals((squareImage.size() * (horizontalOffset(square.col) + 1)).toLong(), squareImage.right().toLong())
     }
 
     @Test
-    public void rightTest() {
-        assertEquals(squareImage.size() * (horizontalOffset(square.col) + 1), squareImage.right());
+    fun topTest() {
+        assertEquals((squareImage.size() * verticalOffset(square.row)).toLong(), squareImage.top().toLong())
     }
 
     @Test
-    public void topTest() {
-        assertEquals(squareImage.size() * verticalOffset(square.row), squareImage.top());
+    fun bottomTest() {
+        assertEquals((squareImage.size() * (verticalOffset(square.row) + 1)).toLong(), squareImage.bottom().toLong())
     }
 
     @Test
-    public void bottomTest() {
-        assertEquals(squareImage.size() * (verticalOffset(square.row) + 1), squareImage.bottom());
+    fun middleXTest() {
+        assertEquals((squareImage.size() / 2 + squareImage.size() * horizontalOffset(square.col)).toLong(), squareImage.middleX().toLong())
     }
 
     @Test
-    public void middleXTest() {
-        assertEquals(squareImage.size() / 2 + squareImage.size() * horizontalOffset(square.col), squareImage.middleX());
+    fun middleYTest() {
+        assertEquals((squareImage.size() / 2 + squareImage.size() * verticalOffset(square.row)).toLong(), squareImage.middleY().toLong())
     }
 
-    @Test
-    public void middleYTest() {
-        assertEquals(squareImage.size() / 2 + squareImage.size() * verticalOffset(square.row), squareImage.middleY());
-    }
+    private fun horizontalOffset(col: Int): Int =
+        if (flipped) Board.SIZE - 1 - col else col
 
-    private int horizontalOffset(int col) {
-        return flipped ? Board.SIZE - 1 - col : col;
-    }
-
-    private int verticalOffset(int row) {
-        return flipped ? row : Board.SIZE - 1 - row;
-    }
+    private fun verticalOffset(row: Int): Int =
+        if (flipped) row else Board.SIZE - 1 - row
 }

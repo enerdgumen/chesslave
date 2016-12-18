@@ -1,235 +1,182 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-import io.chesslave.support.Functions;
-import javaslang.Function1;
-import javaslang.Predicates;
-import javaslang.Tuple;
-import javaslang.collection.HashSet;
-import javaslang.collection.Set;
-import javaslang.collection.Stream;
-import javaslang.control.Option;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import static io.chesslave.model.Movements.Regular;
-import static javaslang.Predicates.is;
+import io.chesslave.model.Movements.Regular
+import javaslang.Predicates
+import javaslang.collection.HashSet
+import javaslang.collection.Set
+import javaslang.collection.Stream
+import javaslang.control.Option
+import java.util.function.Function
+import java.util.function.Predicate
 
 /**
  * Defines the chess logics.
  */
-public final class Rules {
-
-    private Rules() {
-    }
+object Rules {
 
     /**
      * TODO: Handle pawn promotion.
-     *
+
      * @return all the available moves (excluding castling) of the piece placed at the given square for the specified position.
      */
-    public static Set<Regular> moves(Position pos, Square from) {
-        return pos.at(from)
-                .map(piece -> {
-                    final Function1<Square, Regular> regular = to -> Movements.regular(from, to);
-                    final Predicate<Regular> isFreeOrWithOpponent = move -> isFreeOrWithOpponent(pos, move.to, piece);
-                    final Predicate<Regular> isKingSafeAfterMove = move -> isKingSafe(move.apply(pos), piece.color);
-                    final Predicate<Regular> isAvailable = Predicates.allOf(isFreeOrWithOpponent, isKingSafeAfterMove);
-                    switch (piece.type) {
-                        case PAWN:
-                            return pawnMoves(pos, from).filter(isKingSafeAfterMove);
-                        case KING:
-                            return kingSquares(from).map(regular).filter(isAvailable);
-                        case KNIGHT:
-                            return knightSquares(from).map(regular).filter(isAvailable);
-                        case BISHOP:
-                            return bishopSquares(pos, from).map(regular).filter(isAvailable);
-                        case ROOK:
-                            return rookSquares(pos, from).map(regular).filter(isAvailable);
-                        case QUEEN:
-                        default:
-                            return queenSquares(pos, from)
-                                    .map(regular)
-                                    .filter(isAvailable);
-                    }
-                })
-                .getOrElse(HashSet.empty());
-    }
+    @JvmStatic fun moves(pos: Position, from: Square): Set<Regular> = pos.at(from)
+        .map { piece ->
+            val regular = { to: Square -> Movements.Regular(from, to) }
+            val isFreeOrWithOpponent = Predicate { move: Regular -> isFreeOrWithOpponent(pos, move.to, piece) }
+            val isKingSafeAfterMove = Predicate { move: Regular -> isKingSafe(move.apply(pos), piece.color) }
+            val isAvailable = Predicates.allOf(isFreeOrWithOpponent, isKingSafeAfterMove)
+            when (piece.type) {
+                Piece.Type.PAWN -> pawnMoves(pos, from).filter(isKingSafeAfterMove)
+                Piece.Type.KING -> kingSquares(from).map(regular).filter(isAvailable)
+                Piece.Type.KNIGHT -> knightSquares(from).map(regular).filter(isAvailable)
+                Piece.Type.BISHOP -> bishopSquares(pos, from).map(regular).filter(isAvailable)
+                Piece.Type.ROOK -> rookSquares(pos, from).map(regular).filter(isAvailable)
+                Piece.Type.QUEEN -> queenSquares(pos, from).map(regular).filter(isAvailable)
+            }
+        }
+        .getOrElse(HashSet.empty())
 
     /**
      * @return all the moves available for the specified color.
      */
-    public static Stream<Regular> allMoves(Position position, Color color) {
-        return position.toSet().toStream()
-                .filter(squareAndPiece -> squareAndPiece._2.color.equals(color))
-                .flatMap(squareAndPiece -> Rules.moves(position, squareAndPiece._1));
-    }
+    @JvmStatic fun allMoves(position: Position, color: Color): Stream<Regular> = position.toSet().toStream()
+        .filter { it._2.color == color }
+        .flatMap { Rules.moves(position, it._1) }
 
     /**
      * @return true if the king of the given color is not under attack.
      */
-    public static boolean isKingSafe(Position position, Color color) {
-        final Square kingSquare = Square.all().find(sq -> position.at(sq).exists(is(color.king()))).get();
-        return !isTargetForColor(position, kingSquare, color.opponent());
+    @JvmStatic fun isKingSafe(position: Position, color: Color): Boolean {
+        val kingSquare = Square.all().find { position.at(it).exists({ it == color.king() }) }.get()
+        return !isTargetForColor(position, kingSquare, color.opponent())
     }
 
     /**
      * @return true if the given square is under attack by pieces of the specified color.
      */
-    public static boolean isTargetForColor(Position position, Square square, Color color) {
-        return attackingKnightSquares(square, color, position).nonEmpty()
-                || attackingBishopSquares(square, color, position).nonEmpty()
-                || attackingRookSquares(square, color, position).nonEmpty()
-                || attackingQueenSquares(square, color, position).nonEmpty()
-                || attackingKingSquares(square, color, position).nonEmpty()
-                || attackingPawnSquares(square, color, position).nonEmpty();
-    }
+    fun isTargetForColor(position: Position, square: Square, color: Color): Boolean =
+        attackingKnightSquares(square, color, position).nonEmpty()
+            || attackingBishopSquares(square, color, position).nonEmpty()
+            || attackingRookSquares(square, color, position).nonEmpty()
+            || attackingQueenSquares(square, color, position).nonEmpty()
+            || attackingKingSquares(square, color, position).nonEmpty()
+            || attackingPawnSquares(square, color, position).nonEmpty()
 
-    public static Set<Square> attackingPawnSquares(Square target, Color attackingColor, Position position) {
-        final int pawnDirection = Pawns.direction(attackingColor.opponent());
-        Set<Square> squares = target.translateAll(Tuple.of(-1, pawnDirection), Tuple.of(+1, pawnDirection));
-
-        final Option<Piece> targetPiece = position.at(target);
-        if (targetPiece.isDefined() && Piece.Type.PAWN.equals(targetPiece.get().type)) {
-            squares = squares.addAll(target.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
-                    .filter(square -> Pawns.isEnPassantAvailable(square, position)));
+    // TODO: check visibility
+    @JvmStatic fun attackingPawnSquares(target: Square, attackingColor: Color, position: Position): Set<Square> {
+        val pawnDirection = Pawns.direction(attackingColor.opponent())
+        var squares = target.translateAll(Pair(-1, pawnDirection), Pair(+1, pawnDirection))
+        val targetPiece = position.at(target)
+        if (targetPiece.isDefined && Piece.Type.PAWN == targetPiece.get().type) {
+            squares = squares.addAll(target.translateAll(Pair(-1, 0), Pair(+1, 0))
+                .filter { square -> Pawns.isEnPassantAvailable(square, position) })
         }
-        return squares.filter(new FindPiece(Piece.Type.PAWN, attackingColor, position));
+        return squares.filter(findPiece(Piece.Type.PAWN, attackingColor, position))
     }
 
-    private static Set<Square> attackingKingSquares(Square target, Color attackingColor, Position position) {
-        return kingSquares(target)
-                .filter(new FindPiece(Piece.Type.KING, attackingColor, position));
+    private fun attackingKingSquares(target: Square, attackingColor: Color, position: Position) =
+        kingSquares(target).filter(findPiece(Piece.Type.KING, attackingColor, position))
+
+    private fun attackingKnightSquares(target: Square, attackingColor: Color, position: Position) =
+        knightSquares(target).filter(findPiece(Piece.Type.KNIGHT, attackingColor, position))
+
+    private fun attackingBishopSquares(target: Square, attackingColor: Color, position: Position) =
+        baseAttackingBishopSquares(target, position).filter(findPiece(Piece.Type.BISHOP, attackingColor, position))
+
+    private fun attackingRookSquares(target: Square, attackingColor: Color, position: Position) =
+        baseAttackingRookSquares(target, position).filter(findPiece(Piece.Type.ROOK, attackingColor, position))
+
+    private fun attackingQueenSquares(target: Square, attackingColor: Color, position: Position) =
+        baseAttackingBishopSquares(target, position)
+            .addAll(baseAttackingRookSquares(target, position))
+            .filter(findPiece(Piece.Type.QUEEN, attackingColor, position))
+
+    private fun baseAttackingBishopSquares(target: Square, position: Position): Set<Square> {
+        val pieceIsFound = { square: Square -> position.at(square).isDefined }
+        val ne = target.walk(+1, +1).filter(pieceIsFound).headOption()
+        val se = target.walk(+1, -1).filter(pieceIsFound).headOption()
+        val sw = target.walk(-1, -1).filter(pieceIsFound).headOption()
+        val nw = target.walk(-1, +1).filter(pieceIsFound).headOption()
+        return HashSet.of(ne, se, sw, nw).flatMap { it }
     }
 
-    private static Set<Square> attackingKnightSquares(Square target, Color attackingColor, Position position) {
-        return knightSquares(target)
-                .filter(new FindPiece(Piece.Type.KNIGHT, attackingColor, position));
+    private fun baseAttackingRookSquares(target: Square, position: Position): Set<Square> {
+        val pieceIsFound = { square: Square -> position.at(square).isDefined }
+        val n = target.walk(0, +1).filter(pieceIsFound).headOption()
+        val s = target.walk(0, -1).filter(pieceIsFound).headOption()
+        val w = target.walk(+1, 0).filter(pieceIsFound).headOption()
+        val e = target.walk(-1, 0).filter(pieceIsFound).headOption()
+        return HashSet.of(n, s, w, e).flatMap(Function.identity<Option<Square>>())
     }
 
-    private static Set<Square> attackingBishopSquares(Square target, Color attackingColor, Position position) {
-        return baseAttackingBishopSquares(target, position)
-                .filter(new FindPiece(Piece.Type.BISHOP, attackingColor, position));
-    }
+    private fun isFreeOrWithOpponent(position: Position, square: Square, piece: Piece) =
+        !position.at(square).exists { piece.isFriend(it) }
 
-    private static Set<Square> attackingRookSquares(Square target, Color attackingColor, Position position) {
-        return baseAttackingRookSquares(target, position)
-                .filter(new FindPiece(Piece.Type.ROOK, attackingColor, position));
-    }
+    private fun kingSquares(from: Square) = from.translateAll(
+        Pair(+0, +1),
+        Pair(+1, +1),
+        Pair(+1, +0),
+        Pair(+1, -1),
+        Pair(+0, -1),
+        Pair(-1, -1),
+        Pair(-1, +0),
+        Pair(-1, +1))
 
-    private static Set<Square> attackingQueenSquares(Square target, Color attackingColor, Position position) {
-        return baseAttackingBishopSquares(target, position)
-                .addAll(baseAttackingRookSquares(target, position))
-                .filter(new FindPiece(Piece.Type.QUEEN, attackingColor, position));
-    }
+    private fun knightSquares(from: Square) = from.translateAll(
+        Pair(+1, +2),
+        Pair(+2, +1),
+        Pair(+2, -1),
+        Pair(+1, -2),
+        Pair(-1, -2),
+        Pair(-2, -1),
+        Pair(-2, +1),
+        Pair(-1, +2))
 
-    private static Set<Square> baseAttackingBishopSquares(Square target, Position position) {
-        final Predicate<Square> pieceIsFound = square -> position.at(square).isDefined();
-        final Option<Square> ne = target.walk(+1, +1).filter(pieceIsFound).headOption();
-        final Option<Square> se = target.walk(+1, -1).filter(pieceIsFound).headOption();
-        final Option<Square> sw = target.walk(-1, -1).filter(pieceIsFound).headOption();
-        final Option<Square> nw = target.walk(-1, +1).filter(pieceIsFound).headOption();
-        return HashSet.of(ne, se, sw, nw).flatMap(Function.identity());
-    }
-
-    private static Set<Square> baseAttackingRookSquares(Square target, Position position) {
-        final Predicate<Square> pieceIsFound = square -> position.at(square).isDefined();
-        final Option<Square> n = target.walk(0, +1).filter(pieceIsFound).headOption();
-        final Option<Square> s = target.walk(0, -1).filter(pieceIsFound).headOption();
-        final Option<Square> w = target.walk(+1, 0).filter(pieceIsFound).headOption();
-        final Option<Square> e = target.walk(-1, 0).filter(pieceIsFound).headOption();
-        return HashSet.of(n, s, w, e).flatMap(Function.identity());
-    }
-
-    private static boolean isFreeOrWithOpponent(Position position, Square square, Piece piece) {
-        return !position.at(square).exists(piece::isFriend);
-    }
-
-    private static Set<Square> kingSquares(Square from) {
-        return from.translateAll(
-                Tuple.of(+0, +1),
-                Tuple.of(+1, +1),
-                Tuple.of(+1, +0),
-                Tuple.of(+1, -1),
-                Tuple.of(+0, -1),
-                Tuple.of(-1, -1),
-                Tuple.of(-1, +0),
-                Tuple.of(-1, +1));
-    }
-
-    private static Set<Square> knightSquares(Square from) {
-        return from.translateAll(
-                Tuple.of(+1, +2),
-                Tuple.of(+2, +1),
-                Tuple.of(+2, -1),
-                Tuple.of(+1, -2),
-                Tuple.of(-1, -2),
-                Tuple.of(-2, -1),
-                Tuple.of(-2, +1),
-                Tuple.of(-1, +2));
-    }
-
-    private static Set<Square> bishopSquares(Position position, Square from) {
-        final Piece piece = position.at(from).get();
+    private fun bishopSquares(position: Position, from: Square): Set<Square> {
+        val piece = position.at(from).get()
         return HashSet.of(from.walk(+1, +1), from.walk(+1, -1), from.walk(-1, -1), from.walk(-1, +1))
-                .flatMap(Functions.of(Rules::takeWhileFreeOrWithOpponent).apply(position, piece));
+            .flatMap { takeWhileFreeOrWithOpponent(position, piece, it) }
     }
 
-    private static Set<Square> rookSquares(Position position, Square from) {
-        final Piece piece = position.at(from).get();
+    private fun rookSquares(position: Position, from: Square): Set<Square> {
+        val piece = position.at(from).get()
         return HashSet.of(from.walk(0, +1), from.walk(+1, 0), from.walk(0, -1), from.walk(-1, 0))
-                .flatMap(Functions.of(Rules::takeWhileFreeOrWithOpponent).apply(position, piece));
+            .flatMap { takeWhileFreeOrWithOpponent(position, piece, it) }
     }
 
-    private static Set<Square> queenSquares(Position position, Square from) {
-        return bishopSquares(position, from).addAll(rookSquares(position, from));
+    private fun queenSquares(position: Position, from: Square) =
+        bishopSquares(position, from).addAll(rookSquares(position, from))
+
+    private fun pawnMoves(position: Position, from: Square): Set<Regular> {
+        val piece = position.at(from).get()
+        val direction = Pawns.direction(piece.color)
+        val initialRow = if (piece.color === Color.WHITE) 1 else 6
+        val push = if (from.row == initialRow) 2 else 1
+        val forward = from.walk(0, direction)
+            .takeWhile { position.at(it).isEmpty }
+            .take(push.toLong())
+            .map { to -> Movements.Regular(from, to) }
+        val captures = from.translateAll(Pair(-1, direction), Pair(+1, direction))
+            .filter { to -> position.at(to).exists { piece.isOpponent(it) } }
+            .map { to -> Movements.Regular(from, to) }
+        val enPassantCaptures: Set<Regular> =
+            if (Pawns.isEnPassantAvailable(from, position)) {
+                from.translateAll(Pair(-1, 0), Pair(+1, 0))
+                    .filter { sq -> position.at(sq).exists { it == piece.color.opponent().pawn() } }
+                    .map { to -> to.translate(0, direction).get() }
+                    .map { to -> Movements.Regular(from, to, enPassant = true) }
+            } else {
+                HashSet.empty<Regular>()
+            }
+        return forward.appendAll(captures).appendAll(enPassantCaptures).toSet()
     }
 
-    private static Set<Regular> pawnMoves(Position position, Square from) {
-        final Piece piece = position.at(from).get();
-        final int direction = Pawns.direction(piece.color);
-        final int initialRow = piece.color == Color.WHITE ? 1 : 6;
-        final int push = from.row == initialRow ? 2 : 1;
-        final Stream<Regular> forward = from.walk(0, direction)
-                .takeWhile(sq -> position.at(sq).isEmpty())
-                .take(push)
-                .map(to -> Movements.regular(from, to));
-        final Set<Regular> captures = from.translateAll(Tuple.of(-1, direction), Tuple.of(+1, direction))
-                .filter(sq -> position.at(sq).exists(piece::isOpponent))
-                .map(to -> Movements.regular(from, to));
+    private fun takeWhileFreeOrWithOpponent(position: Position, moving: Piece, walk: Stream<Square>) = walk
+        .splitAt { position.at(it).isDefined }
+        .map({ it }, { it.headOption().filter({ sq -> moving.isOpponent(position.at(sq).get()) }).toList() })
+        .transform { obj, elements -> obj.appendAll(elements) }
 
-        Set<Regular> enPassantCaptures = HashSet.empty();
-        if (Pawns.isEnPassantAvailable(from, position)) {
-            enPassantCaptures = from.translateAll(Tuple.of(-1, 0), Tuple.of(+1, 0))
-                    .filter(sq -> position.at(sq).exists(is(piece.color.opponent().pawn())))
-                    .map(sq -> sq.translate(0, direction).get())
-                    .map(to -> Movements.enPassant(from, to));
-        }
-        return forward.appendAll(captures).appendAll(enPassantCaptures).toSet();
-    }
-
-    private static Stream<Square> takeWhileFreeOrWithOpponent(Position position, Piece moving, Stream<Square> walk) {
-        return walk
-                .splitAt(sq -> position.at(sq).isDefined())
-                .map(sqs -> sqs,
-                        sqs -> sqs.headOption().filter(sq -> moving.isOpponent(position.at(sq).get())).toList())
-                .transform(Stream::appendAll);
-    }
-
-    private static class FindPiece implements Predicate<Square> {
-        private final Piece.Type type;
-        private final Color color;
-        private final Position position;
-
-        public FindPiece(Piece.Type type, Color color, Position position) {
-            this.type = type;
-            this.color = color;
-            this.position = position;
-        }
-
-        @Override
-        public boolean test(Square square) {
-            return position.at(square).isDefined()
-                    && color.equals(position.at(square).get().color)
-                    && type.equals(position.at(square).get().type);
-        }
+    private fun findPiece(type: Piece.Type, color: Color, position: Position) = Predicate { square: Square ->
+        position.at(square) == Option.some(Piece(type, color))
     }
 }

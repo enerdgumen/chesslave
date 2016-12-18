@@ -1,127 +1,110 @@
-package io.chesslave.visual.rendering;
+package io.chesslave.visual.rendering
 
-import io.chesslave.model.Position;
-import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
-import io.chesslave.visual.model.SquareImage;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.control.Option;
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
-import org.apache.batik.transcoder.TranscoderException;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
+import io.chesslave.model.Position
+import io.chesslave.model.Square
+import io.chesslave.visual.model.BoardImage
+import io.chesslave.visual.model.SquareImage
+import javaslang.collection.HashMap
+import javaslang.collection.Map
+import javaslang.control.Option
+import org.apache.batik.dom.GenericDOMImplementation
+import org.apache.batik.svggen.SVGGraphics2D
+import org.apache.batik.svggen.SVGGraphics2DIOException
+import org.apache.batik.transcoder.TranscoderException
+import org.w3c.dom.DOMImplementation
+import org.w3c.dom.Document
 
-import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
+import javax.imageio.ImageIO
+import java.awt.Color
+import java.awt.Dimension
+import java.awt.geom.AffineTransform
+import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
+import java.io.IOException
+import java.io.StringWriter
 
 /**
  * Given a position and a chess set, creates an image of the board.
  */
-public final class BoardRenderer {
+object BoardRenderer {
 
-    private static final String SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+    private val SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
-    private BoardRenderer() {}
+    @JvmStatic fun using(chessSet: ChessSet) = Builder(chessSet)
 
-    public static Builder using(ChessSet chessSet) {
-        return new Builder(chessSet);
+    // TODO: check
+    @JvmStatic fun using(chessSet: ChessSet, position: Position) = using(chessSet).withPosition(position)
+
+    private fun render(set: ChessSet, position: Option<Position>, backgrounds: Map<Square, Color>): BoardImage {
+        val graphics = createGraphics()
+        drawBoard(graphics, set.board.image())
+        drawCustomBackgrounds(graphics, set, backgrounds)
+        drawPieces(graphics, set, position)
+        return graphicsToBoardImage(graphics)
     }
 
-    public static Builder using(ChessSet chessSet, Position position) {
-        return using(chessSet).withPosition(position);
+    private fun drawBoard(graphics: SVGGraphics2D, boardImg: BufferedImage) {
+        graphics.svgCanvasSize = Dimension(boardImg.width, boardImg.height)
+        graphics.drawImage(boardImg, 0, 0, null)
     }
 
-    private static BoardImage render(ChessSet set, Option<Position> position, Map<Square, Color> backgrounds) throws IOException {
-        final SVGGraphics2D graphics = createGraphics();
-        drawBoard(graphics, set.board.image());
-        drawCustomBackgrounds(graphics, set, backgrounds);
-        drawPieces(graphics, set, position);
-        return graphicsToBoardImage(graphics);
-    }
-
-    private static void drawBoard(SVGGraphics2D graphics, BufferedImage boardImg) {
-        graphics.setSVGCanvasSize(new Dimension(boardImg.getWidth(), boardImg.getHeight()));
-        graphics.drawImage(boardImg, 0, 0, null);
-    }
-
-    private static void drawCustomBackgrounds(SVGGraphics2D graphics, ChessSet set, Map<Square, Color> backgrounds) {
-        backgrounds.forEach((square, color) -> {
-            graphics.setColor(color);
-            final SquareImage squareImage = set.board.squareImage(square);
-            graphics.fillRect(squareImage.left(), squareImage.top(), squareImage.size(), squareImage.size());
-        });
-    }
-
-    private static void drawPieces(SVGGraphics2D graphics, ChessSet set, Option<Position> position) {
-        if (position.isDefined()) {
-            position.get().toMap().forEach((square, piece) -> {
-                final BufferedImage pieceImg = set.pieces.apply(piece);
-                final SquareImage squareImg = set.board.squareImage(square);
-                final AffineTransform translation = AffineTransform.getTranslateInstance(
-                        squareImg.left() + (squareImg.size() - pieceImg.getWidth()) / 2,
-                        squareImg.top() + (squareImg.size() - pieceImg.getHeight()) / 2);
-                graphics.drawRenderedImage(pieceImg, translation);
-            });
+    private fun drawCustomBackgrounds(graphics: SVGGraphics2D, set: ChessSet, backgrounds: Map<Square, Color>) {
+        backgrounds.forEach { square, color ->
+            graphics.color = color
+            val squareImage = set.board.squareImage(square)
+            graphics.fillRect(squareImage.left(), squareImage.top(), squareImage.size(), squareImage.size())
         }
     }
 
-    private static BoardImage graphicsToBoardImage(SVGGraphics2D graphics) throws IOException {
-        final String svg = graphicsToSvg(graphics);
-        final ChessTranscoder transcoder = new ChessTranscoder(svg);
-        try (final ByteArrayInputStream img = new ByteArrayInputStream(transcoder.toPng())) {
-            return new BoardImage(ImageIO.read(img));
-        } catch (TranscoderException te) {
-            throw new IOException(te.getMessage(), te);
+    private fun drawPieces(graphics: SVGGraphics2D, set: ChessSet, position: Option<Position>) {
+        if (position.isDefined) {
+            position.get().toMap().forEach { square, piece ->
+                val pieceImg = set.pieces.apply(piece)
+                val squareImg = set.board.squareImage(square)
+                val translation = AffineTransform.getTranslateInstance(
+                    (squareImg.left() + (squareImg.size() - pieceImg.width) / 2).toDouble(),
+                    (squareImg.top() + (squareImg.size() - pieceImg.height) / 2).toDouble())
+                graphics.drawRenderedImage(pieceImg, translation)
+            }
         }
     }
 
-    private static SVGGraphics2D createGraphics() {
-        final DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-        final Document document = domImpl.createDocument(SVG_NAMESPACE, "svg", null);
-        return new SVGGraphics2D(document);
+    private fun graphicsToBoardImage(graphics: SVGGraphics2D): BoardImage {
+        val svg = graphicsToSvg(graphics)
+        val transcoder = ChessTranscoder(svg)
+        return ByteArrayInputStream(transcoder.toPng()).use { BoardImage(ImageIO.read(it)) }
     }
 
-    private static String graphicsToSvg(SVGGraphics2D graphics) throws SVGGraphics2DIOException {
-        final StringWriter svg = new StringWriter();
-        graphics.stream(svg, false);
-        return svg.toString();
+    private fun createGraphics(): SVGGraphics2D {
+        val domImpl = GenericDOMImplementation.getDOMImplementation()
+        val document = domImpl.createDocument(SVG_NAMESPACE, "svg", null)
+        return SVGGraphics2D(document)
+    }
+
+    private fun graphicsToSvg(graphics: SVGGraphics2D): String {
+        val svg = StringWriter()
+        graphics.stream(svg, false)
+        return svg.toString()
     }
 
     /**
      * Fluent interface to toBoardImage a chess position.
      */
-    public static class Builder {
-        private final ChessSet chessSet;
+    class Builder internal constructor(private val chessSet: ChessSet) {
 
-        private Position position;
-        private Map<Square, Color> customBackgrounds;
+        private var position: Position? = null
+        private var customBackgrounds: Map<Square, Color> = HashMap.empty<Square, Color>()
 
-        private Builder(ChessSet chessSet) {
-            this.chessSet = chessSet;
-            customBackgrounds = HashMap.empty();
+        fun withPosition(position: Position): Builder {
+            this.position = position
+            return this
         }
 
-        public Builder withPosition(Position position) {
-            this.position = position;
-            return this;
+        fun withBackground(square: Square, background: Color): Builder {
+            customBackgrounds = customBackgrounds.put(square, background)
+            return this
         }
 
-        public Builder withBackground(Square square, Color background) {
-            customBackgrounds = customBackgrounds.put(square, background);
-            return this;
-        }
-
-        public BoardImage toBoardImage() throws IOException {
-            return BoardRenderer.render(chessSet, Option.of(position), customBackgrounds);
-        }
+        fun toBoardImage(): BoardImage = BoardRenderer.render(chessSet, Option.of(position), customBackgrounds)
     }
 }

@@ -1,24 +1,19 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
+import io.chesslave.model.Square
+import io.chesslave.visual.model.BoardImage
 
 /**
  * A bot able to move pieces through a point and click strategy.
  */
-public class ClickBotMover extends BaseBotMover {
+class ClickBotMover(board: BoardImage) : BaseBotMover(board) {
 
-    public ClickBotMover(BoardImage board) {
-        super(board);
-    }
-
-    @Override
-    public void move(Square from, Square to) throws MoverException {
+    override fun move(from: Square, to: Square) {
         try {
-            pointer.click(getSquareCoords(from));
-            pointer.click(getSquareCoords(to));
-        } catch (RuntimeException re) {
-            throw new MoverException(re);
+            pointer.click(getSquareCoords(from))
+            pointer.click(getSquareCoords(to))
+        } catch (re: RuntimeException) {
+            throw MoverException(re)
         }
     }
 }

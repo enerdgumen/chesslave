@@ -1,146 +1,147 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import io.chesslave.model.Color;
-import io.chesslave.model.Piece;
-import io.chesslave.model.Square;
-import org.junit.Test;
+import io.chesslave.model.Color
+import io.chesslave.model.Piece
+import io.chesslave.model.Piece.Type
+import io.chesslave.model.Square
+import io.chesslave.visual.rendering.ChessSet
+import org.junit.Test
 
-public abstract class SinglePieceRecognitionTest extends BaseRecognitionTest {
-
-    @Test
-    public void whiteRookOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.ROOK, Color.WHITE));
-    }
+abstract class SinglePieceRecognitionTest(chessSet: ChessSet) : BaseRecognitionTest(chessSet) {
 
     @Test
-    public void blackRookOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.ROOK, Color.BLACK));
+    fun whiteRookOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.ROOK, Color.WHITE))
     }
 
     @Test
-    public void whiteRookOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.ROOK, Color.WHITE));
+    fun blackRookOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.ROOK, Color.BLACK))
     }
 
     @Test
-    public void blackRookOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.ROOK, Color.BLACK));
+    fun whiteRookOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.ROOK, Color.WHITE))
     }
 
     @Test
-    public void whiteKnightOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.KNIGHT, Color.WHITE));
+    fun blackRookOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.ROOK, Color.BLACK))
     }
 
     @Test
-    public void blackKnightOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.KNIGHT, Color.BLACK));
+    fun whiteKnightOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.KNIGHT, Color.WHITE))
     }
 
     @Test
-    public void whiteKnightOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.KNIGHT, Color.WHITE));
+    fun blackKnightOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.KNIGHT, Color.BLACK))
     }
 
     @Test
-    public void blackKnightOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.KNIGHT, Color.BLACK));
+    fun whiteKnightOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.KNIGHT, Color.WHITE))
     }
 
     @Test
-    public void whitePawnOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.PAWN, Color.WHITE));
+    fun blackKnightOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.KNIGHT, Color.BLACK))
     }
 
     @Test
-    public void blackPawnOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.PAWN, Color.BLACK));
+    fun whitePawnOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.PAWN, Color.WHITE))
     }
 
     @Test
-    public void whitePawnOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.PAWN, Color.WHITE));
+    fun blackPawnOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.PAWN, Color.BLACK))
     }
 
     @Test
-    public void blackPawnOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.PAWN, Color.BLACK));
+    fun whitePawnOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.PAWN, Color.WHITE))
     }
 
     @Test
-    public void whiteQueenOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.QUEEN, Color.WHITE));
+    fun blackPawnOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.PAWN, Color.BLACK))
     }
 
     @Test
-    public void blackQueenOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.QUEEN, Color.BLACK));
+    fun whiteQueenOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.QUEEN, Color.WHITE))
     }
 
     @Test
-    public void whiteQueenOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.QUEEN, Color.WHITE));
+    fun blackQueenOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.QUEEN, Color.BLACK))
     }
 
     @Test
-    public void blackQueenOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.QUEEN, Color.BLACK));
-    }
-
-    // FAIL
-    @Test
-    public void whiteKingOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.KING, Color.WHITE));
+    fun whiteQueenOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.QUEEN, Color.WHITE))
     }
 
     @Test
-    public void blackKingOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.KING, Color.BLACK));
+    fun blackQueenOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.QUEEN, Color.BLACK))
     }
 
     @Test
-    public void whiteKingOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.KING, Color.WHITE));
+    fun whiteKingOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.KING, Color.WHITE))
     }
 
     @Test
-    public void blackKingOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.KING, Color.BLACK));
+    fun blackKingOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.KING, Color.BLACK))
     }
 
     @Test
-    public void whiteBishopOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.BISHOP, Color.WHITE));
+    fun whiteKingOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.KING, Color.WHITE))
     }
 
     @Test
-    public void blackBishopOnDarkSquare() throws Exception {
-        withPieceOnSquare(Square.of("a1"), Piece.of(Piece.Type.BISHOP, Color.BLACK));
+    fun blackKingOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.KING, Color.BLACK))
     }
 
     @Test
-    public void whiteBishopOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.BISHOP, Color.WHITE));
+    fun whiteBishopOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.BISHOP, Color.WHITE))
     }
 
     @Test
-    public void blackBishopOnLightSquare() throws Exception {
-        withPieceOnSquare(Square.of("b1"), Piece.of(Piece.Type.BISHOP, Color.BLACK));
+    fun blackBishopOnDarkSquare() {
+        withPieceOnSquare(Square.of("a1"), Piece(Type.BISHOP, Color.BLACK))
     }
 
     @Test
-    public void emptyLightSquare() throws Exception {
-        withEmptySquare(Square.of("b1"));
+    fun whiteBishopOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.BISHOP, Color.WHITE))
     }
 
     @Test
-    public void emptyDarkSquare() throws Exception {
-        withEmptySquare(Square.of("a1"));
+    fun blackBishopOnLightSquare() {
+        withPieceOnSquare(Square.of("b1"), Piece(Type.BISHOP, Color.BLACK))
     }
 
-    public void withPieceOnSquare(Square square, Piece piece) throws Exception {
+    @Test
+    fun emptyLightSquare() {
+        withEmptySquare(Square.of("b1"))
     }
 
-    public void withEmptySquare(Square square) throws Exception {
+    @Test
+    fun emptyDarkSquare() {
+        withEmptySquare(Square.of("a1"))
+    }
+
+    open fun withPieceOnSquare(square: Square, piece: Piece) {
+    }
+
+    open fun withEmptySquare(square: Square) {
     }
 }

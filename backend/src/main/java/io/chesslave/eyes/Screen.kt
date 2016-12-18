@@ -1,17 +1,17 @@
-package io.chesslave.eyes;
+package io.chesslave.eyes
 
-import rx.Observable;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.TimeUnit;
+import rx.Observable
+import java.awt.Rectangle
+import java.awt.image.BufferedImage
+import java.util.concurrent.TimeUnit
 
-public interface Screen {
+interface Screen {
 
-    BufferedImage captureAll();
+    fun captureAll(): BufferedImage
 
-    BufferedImage capture(Rectangle region);
+    fun capture(region: Rectangle): BufferedImage
 
-    Observable<BufferedImage> select(String message);
+    fun select(message: String): Observable<BufferedImage>
 
-    void highlight(Rectangle region, long time, TimeUnit unit);
+    fun highlight(region: Rectangle, time: Long, unit: TimeUnit)
 }

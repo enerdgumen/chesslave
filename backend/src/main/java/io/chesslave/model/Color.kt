@@ -1,35 +1,23 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-public enum Color {
+import io.chesslave.model.Piece.Type
+
+enum class Color {
 
     WHITE,
     BLACK;
 
-    public Color opponent() {
-        return this == WHITE ? BLACK : WHITE;
-    }
+    fun opponent(): Color = if (this == WHITE) BLACK else WHITE
 
-    public Piece pawn() {
-        return Piece.of(Piece.Type.PAWN, this);
-    }
+    fun pawn() = Piece(Type.PAWN, this)
 
-    public Piece bishop() {
-        return Piece.of(Piece.Type.BISHOP, this);
-    }
+    fun bishop() = Piece(Type.BISHOP, this)
 
-    public Piece knight() {
-        return Piece.of(Piece.Type.KNIGHT, this);
-    }
+    fun knight() = Piece(Type.KNIGHT, this)
 
-    public Piece rook() {
-        return Piece.of(Piece.Type.ROOK, this);
-    }
+    fun rook() = Piece(Type.ROOK, this)
 
-    public Piece queen() {
-        return Piece.of(Piece.Type.QUEEN, this);
-    }
+    fun queen() = Piece(Type.QUEEN, this)
 
-    public Piece king() {
-        return Piece.of(Piece.Type.KING, this);
-    }
+    fun king() = Piece(Type.KING, this)
 }

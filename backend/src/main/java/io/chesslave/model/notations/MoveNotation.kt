@@ -1,11 +1,11 @@
-package io.chesslave.model.notations;
+package io.chesslave.model.notations
 
-import io.chesslave.model.MoveDescription;
+import io.chesslave.model.MoveDescription
 
 /**
  * A notation to describe chess moves.
  */
-public interface MoveNotation {
+interface MoveNotation {
 
-    String print(MoveDescription description);
+    fun print(move: MoveDescription): String
 }

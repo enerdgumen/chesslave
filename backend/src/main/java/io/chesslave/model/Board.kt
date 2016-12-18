@@ -1,6 +1,6 @@
-package io.chesslave.model;
+package io.chesslave.model
 
-public final class Board {
+object Board {
 
-    public static final int SIZE = 8;
+    const val SIZE = 8
 }

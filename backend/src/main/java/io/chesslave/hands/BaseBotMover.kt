@@ -1,29 +1,21 @@
-package io.chesslave.hands;
+package io.chesslave.hands
 
-import io.chesslave.hands.sikuli.SikuliPointer;
-import io.chesslave.model.Square;
-import io.chesslave.visual.model.BoardImage;
-import io.chesslave.visual.model.SquareImage;
-
-import java.awt.Point;
+import io.chesslave.hands.sikuli.SikuliPointer
+import io.chesslave.model.Square
+import io.chesslave.visual.model.BoardImage
+import java.awt.Point
 
 /**
  * Base implementation of a bot which can move pieces on the board.
  */
-public abstract class BaseBotMover implements Mover {
+abstract class BaseBotMover(private val board: BoardImage) : Mover {
 
-    protected final Pointer pointer;
-    private final BoardImage board;
+    protected val pointer: Pointer = SikuliPointer()
 
-    protected BaseBotMover(BoardImage board) {
-        pointer = new SikuliPointer();
-        this.board = board;
-    }
-
-    protected Point getSquareCoords(Square square) {
-        final SquareImage squareImage = board.squareImage(square);
-        return new Point(
-                board.offset().x + squareImage.middleX(),
-                board.offset().y + squareImage.middleY());
+    protected fun getSquareCoords(square: Square): Point {
+        val squareImage = board.squareImage(square)
+        return Point(
+            board.offset().x + squareImage.middleX(),
+            board.offset().y + squareImage.middleY())
     }
 }

@@ -1,78 +1,46 @@
-package io.chesslave.eyes.sikuli;
+package io.chesslave.eyes.sikuli
 
-import io.chesslave.eyes.Vision;
-import javaslang.Lazy;
-import javaslang.collection.Stream;
-import javaslang.control.Option;
-import org.sikuli.basics.Settings;
-import org.sikuli.script.Finder;
-import org.sikuli.script.Image;
-import org.sikuli.script.Pattern;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import io.chesslave.eyes.Vision
+import javaslang.Lazy
+import javaslang.collection.Stream
+import javaslang.control.Option
+import org.sikuli.script.Finder
+import org.sikuli.script.Image
+import org.sikuli.script.Match
+import java.awt.image.BufferedImage
 
-public class SikuliVision implements Vision {
+class SikuliVision : Vision {
 
-    private static class SikuliRecogniser implements Recogniser {
+    private class SikuliRecogniser(private val source: BufferedImage) : Vision.Recogniser {
 
-        private final BufferedImage source;
-
-        public SikuliRecogniser(BufferedImage source) {
-            this.source = source;
+        override fun match(target: BufferedImage): Option<Vision.Match> {
+            val matches = Finder(source)
+            matches.find(Image(target))
+            return Stream.ofAll(Iterable { matches }).map { SikuliMatch(source, it) as Vision.Match }.headOption()
         }
 
-        @Override
-        public Option<Match> match(BufferedImage target) {
-            final Finder matches = new Finder(source);
-            matches.find(new Image(target));
-            return Stream.ofAll(() -> matches).<Match>map(m -> new SikuliMatch(source, m)).headOption();
-        }
-
-        @Override
-        public Stream<Match> matches(BufferedImage target) {
-            final Finder matches = new Finder(source);
-            matches.findAll(new Image(target));
-            return Stream.ofAll(() -> matches).map(match -> new SikuliMatch(source, match));
+        override fun matches(target: BufferedImage): Stream<Vision.Match> {
+            val matches = Finder(source)
+            matches.findAll(Image(target))
+            return Stream.ofAll(Iterable { matches }).map { SikuliMatch(source, it) }
         }
     }
 
-    public static class SikuliMatch implements Match {
-        private final BufferedImage source;
-        private final Lazy<BufferedImage> image;
-        private final org.sikuli.script.Match match;
+    class SikuliMatch(private val source: BufferedImage, private val match: Match) : Vision.Match {
 
-        public SikuliMatch(BufferedImage source, org.sikuli.script.Match match) {
-            this.source = source;
-            this.match = match;
-            this.image = Lazy.of(() -> {
-                final Rectangle rect = match.getRect();
-                return source.getSubimage(rect.x, rect.y, rect.width, rect.height);
-            });
+        private val image: BufferedImage by lazy {
+            val rect = match.rect
+            source.getSubimage(rect.x, rect.y, rect.width, rect.height)
         }
 
-        @Override
-        public double similarity() {
-            return match.getScore();
-        }
+        override fun similarity() = match.score
 
-        @Override
-        public Rectangle region() {
-            return match.getRect();
-        }
+        override fun region() = match.rect
 
-        @Override
-        public BufferedImage source() {
-            return source;
-        }
+        override fun source() = source
 
-        @Override
-        public BufferedImage image() {
-            return image.get();
-        }
+        override fun image() = image
     }
 
-    @Override
-    public Recogniser recognise(BufferedImage image) {
-        return new SikuliRecogniser(image);
-    }
+    override fun recognise(image: BufferedImage): Vision.Recogniser = SikuliRecogniser(image)
 }

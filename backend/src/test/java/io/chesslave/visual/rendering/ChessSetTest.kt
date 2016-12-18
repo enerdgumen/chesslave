@@ -1,71 +1,50 @@
-package io.chesslave.visual.rendering;
+package io.chesslave.visual.rendering
 
-import static org.junit.Assert.assertTrue;
+import io.chesslave.model.Color
+import io.chesslave.model.Piece
+import io.chesslave.visual.Images
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-import io.chesslave.visual.Images;
-import io.chesslave.model.Color;
-import io.chesslave.model.Piece;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+@RunWith(Parameterized::class)
+class ChessSetTest(val chessSet: ChessSet, val chessSetPath: String) {
 
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
+    companion object {
 
-@RunWith(Parameterized.class)
-public class ChessSetTest {
-    private static final String DIR_IMAGES = "/images/";
-    private static final String PATH_CHESS_SET_1 = DIR_IMAGES + "set1/";
-    private static final String PATH_CHESS_SET_3 = DIR_IMAGES + "set3/";
-
-    @Parameterized.Parameter
-    public ChessSet chessSet;
-
-    @Parameterized.Parameter(value = 1)
-    public String chessSetPath;
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-                {ChessSet.read(PATH_CHESS_SET_1), PATH_CHESS_SET_1},
-                {ChessSet.read(PATH_CHESS_SET_3), PATH_CHESS_SET_3}
-        });
+        @Parameterized.Parameters
+        @JvmStatic fun data(): Collection<Array<Any>> =
+            listOf("/images/set1/", "/images/set3/").map {
+                arrayOf(ChessSet.read(it), it)
+            }
     }
 
     @Test
-    public void readTest() {
-        final BufferedImage expectedBoardImage = Images.read(chessSetPath + "empty-board.png");
-        assertTrue(Images.areEquals(chessSet.board.image(), expectedBoardImage));
-        chessSet.pieces.forEach((piece, image) -> {
-            final BufferedImage expectedPieceImage = Images.read(chessSetPath + getPieceBaseName(piece) + ".png");
-            assertTrue(Images.areEquals(image, expectedPieceImage));
-        });
-    }
-
-    private String getPieceBaseName(Piece piece) {
-        StringBuilder pieceName = new StringBuilder();
-        pieceName.append(piece.color == Color.WHITE ? 'w' : 'b');
-        pieceName.append(getPieceChar(piece.type));
-        return pieceName.toString();
-    }
-
-    private char getPieceChar(Piece.Type pieceType) {
-        switch (pieceType) {
-            case KING:
-                return 'k';
-            case QUEEN:
-                return 'q';
-            case ROOK:
-                return 'r';
-            case BISHOP:
-                return 'b';
-            case KNIGHT:
-                return 'n';
-            case PAWN:
-                return 'p';
-            default:
-                throw new IllegalArgumentException("invalid piece type");
+    fun readTest() {
+        val expectedBoardImage = Images.read("${chessSetPath}empty-board.png")
+        assertTrue(Images.areEquals(chessSet.board.image(), expectedBoardImage))
+        chessSet.pieces.forEach { piece, image ->
+            val expectedPieceImage = Images.read("$chessSetPath${getPieceBaseName(piece)}.png")
+            assertTrue(Images.areEquals(image, expectedPieceImage))
         }
     }
+
+    // TODO: this test has too much logic, it should be tested too!
+    private fun getPieceBaseName(piece: Piece): String {
+        val pieceName = StringBuilder()
+        pieceName.append(if (piece.color === Color.WHITE) 'w' else 'b')
+        pieceName.append(getPieceChar(piece.type))
+        return pieceName.toString()
+    }
+
+    private fun getPieceChar(pieceType: Piece.Type) =
+        when (pieceType) {
+            Piece.Type.KING -> 'k'
+            Piece.Type.QUEEN -> 'q'
+            Piece.Type.ROOK -> 'r'
+            Piece.Type.BISHOP -> 'b'
+            Piece.Type.KNIGHT -> 'n'
+            Piece.Type.PAWN -> 'p'
+        }
 }

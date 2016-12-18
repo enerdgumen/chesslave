@@ -1,221 +1,209 @@
-package io.chesslave.visual;
+package io.chesslave.visual
 
-import javaslang.collection.Iterator;
-import javaslang.collection.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.function.Predicate;
+import javaslang.collection.Iterator
+import javaslang.collection.Stream
+import org.slf4j.LoggerFactory
+import java.awt.image.BufferedImage
+import java.io.File
+import java.util.function.Predicate
+import javax.imageio.ImageIO
 
 /**
  * Support methods for images.
  */
-public final class Images {
+object Images {
 
-    private static final Logger logger = LoggerFactory.getLogger(Images.class);
-
-    private Images() {}
+    private val logger = LoggerFactory.getLogger(Images::class.java)
 
     /**
      * Reads the image from the classpath.
      */
-    public static BufferedImage read(String path) {
-        try {
-            logger.trace("Reading image {}", path);
-            return ImageIO.read(Images.class.getResource(path));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+    @JvmStatic fun read(path: String): BufferedImage {
+        logger.trace("Reading image {}", path)
+        return ImageIO.read(Images::class.java.getResource(path))
     }
 
     /**
      * Writes the image of the given file as PNG.
      */
-    public static void write(BufferedImage image, File file) {
-        try {
-            logger.debug("Writing image {}", file);
-            ImageIO.write(image, "PNG", file);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+    @JvmStatic fun write(image: BufferedImage, file: File) {
+        logger.debug("Writing image {}", file)
+        ImageIO.write(image, "PNG", file)
     }
 
     /**
      * Clones the given image.
      */
-    public static BufferedImage copy(BufferedImage image) {
-        final BufferedImage copy = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-        final Graphics g = copy.getGraphics();
-        g.drawImage(image, 0, 0, null);
-        g.dispose();
-        return copy;
+    @JvmStatic fun copy(image: BufferedImage): BufferedImage {
+        val copy = BufferedImage(image.width, image.height, image.type)
+        val g = copy.graphics
+        g.drawImage(image, 0, 0, null)
+        g.dispose()
+        return copy
     }
 
     /**
      * Removes the image border while the RGB pixel colors hold the given predicate.
      */
-    public static BufferedImage crop(BufferedImage image, Predicate<Integer> predicate) {
-        int top = 0;
-        {
-            boolean accept = true;
+    @JvmStatic fun crop(image: BufferedImage, predicate: (Int) -> Boolean): BufferedImage {
+        var top = 0
+        run {
+            var accept = true
             while (accept) {
-                for (int x = 0; x < image.getWidth(); ++x) {
-                    if (!predicate.test(image.getRGB(x, top))) {
-                        accept = false;
-                        break;
+                for (x in 0..image.width - 1) {
+                    if (!predicate(image.getRGB(x, top))) {
+                        accept = false
+                        break
                     }
                 }
                 if (accept) {
-                    ++top;
+                    ++top
                 }
             }
         }
-        int left = 0;
-        {
-            boolean accept = true;
+        var left = 0
+        run {
+            var accept = true
             while (accept) {
-                for (int y = top; y < image.getHeight(); ++y) {
-                    if (!predicate.test(image.getRGB(left, y))) {
-                        accept = false;
-                        break;
+                for (y in top..image.height - 1) {
+                    if (!predicate(image.getRGB(left, y))) {
+                        accept = false
+                        break
                     }
                 }
                 if (accept) {
-                    ++left;
+                    ++left
                 }
             }
         }
-        int right = image.getWidth() - 1;
-        {
-            boolean accept = true;
+        var right = image.width - 1
+        run {
+            var accept = true
             while (accept) {
-                for (int y = top; y < image.getHeight(); ++y) {
-                    if (!predicate.test(image.getRGB(right, y))) {
-                        accept = false;
-                        break;
+                for (y in top..image.height - 1) {
+                    if (!predicate(image.getRGB(right, y))) {
+                        accept = false
+                        break
                     }
                 }
                 if (accept) {
-                    --right;
+                    --right
                 }
             }
         }
-        int bottom = image.getHeight() - 1;
-        {
-            boolean accept = true;
+        var bottom = image.height - 1
+        run {
+            var accept = true
             while (accept) {
-                for (int x = left; x <= right; ++x) {
-                    if (!predicate.test(image.getRGB(x, bottom))) {
-                        accept = false;
-                        break;
+                for (x in left..right) {
+                    if (!predicate(image.getRGB(x, bottom))) {
+                        accept = false
+                        break
                     }
                 }
                 if (accept) {
-                    --bottom;
+                    --bottom
                 }
             }
         }
-        final int width = right - left + 1;
-        final int height = bottom - top + 1;
-        return image.getSubimage(left, top, width, height);
+        val width = right - left + 1
+        val height = bottom - top + 1
+        return image.getSubimage(left, top, width, height)
     }
 
     /**
      * Fills the outer background with the specific RGB color.
      */
-    public static BufferedImage fillOuterBackground(BufferedImage source, int newColor) {
-        final BufferedImage image = Images.copy(source);
-        final int oldColor = image.getRGB(0, 0);
+    @JvmStatic fun fillOuterBackground(source: BufferedImage, newColor: Int): BufferedImage {
+        val image = Images.copy(source)
+        val oldColor = image.getRGB(0, 0)
         // top -> bottom
-        for (int x = 0; x < image.getWidth(); ++x) {
-            for (int y = 0; y < image.getHeight(); ++y) {
-                final int color = image.getRGB(x, y);
+        for (x in 0..image.width - 1) {
+            for (y in 0..image.height - 1) {
+                val color = image.getRGB(x, y)
                 if (color == oldColor) {
-                    image.setRGB(x, y, newColor);
+                    image.setRGB(x, y, newColor)
                 } else if (color != newColor) {
-                    break;
+                    break
                 }
             }
         }
         // bottom -> top
-        for (int x = 0; x < image.getWidth(); ++x) {
-            for (int y = image.getHeight() - 1; y >= 0; --y) {
-                final int color = image.getRGB(x, y);
+        for (x in 0..image.width - 1) {
+            for (y in image.height - 1 downTo 0) {
+                val color = image.getRGB(x, y)
                 if (color == oldColor) {
-                    image.setRGB(x, y, newColor);
+                    image.setRGB(x, y, newColor)
                 } else if (color != newColor) {
-                    break;
+                    break
                 }
             }
         }
         // left -> right
-        for (int y = 0; y < image.getHeight(); ++y) {
-            for (int x = 0; x < image.getWidth(); ++x) {
-                final int color = image.getRGB(x, y);
+        for (y in 0..image.height - 1) {
+            for (x in 0..image.width - 1) {
+                val color = image.getRGB(x, y)
                 if (color == oldColor) {
-                    image.setRGB(x, y, newColor);
+                    image.setRGB(x, y, newColor)
                 } else if (color != newColor) {
-                    break;
+                    break
                 }
             }
         }
         // right -> left
-        for (int y = 0; y < image.getHeight(); ++y) {
-            for (int x = image.getWidth() - 1; x >= 0; --x) {
-                final int color = image.getRGB(x, y);
+        for (y in 0..image.height - 1) {
+            for (x in image.width - 1 downTo 0) {
+                val color = image.getRGB(x, y)
                 if (color == oldColor) {
-                    image.setRGB(x, y, newColor);
+                    image.setRGB(x, y, newColor)
                 } else if (color != newColor) {
-                    break;
+                    break
                 }
             }
         }
-        return image;
+        return image
     }
 
     /**
      * @param rowPoints    The number of pixel colors to read for each image row.
+     * *
      * @param columnPoints The number of pixel colors to read for each image column.
+     * *
      * @return The stream of all pixel colors read from the upper-left corner to the down-right corner.
-     * For each row only {@code rowPoints} pixels are read at regular intervals at the center of the image.
-     * As the same way, for each column only {@code columnPoints} pixels are read at regular intervals at
-     * the center of the image.
+     * * For each row only `rowPoints` pixels are read at regular intervals at the center of the image.
+     * * As the same way, for each column only `columnPoints` pixels are read at regular intervals at
+     * * the center of the image.
      */
-    public static Iterator<Integer> sample(BufferedImage image, int rowPoints, int columnPoints) {
-        final int widthStep = image.getWidth() / (rowPoints + 1);
-        final int heightStep = image.getHeight() / (columnPoints + 1);
+    @JvmStatic fun sample(image: BufferedImage, rowPoints: Int, columnPoints: Int): Iterator<Int> {
+        val widthStep = image.width / (rowPoints + 1)
+        val heightStep = image.height / (columnPoints + 1)
         return Stream.rangeClosed(1, rowPoints)
-                .crossProduct(Stream.rangeClosed(1, columnPoints))
-                .map(point -> image.getRGB(point._1 * widthStep, point._2 * heightStep));
+            .crossProduct(Stream.rangeClosed(1, columnPoints))
+            .map { image.getRGB(it._1 * widthStep, it._2 * heightStep) }
     }
 
     /**
      * @return True if the two images are *surely* different, false otherwise.
      */
-    public static boolean areDifferent(BufferedImage fst, BufferedImage snd) {
-        return fst.getWidth() != snd.getWidth() ||
-                fst.getHeight() != snd.getHeight() ||
-                Images.sample(fst, 10, 10).sum().intValue() != Images.sample(snd, 10, 10).sum().intValue();
-    }
+    @JvmStatic fun areDifferent(fst: BufferedImage, snd: BufferedImage): Boolean =
+        fst.width != snd.width ||
+            fst.height != snd.height ||
+            Images.sample(fst, 10, 10).sum().toInt() != Images.sample(snd, 10, 10).sum().toInt()
 
     /**
      * @return True if the two images are identical.
      */
-    public static boolean areEquals(BufferedImage fst, BufferedImage snd) {
-        if (fst.getWidth() != snd.getWidth() || fst.getHeight() != snd.getHeight()) {
-            return false;
+    @JvmStatic fun areEquals(fst: BufferedImage, snd: BufferedImage): Boolean {
+        if (fst.width != snd.width || fst.height != snd.height) {
+            return false
         }
-        for (int x = 0; x < fst.getWidth(); ++x) {
-            for (int y = 0; y < fst.getHeight(); ++y) {
+        for (x in 0..fst.width - 1) {
+            for (y in 0..fst.height - 1) {
                 if (fst.getRGB(x, y) != snd.getRGB(x, y)) {
-                    return false;
+                    return false
                 }
             }
         }
-        return true;
+        return true
     }
 }

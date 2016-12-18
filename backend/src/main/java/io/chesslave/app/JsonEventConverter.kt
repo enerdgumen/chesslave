@@ -1,25 +1,13 @@
-package io.chesslave.app;
+package io.chesslave.app
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
 
-public class JsonEventConverter implements Converter<Event> {
+class JsonEventConverter : Converter<Event> {
 
-    private final ObjectMapper mapper;
+    private val mapper = ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
-    public JsonEventConverter() {
-        this.mapper =   new ObjectMapper();
-        this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    }
+    override fun asString(event: Event): String = mapper.writeValueAsString(event)
 
-    @Override
-    public String asString(Event event) throws IOException {
-        return mapper.writeValueAsString(event);
-    }
-
-    @Override
-    public Event fromString(String text) throws IOException {
-        return mapper.readValue(text, Event.class);
-    }
+    override fun fromString(text: String): Event = mapper.readValue(text, Event::class.java)
 }
