@@ -5,7 +5,7 @@ import io.chesslave.model.Square
 /**
  * A bot able to move pieces through a point and click strategy.
  */
-class ClickBotMover(val pointer: Pointer, val points: SquarePoints) : Mover {
+class ClickMover(val pointer: Pointer, val points: SquarePoints) : Mover {
 
     override fun move(from: Square, to: Square) {
         try {

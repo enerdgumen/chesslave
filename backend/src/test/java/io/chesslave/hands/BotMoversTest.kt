@@ -58,10 +58,10 @@ class BotMoversTest(val botMover: Mover, val resetButtonPoint: Point, val flipBu
                     .get()
 
                 return listOf(
-                    arrayOf<Any?>(ClickBotMover(pointer, SquarePoints(unflippedBoard)), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragBotMover(pointer, SquarePoints(unflippedBoard)), resetPoint, null),
-                    arrayOf<Any?>(ClickBotMover(pointer, SquarePoints(flippedBoard)), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragBotMover(pointer, SquarePoints(flippedBoard)), resetPoint, null))
+                    arrayOf<Any?>(ClickMover(pointer, SquarePoints(unflippedBoard)), resetPoint, flipPoint),
+                    arrayOf<Any?>(DragMover(pointer, SquarePoints(unflippedBoard)), resetPoint, null),
+                    arrayOf<Any?>(ClickMover(pointer, SquarePoints(flippedBoard)), resetPoint, flipPoint),
+                    arrayOf<Any?>(DragMover(pointer, SquarePoints(flippedBoard)), resetPoint, null))
             } catch (ex: Exception) {
                 return listOf()
             }

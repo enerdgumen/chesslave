@@ -6,7 +6,7 @@ import java.awt.Point
 /**
  * A bot able to move pieces through a drag and drop strategy.
  */
-class DragBotMover(val pointer: Pointer, val points: SquarePoints) : Mover {
+class DragMover(val pointer: Pointer, val points: SquarePoints) : Mover {
 
     override fun move(from: Square, to: Square) {
         try {
