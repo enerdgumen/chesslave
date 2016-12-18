@@ -19,7 +19,7 @@ import java.awt.Point
 import java.net.URI
 
 @RunWith(Parameterized::class)
-class BotMoversTest(val botMover: Mover, val resetButtonPoint: Point, val flipButtonPoint: Point?) {
+class BotMoversTest(val subject: Mover, val resetButtonPoint: Point, val flipButtonPoint: Point?) {
 
     companion object {
 
@@ -70,7 +70,7 @@ class BotMoversTest(val botMover: Mover, val resetButtonPoint: Point, val flipBu
 
     @Before
     fun setUp() {
-        assumeThat(botMover, notNullValue())
+        assumeThat(subject, notNullValue())
         assumeThat(resetButtonPoint, notNullValue())
 
         val pointer = SikuliPointer(Screen.getPrimaryScreen())
@@ -86,17 +86,17 @@ class BotMoversTest(val botMover: Mover, val resetButtonPoint: Point, val flipBu
 
     @Test
     fun spanishOpeningTest() {
-        botMover.move(Square.of("e2"), Square.of("e4"))
-        botMover.move(Square.of("e7"), Square.of("e5"))
-        botMover.move(Square.of("g1"), Square.of("f3"))
-        botMover.move(Square.of("b8"), Square.of("c6"))
-        botMover.move(Square.of("f1"), Square.of("b5"))
-        botMover.move(Square.of("g8"), Square.of("f6"))
-        botMover.move(Square.of("e1"), Square.of("g1"))
-        botMover.move(Square.of("f8"), Square.of("e7"))
-        botMover.move(Square.of("f1"), Square.of("e1"))
-        botMover.move(Square.of("a7"), Square.of("a6"))
+        subject.move(Square.of("e2"), Square.of("e4"))
+        subject.move(Square.of("e7"), Square.of("e5"))
+        subject.move(Square.of("g1"), Square.of("f3"))
+        subject.move(Square.of("b8"), Square.of("c6"))
+        subject.move(Square.of("f1"), Square.of("b5"))
+        subject.move(Square.of("g8"), Square.of("f6"))
+        subject.move(Square.of("e1"), Square.of("g1"))
+        subject.move(Square.of("f8"), Square.of("e7"))
+        subject.move(Square.of("f1"), Square.of("e1"))
+        subject.move(Square.of("a7"), Square.of("a6"))
         // awkward move, but it tests captures ;)
-        botMover.move(Square.of("b5"), Square.of("c6"))
+        subject.move(Square.of("b5"), Square.of("c6"))
     }
 }
