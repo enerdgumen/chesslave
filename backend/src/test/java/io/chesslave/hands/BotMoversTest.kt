@@ -19,7 +19,7 @@ import java.awt.Point
 import java.net.URI
 
 @RunWith(Parameterized::class)
-class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val flipButtonPoint: Point?) {
+class BotMoversTest(val botMover: Mover, val resetButtonPoint: Point, val flipButtonPoint: Point?) {
 
     companion object {
 
@@ -58,10 +58,10 @@ class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val
                     .get()
 
                 return listOf(
-                    arrayOf<Any?>(ClickBotMover(pointer, unflippedBoard), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragBotMover(pointer, unflippedBoard), resetPoint, null),
-                    arrayOf<Any?>(ClickBotMover(pointer, flippedBoard), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragBotMover(pointer, flippedBoard), resetPoint, null))
+                    arrayOf<Any?>(ClickBotMover(pointer, SquarePoints(unflippedBoard)), resetPoint, flipPoint),
+                    arrayOf<Any?>(DragBotMover(pointer, SquarePoints(unflippedBoard)), resetPoint, null),
+                    arrayOf<Any?>(ClickBotMover(pointer, SquarePoints(flippedBoard)), resetPoint, flipPoint),
+                    arrayOf<Any?>(DragBotMover(pointer, SquarePoints(flippedBoard)), resetPoint, null))
             } catch (ex: Exception) {
                 return listOf()
             }

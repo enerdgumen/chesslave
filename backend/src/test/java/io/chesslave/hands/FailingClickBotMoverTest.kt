@@ -9,8 +9,8 @@ class FailingClickBotMoverTest {
 
     @Test(expected = MoverException::class)
     fun moveTest() {
-        val board = BoardImage(BufferedImage(80, 80, BufferedImage.TYPE_INT_RGB))
-        val subject = ClickBotMover(FailingPointer(), board)
+        val points = SquarePoints(BoardImage(BufferedImage(80, 80, BufferedImage.TYPE_INT_RGB)))
+        val subject = ClickBotMover(FailingPointer(), points)
         subject.move(Square.of("a1"), Square.of("b3"))
     }
 }

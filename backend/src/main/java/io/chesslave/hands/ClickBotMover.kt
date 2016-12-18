@@ -1,17 +1,16 @@
 package io.chesslave.hands
 
 import io.chesslave.model.Square
-import io.chesslave.visual.model.BoardImage
 
 /**
  * A bot able to move pieces through a point and click strategy.
  */
-class ClickBotMover(val pointer: Pointer, board: BoardImage) : BaseBotMover(board) {
+class ClickBotMover(val pointer: Pointer, val points: SquarePoints) : Mover {
 
     override fun move(from: Square, to: Square) {
         try {
-            pointer.click(getSquareCoords(from))
-            pointer.click(getSquareCoords(to))
+            pointer.click(points.of(from))
+            pointer.click(points.of(to))
         } catch (re: RuntimeException) {
             throw MoverException(re)
         }
