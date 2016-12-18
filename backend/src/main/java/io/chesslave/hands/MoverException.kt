@@ -1,14 +1,6 @@
 package io.chesslave.hands
 
-class MoverException : RuntimeException {
+import io.chesslave.model.Square
 
-    constructor(cause: Throwable) : super(cause) {
-    }
-
-    constructor(message: String, cause: Throwable) : super(message, cause) {
-    }
-
-    companion object {
-        private val serialVersionUID = 2338005287898395747L
-    }
-}
+class MoverException(from: Square, to: Square, cause: RuntimeException)
+    : RuntimeException("Cannot move piece from $from to $to", cause)

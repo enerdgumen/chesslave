@@ -11,8 +11,8 @@ class ClickMover(val pointer: Pointer, val points: SquarePoints) : Mover {
         try {
             pointer.click(points.of(from))
             pointer.click(points.of(to))
-        } catch (re: RuntimeException) {
-            throw MoverException(re)
+        } catch (ex: RuntimeException) {
+            throw MoverException(from, to, ex)
         }
     }
 }

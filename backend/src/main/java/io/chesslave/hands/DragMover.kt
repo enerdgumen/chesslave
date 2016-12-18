@@ -12,8 +12,8 @@ class DragMover(val pointer: Pointer, val points: SquarePoints) : Mover {
         try {
             pointer.dragFrom(points.of(from))
             pointer.dropAt(points.of(to))
-        } catch (re: RuntimeException) {
-            throw MoverException(re)
+        } catch (ex: RuntimeException) {
+            throw MoverException(from, to, ex)
         }
     }
 }
