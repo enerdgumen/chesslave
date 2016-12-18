@@ -11,8 +11,6 @@ import java.awt.Point
  */
 abstract class BaseBotMover(private val board: BoardImage) : Mover {
 
-    protected val pointer: Pointer = SikuliPointer(Screen.getPrimaryScreen())
-
     protected fun getSquareCoords(square: Square): Point {
         val squareImage = board.squareImage(square)
         return Point(

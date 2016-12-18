@@ -32,6 +32,7 @@ class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val
 
                 val screen = SikuliScreen()
                 val vision = SikuliVision()
+                val pointer = SikuliPointer(Screen.getPrimaryScreen())
                 val recogniser: Vision.Recogniser = vision.recognise(screen.captureAll())
 
                 val unflippedBoard = recogniser.bestMatch(Images.read("/images/visual/board.png"))
@@ -46,7 +47,7 @@ class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val
                     .map { with(it.region()) { Point(centerX.toInt(), centerY.toInt()) } }
                     .get()
                 if (flipPoint != null) {
-                    SikuliPointer(Screen.getPrimaryScreen()).click(flipPoint)
+                    pointer.click(flipPoint)
                 }
                 // wait webapp's response
                 Thread.sleep(500)
@@ -57,10 +58,10 @@ class BotMoversTest(val botMover: BaseBotMover, val resetButtonPoint: Point, val
                     .get()
 
                 return listOf(
-                    arrayOf<Any?>(ClickBotMover(unflippedBoard), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragBotMover(unflippedBoard), resetPoint, null),
-                    arrayOf<Any?>(ClickBotMover(flippedBoard), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragBotMover(flippedBoard), resetPoint, null))
+                    arrayOf<Any?>(ClickBotMover(pointer, unflippedBoard), resetPoint, flipPoint),
+                    arrayOf<Any?>(DragBotMover(pointer, unflippedBoard), resetPoint, null),
+                    arrayOf<Any?>(ClickBotMover(pointer, flippedBoard), resetPoint, flipPoint),
+                    arrayOf<Any?>(DragBotMover(pointer, flippedBoard), resetPoint, null))
             } catch (ex: Exception) {
                 return listOf()
             }

@@ -6,7 +6,7 @@ import io.chesslave.visual.model.BoardImage
 /**
  * A bot able to move pieces through a point and click strategy.
  */
-class ClickBotMover(board: BoardImage) : BaseBotMover(board) {
+class ClickBotMover(val pointer: Pointer, board: BoardImage) : BaseBotMover(board) {
 
     override fun move(from: Square, to: Square) {
         try {

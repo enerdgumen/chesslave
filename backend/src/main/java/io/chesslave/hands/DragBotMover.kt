@@ -6,7 +6,7 @@ import io.chesslave.visual.model.BoardImage
 /**
  * A bot able to move pieces through a drag and drop strategy.
  */
-class DragBotMover(board: BoardImage) : BaseBotMover(board) {
+class DragBotMover(val pointer: Pointer, board: BoardImage) : BaseBotMover(board) {
 
     override fun move(from: Square, to: Square) {
         try {
