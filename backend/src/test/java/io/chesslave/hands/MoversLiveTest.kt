@@ -10,6 +10,7 @@ import io.chesslave.visual.model.BoardImage
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.Assume.assumeThat
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -18,8 +19,13 @@ import java.awt.Desktop
 import java.awt.Point
 import java.net.URI
 
+/**
+ * This test is ignored since it is based on unstable www.chess.com.
+ * It doesn't work anymore, and should be revisited.
+ */
 @RunWith(Parameterized::class)
-class BotMoversTest(val subject: Mover, val resetButtonPoint: Point, val flipButtonPoint: Point?) {
+@Ignore
+class MoversLiveTest(val subject: Mover, val resetButtonPoint: Point, val flipButtonPoint: Point?) {
 
     companion object {
 
@@ -58,10 +64,10 @@ class BotMoversTest(val subject: Mover, val resetButtonPoint: Point, val flipBut
                     .get()
 
                 return listOf(
-                    arrayOf<Any?>(ClickMover(pointer, SquarePoints(unflippedBoard)), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragMover(pointer, SquarePoints(unflippedBoard)), resetPoint, null),
-                    arrayOf<Any?>(ClickMover(pointer, SquarePoints(flippedBoard)), resetPoint, flipPoint),
-                    arrayOf<Any?>(DragMover(pointer, SquarePoints(flippedBoard)), resetPoint, null))
+                    arrayOf(moveByClick(squarePoints(unflippedBoard)), resetPoint, flipPoint),
+                    arrayOf(moveByDrag(squarePoints(unflippedBoard)), resetPoint, null),
+                    arrayOf(moveByClick(squarePoints(flippedBoard)), resetPoint, flipPoint),
+                    arrayOf(moveByDrag(squarePoints(flippedBoard)), resetPoint, null))
             } catch (ex: Exception) {
                 return listOf()
             }
@@ -86,17 +92,17 @@ class BotMoversTest(val subject: Mover, val resetButtonPoint: Point, val flipBut
 
     @Test
     fun spanishOpeningTest() {
-        subject.move(Square.of("e2"), Square.of("e4"))
-        subject.move(Square.of("e7"), Square.of("e5"))
-        subject.move(Square.of("g1"), Square.of("f3"))
-        subject.move(Square.of("b8"), Square.of("c6"))
-        subject.move(Square.of("f1"), Square.of("b5"))
-        subject.move(Square.of("g8"), Square.of("f6"))
-        subject.move(Square.of("e1"), Square.of("g1"))
-        subject.move(Square.of("f8"), Square.of("e7"))
-        subject.move(Square.of("f1"), Square.of("e1"))
-        subject.move(Square.of("a7"), Square.of("a6"))
+        subject(Square.of("e2"), Square.of("e4"))
+        subject(Square.of("e7"), Square.of("e5"))
+        subject(Square.of("g1"), Square.of("f3"))
+        subject(Square.of("b8"), Square.of("c6"))
+        subject(Square.of("f1"), Square.of("b5"))
+        subject(Square.of("g8"), Square.of("f6"))
+        subject(Square.of("e1"), Square.of("g1"))
+        subject(Square.of("f8"), Square.of("e7"))
+        subject(Square.of("f1"), Square.of("e1"))
+        subject(Square.of("a7"), Square.of("a6"))
         // awkward move, but it tests captures ;)
-        subject.move(Square.of("b5"), Square.of("c6"))
+        subject(Square.of("b5"), Square.of("c6"))
     }
 }
