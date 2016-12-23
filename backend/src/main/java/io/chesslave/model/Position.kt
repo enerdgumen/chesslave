@@ -19,7 +19,7 @@ class Position(private val position: Map<Square, Piece>) {
          * Puts the piece at the specified square.
          */
         fun withPiece(square: Square, piece: Piece): Builder {
-            assert(!position.containsKey(square), { "cannot place $piece into $square: square already used" })
+            if (position.containsKey(square)) throw IllegalArgumentException("cannot place $piece into $square: square already used")
             position = position.put(square, piece)
             return this
         }

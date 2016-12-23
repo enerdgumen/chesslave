@@ -40,10 +40,12 @@ class MoveDescriptor {
                 else
                     MoveDescription.Square(piece = piece.type, col = move.from.col)
             }
+            ambiguousSquares.size() > 1 ->
+                MoveDescription.Square(piece = piece.type, row = move.from.row, col = move.from.col)
             move.enPassant || Type.PAWN == piece.type && position.at(move.to).isDefined ->
                 MoveDescription.Square(piece = piece.type, col = move.from.col)
             else ->
-                MoveDescription.Square(piece = piece.type, row = move.from.row, col = move.from.col)
+                MoveDescription.Square(piece = piece.type)
         }
     }
 
