@@ -18,7 +18,7 @@ object Images {
     /**
      * Reads the image from the classpath.
      */
-    @JvmStatic fun read(path: String): BufferedImage {
+    fun read(path: String): BufferedImage {
         logger.trace("Reading image {}", path)
         return ImageIO.read(Images::class.java.getResource(path))
     }
@@ -26,7 +26,7 @@ object Images {
     /**
      * Writes the image of the given file as PNG.
      */
-    @JvmStatic fun write(image: BufferedImage, file: File) {
+   fun write(image: BufferedImage, file: File) {
         logger.debug("Writing image {}", file)
         ImageIO.write(image, "PNG", file)
     }
@@ -34,7 +34,7 @@ object Images {
     /**
      * Clones the given image.
      */
-    @JvmStatic fun copy(image: BufferedImage): BufferedImage {
+    fun copy(image: BufferedImage): BufferedImage {
         val copy = BufferedImage(image.width, image.height, image.type)
         val g = copy.graphics
         g.drawImage(image, 0, 0, null)
@@ -45,7 +45,7 @@ object Images {
     /**
      * Removes the image border while the RGB pixel colors hold the given predicate.
      */
-    @JvmStatic fun crop(image: BufferedImage, predicate: (Int) -> Boolean): BufferedImage {
+    fun crop(image: BufferedImage, predicate: (Int) -> Boolean): BufferedImage {
         var top = 0
         run {
             var accept = true
@@ -114,7 +114,7 @@ object Images {
     /**
      * Fills the outer background with the specific RGB color.
      */
-    @JvmStatic fun fillOuterBackground(source: BufferedImage, newColor: Int): BufferedImage {
+    fun fillOuterBackground(source: BufferedImage, newColor: Int): BufferedImage {
         val image = Images.copy(source)
         val oldColor = image.getRGB(0, 0)
         // top -> bottom
@@ -174,7 +174,7 @@ object Images {
      * * As the same way, for each column only `columnPoints` pixels are read at regular intervals at
      * * the center of the image.
      */
-    @JvmStatic fun sample(image: BufferedImage, rowPoints: Int, columnPoints: Int): Iterator<Int> {
+    fun sample(image: BufferedImage, rowPoints: Int, columnPoints: Int): Iterator<Int> {
         val widthStep = image.width / (rowPoints + 1)
         val heightStep = image.height / (columnPoints + 1)
         return Stream.rangeClosed(1, rowPoints)
@@ -185,7 +185,7 @@ object Images {
     /**
      * @return True if the two images are *surely* different, false otherwise.
      */
-    @JvmStatic fun areDifferent(fst: BufferedImage, snd: BufferedImage): Boolean =
+    fun areDifferent(fst: BufferedImage, snd: BufferedImage): Boolean =
         fst.width != snd.width ||
             fst.height != snd.height ||
             Images.sample(fst, 10, 10).sum().toInt() != Images.sample(snd, 10, 10).sum().toInt()
@@ -193,7 +193,7 @@ object Images {
     /**
      * @return True if the two images are identical.
      */
-    @JvmStatic fun areEquals(fst: BufferedImage, snd: BufferedImage): Boolean {
+    fun areEquals(fst: BufferedImage, snd: BufferedImage): Boolean {
         if (fst.width != snd.width || fst.height != snd.height) {
             return false
         }

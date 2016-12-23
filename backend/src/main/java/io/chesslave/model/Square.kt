@@ -84,7 +84,7 @@ class Square(val col: Int, val row: Int) {
         /**
          * @return All the available squares on the board.
          */
-        @JvmStatic fun all(): Set<Square> {
+        fun all(): Set<Square> {
             val range = 0 until Board.SIZE
             return HashSet.ofAll(range.flatMap { col -> range.map { row -> Square(col, row) } })
         }

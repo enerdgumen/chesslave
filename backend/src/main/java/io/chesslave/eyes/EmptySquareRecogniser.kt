@@ -6,7 +6,6 @@ import java.awt.Color
 
 object EmptySquareRecogniser {
 
-    @JvmStatic
     fun isEmpty(square: SquareImage): Boolean {
         val image = square.image()
         val example = Color(image.getRGB(image.width / 2, image.height / 2))

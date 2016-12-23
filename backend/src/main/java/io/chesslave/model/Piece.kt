@@ -32,7 +32,7 @@ data class Piece(val type: Piece.Type, val color: Color) {
         /**
          * @return All chess pieces available.
          */
-        @JvmStatic fun all(): Set<Piece> =
+        fun all(): Set<Piece> =
             HashSet.ofAll(Piece.Type.values().flatMap { type ->
                 Color.values().map { color -> Piece(type, color) }
             })

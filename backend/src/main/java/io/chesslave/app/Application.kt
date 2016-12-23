@@ -7,7 +7,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketCreator
 
 object Application {
 
-    @JvmStatic fun main(args: Array<String>) {
+    fun main(args: Array<String>) {
         val creator = WebSocketCreator { req, resp ->
             val socket = RxWebSocket(JsonEventConverter())
             val events = EventBus(socket.input, socket.output)

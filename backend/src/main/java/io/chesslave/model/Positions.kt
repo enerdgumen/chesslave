@@ -38,7 +38,7 @@ object Positions {
     /**
      * Creates a position from a textual human-readable representation of the board.
      */
-    @JvmStatic fun fromText(
+    fun fromText(
         row8: String,
         row7: String,
         row6: String,
@@ -62,7 +62,7 @@ object Positions {
     /**
      * @return A textual human-readable representation of the position.
      */
-    @JvmStatic fun toText(position: Position): String =
+    fun toText(position: Position): String =
         (Board.SIZE - 1 downTo 0).map { row ->
             (0 until Board.SIZE).map { col ->
                 position.at(Square(col, row))

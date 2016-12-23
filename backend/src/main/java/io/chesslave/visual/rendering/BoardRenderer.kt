@@ -30,10 +30,10 @@ object BoardRenderer {
 
     private val SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
-    @JvmStatic fun using(chessSet: ChessSet) = Builder(chessSet)
+    fun using(chessSet: ChessSet) = Builder(chessSet)
 
     // TODO: check
-    @JvmStatic fun using(chessSet: ChessSet, position: Position) = using(chessSet).withPosition(position)
+    fun using(chessSet: ChessSet, position: Position) = using(chessSet).withPosition(position)
 
     private fun render(set: ChessSet, position: Option<Position>, backgrounds: Map<Square, Color>): BoardImage {
         val graphics = createGraphics()

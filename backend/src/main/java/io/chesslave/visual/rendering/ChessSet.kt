@@ -25,7 +25,7 @@ class ChessSet private constructor(val board: BoardImage, val pieces: Map<Piece,
             Type.ROOK, "r")
 
         // TODO: path could not end with /
-        @JvmStatic fun read(path: String): ChessSet {
+        fun read(path: String): ChessSet {
             val board = BoardImage(Images.read(path + "empty-board.png"))
             val pieces = Piece.all().toMap { Tuple.of(it, Images.read(path + ChessSet.name(it) + ".png")) }
             return ChessSet(board, pieces)

@@ -39,7 +39,7 @@ class Game(private val initialPosition: Position, private val moves: List<Move>,
         /**
          * @return a game from the initial position.
          */
-        @JvmStatic fun initialPosition(): Game {
+        fun initialPosition(): Game {
             val position = Position.Builder()
                 .withPiece(Board.a1, Piece(Type.ROOK, Color.WHITE))
                 .withPiece(Board.b1, Piece(Type.KNIGHT, Color.WHITE))

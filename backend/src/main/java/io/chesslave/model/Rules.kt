@@ -19,7 +19,7 @@ object Rules {
 
      * @return all the available moves (excluding castling) of the piece placed at the given square for the specified position.
      */
-    @JvmStatic fun moves(pos: Position, from: Square): Set<Regular> = pos.at(from)
+    fun moves(pos: Position, from: Square): Set<Regular> = pos.at(from)
         .map { piece ->
             val regular = { to: Square -> Movements.Regular(from, to) }
             val isFreeOrWithOpponent = Predicate { move: Regular -> isFreeOrWithOpponent(pos, move.to, piece) }
@@ -39,14 +39,14 @@ object Rules {
     /**
      * @return all the moves available for the specified color.
      */
-    @JvmStatic fun allMoves(position: Position, color: Color): Stream<Regular> = position.toSet().toStream()
+    fun allMoves(position: Position, color: Color): Stream<Regular> = position.toSet().toStream()
         .filter { it._2.color == color }
         .flatMap { Rules.moves(position, it._1) }
 
     /**
      * @return true if the king of the given color is not under attack.
      */
-    @JvmStatic fun isKingSafe(position: Position, color: Color): Boolean {
+    fun isKingSafe(position: Position, color: Color): Boolean {
         val kingSquare = Square.all().find { position.at(it).exists({ it == color.king() }) }.get()
         return !isTargetForColor(position, kingSquare, color.opponent())
     }
@@ -63,7 +63,7 @@ object Rules {
             || attackingPawnSquares(square, color, position).nonEmpty()
 
     // TODO: check visibility
-    @JvmStatic fun attackingPawnSquares(target: Square, attackingColor: Color, position: Position): Set<Square> {
+    fun attackingPawnSquares(target: Square, attackingColor: Color, position: Position): Set<Square> {
         val pawnDirection = Pawns.direction(attackingColor.opponent())
         var squares = target.translateAll(Pair(-1, pawnDirection), Pair(+1, pawnDirection))
         val targetPiece = position.at(target)
