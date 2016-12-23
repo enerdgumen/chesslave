@@ -23,11 +23,11 @@ class PawnsTest {
 
     @Test
     fun isCaptureTest() {
-        assertTrue(Pawns.isCapture(Movements.Regular(Board.e5, Board.d6, enPassant = true)))
-        assertTrue(Pawns.isCapture(Movements.Regular(Board.b2, Board.c3)))
+        assertTrue(Pawns.isCapture(Move.Regular(Board.e5, Board.d6, enPassant = true)))
+        assertTrue(Pawns.isCapture(Move.Regular(Board.b2, Board.c3)))
 
-        assertFalse(Pawns.isCapture(Movements.Regular(Board.b2, Board.b3)))
-        assertFalse(Pawns.isCapture(Movements.Regular(Board.g7, Board.g8, promotion = Option.some(Piece.Type.QUEEN))))
+        assertFalse(Pawns.isCapture(Move.Regular(Board.b2, Board.b3)))
+        assertFalse(Pawns.isCapture(Move.Regular(Board.g7, Board.g8, promotion = Option.some(Piece.Type.QUEEN))))
     }
 
     @Test

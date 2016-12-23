@@ -32,16 +32,16 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
         val changes = changedSquares(previousImage, currentImage)
         val squares = changes.map { it.square() }
         if (squares == whiteShortCastlingSquares) {
-            return Option.of(Movements.ShortCastling(Color.WHITE))
+            return Option.of(Move.ShortCastling(Color.WHITE))
         }
         if (squares == whiteLongCastlingSquares) {
-            return Option.of(Movements.LongCastling(Color.WHITE))
+            return Option.of(Move.LongCastling(Color.WHITE))
         }
         if (squares == blackShortCastlingSquares) {
-            return Option.of(Movements.ShortCastling(Color.BLACK))
+            return Option.of(Move.ShortCastling(Color.BLACK))
         }
         if (squares == blackLongCastlingSquares) {
-            return Option.of(Movements.LongCastling(Color.BLACK))
+            return Option.of(Move.LongCastling(Color.BLACK))
         }
         if (changes.size() == 2) {
             val from = changes.find(EmptySquareRecogniser::isEmpty).get()
@@ -51,9 +51,9 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
                 val promotedPiece: Piece = pieceRecogniser.piece(to,
                     List.of(piece.color.queen(), piece.color.rook(), piece.color.knight(), piece.color.bishop()))
                     .getOrElseThrow { IllegalArgumentException("Cannot recognise the piece promoted in ${to.square()}") }
-                return Option.of(Movements.Regular(from.square(), to.square(), promotion = Option.some(promotedPiece.type)))
+                return Option.of(Move.Regular(from.square(), to.square(), promotion = Option.some(promotedPiece.type)))
             }
-            return Option.of(Movements.Regular(from.square(), to.square()))
+            return Option.of(Move.Regular(from.square(), to.square()))
         }
         if (changes.size() == 3) {
             // en passant
@@ -66,7 +66,7 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
             val captured = fromAndCaptured.find { it.square().col == to.square().col }.get()
             val capturedPiece = previousPosition.at(captured.square()).get()
             assert(capturedPiece == movedPiece.color.opponent().pawn()) { "Expected en-passant of $movedPiece from ${from.square()} to ${to.square()}, found $capturedPiece in ${captured.square()}" }
-            return Option.of(Movements.Regular(from.square(), to.square(), enPassant = true))
+            return Option.of(Move.Regular(from.square(), to.square(), enPassant = true))
         }
         // TODO: ensure that position is not changed
         return Option.none()

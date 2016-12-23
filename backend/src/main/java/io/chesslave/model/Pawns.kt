@@ -11,7 +11,7 @@ object Pawns {
         square.row == (if (color === Color.WHITE) 7 else 0)
 
     // TODO: check
-    fun isCapture(pawnMove: Movements.Regular): Boolean =
+    fun isCapture(pawnMove: Move.Regular): Boolean =
         pawnMove.enPassant || pawnMove.from.col != pawnMove.to.col
 
     // TODO: review this code

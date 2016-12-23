@@ -1,6 +1,5 @@
 package io.chesslave.model
 
-import io.chesslave.model.Movements.Regular
 import javaslang.Predicates
 import javaslang.collection.HashSet
 import javaslang.collection.Set
@@ -19,11 +18,11 @@ object Rules {
 
      * @return all the available moves (excluding castling) of the piece placed at the given square for the specified position.
      */
-    fun moves(pos: Position, from: Square): Set<Regular> = pos.at(from)
+    fun moves(pos: Position, from: Square): Set<Move.Regular> = pos.at(from)
         .map { piece ->
-            val regular = { to: Square -> Movements.Regular(from, to) }
-            val isFreeOrWithOpponent = Predicate { move: Regular -> isFreeOrWithOpponent(pos, move.to, piece) }
-            val isKingSafeAfterMove = Predicate { move: Regular -> isKingSafe(move.apply(pos), piece.color) }
+            val regular = { to: Square -> Move.Regular(from, to) }
+            val isFreeOrWithOpponent = Predicate { move: Move.Regular -> isFreeOrWithOpponent(pos, move.to, piece) }
+            val isKingSafeAfterMove = Predicate { move: Move.Regular -> isKingSafe(move.apply(pos), piece.color) }
             val isAvailable = Predicates.allOf(isFreeOrWithOpponent, isKingSafeAfterMove)
             when (piece.type) {
                 Piece.Type.PAWN -> pawnMoves(pos, from).filter(isKingSafeAfterMove)
@@ -39,7 +38,7 @@ object Rules {
     /**
      * @return all the moves available for the specified color.
      */
-    fun allMoves(position: Position, color: Color): Stream<Regular> = position.toSet().toStream()
+    fun allMoves(position: Position, color: Color): Stream<Move.Regular> = position.toSet().toStream()
         .filter { it._2.color == color }
         .flatMap { Rules.moves(position, it._1) }
 
@@ -147,7 +146,7 @@ object Rules {
     private fun queenSquares(position: Position, from: Square) =
         bishopSquares(position, from).addAll(rookSquares(position, from))
 
-    private fun pawnMoves(position: Position, from: Square): Set<Regular> {
+    private fun pawnMoves(position: Position, from: Square): Set<Move.Regular> {
         val piece = position.at(from).get()
         val direction = Pawns.direction(piece.color)
         val initialRow = if (piece.color === Color.WHITE) 1 else 6
@@ -155,18 +154,18 @@ object Rules {
         val forward = from.walk(0, direction)
             .takeWhile { position.at(it).isEmpty }
             .take(push.toLong())
-            .map { to -> Movements.Regular(from, to) }
+            .map { to -> Move.Regular(from, to) }
         val captures = from.translateAll(Pair(-1, direction), Pair(+1, direction))
             .filter { to -> position.at(to).exists { piece.isOpponent(it) } }
-            .map { to -> Movements.Regular(from, to) }
-        val enPassantCaptures: Set<Regular> =
+            .map { to -> Move.Regular(from, to) }
+        val enPassantCaptures: Set<Move.Regular> =
             if (Pawns.isEnPassantAvailable(from, position)) {
                 from.translateAll(Pair(-1, 0), Pair(+1, 0))
                     .filter { sq -> position.at(sq).exists { it == piece.color.opponent().pawn() } }
                     .map { to -> to.translate(0, direction).get() }
-                    .map { to -> Movements.Regular(from, to, enPassant = true) }
+                    .map { to -> Move.Regular(from, to, enPassant = true) }
             } else {
-                HashSet.empty<Regular>()
+                HashSet.empty<Move.Regular>()
             }
         return forward.appendAll(captures).appendAll(enPassantCaptures).toSet()
     }

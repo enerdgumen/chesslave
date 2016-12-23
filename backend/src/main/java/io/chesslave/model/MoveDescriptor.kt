@@ -1,6 +1,5 @@
 package io.chesslave.model
 
-import io.chesslave.model.Movements.Regular
 import io.chesslave.model.Piece.Type
 
 class MoveDescriptor {
@@ -15,11 +14,11 @@ class MoveDescriptor {
      * @return the move's description
      */
     fun describe(move: Move, position: Position): MoveDescription = when (move) {
-        is Movements.ShortCastling ->
+        is Move.ShortCastling ->
             MoveDescription.Castling(short = true, status = status(move, position, move.color.opponent()))
-        is Movements.LongCastling ->
+        is Move.LongCastling ->
             MoveDescription.Castling(short = false, status = status(move, position, move.color.opponent()))
-        is Movements.Regular ->
+        is Move.Regular ->
             MoveDescription.Regular(
                 fromSquare = fromSquareDescription(move, position),
                 toSquare = toSquareDescription(move.to),
@@ -30,7 +29,7 @@ class MoveDescriptor {
         else -> TODO("Moves should be an algebraic data type")
     }
 
-    private fun fromSquareDescription(move: Regular, position: Position): MoveDescription.Square {
+    private fun fromSquareDescription(move: Move.Regular, position: Position): MoveDescription.Square {
         val piece = position.at(move.from).get()
         val ambiguousSquares = ambiguousSquares(piece, move, position)
         return when {
@@ -52,14 +51,14 @@ class MoveDescriptor {
     private fun toSquareDescription(square: Square) =
         MoveDescription.Square(row = square.row, col = square.col)
 
-    private fun ambiguousSquares(piece: Piece, move: Regular, position: Position) =
+    private fun ambiguousSquares(piece: Piece, move: Move.Regular, position: Position) =
         position.toSet()
             .filter { it._1 != move.from && it._2 == piece }
             .flatMap { Rules.moves(position, it._1) }
             .filter { it.to == move.to }
             .map { it.from }
 
-    private fun isCapture(move: Movements.Regular, position: Position) =
+    private fun isCapture(move: Move.Regular, position: Position) =
         move.enPassant || position.at(move.to).isDefined
 
     private fun status(move: Move, position: Position, opponentColor: Color) =

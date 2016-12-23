@@ -6,7 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class MovementsTest {
+class MoveTest {
 
     @Test
     fun shortCastleWhiteTest() {
@@ -19,7 +19,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | |R")
-        val shortCastling = Movements.ShortCastling(Color.WHITE)
+        val shortCastling = Move.ShortCastling(Color.WHITE)
         val newPosition = shortCastling.apply(position)
 
         val noPieceOnE1 = newPosition.at(Board.e1)
@@ -45,7 +45,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             "R| | | |K| | | ")
-        val longCastling = Movements.LongCastling(Color.WHITE)
+        val longCastling = Move.LongCastling(Color.WHITE)
         val newPosition = longCastling.apply(position)
 
         val noPieceOnE1 = newPosition.at(Board.e1)
@@ -73,7 +73,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val shortCastling = Movements.ShortCastling(Color.BLACK)
+        val shortCastling = Move.ShortCastling(Color.BLACK)
         val newPosition = shortCastling.apply(position)
 
         val noPieceOnE8 = newPosition.at(Board.e8)
@@ -99,7 +99,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val longCastling = Movements.LongCastling(Color.BLACK)
+        val longCastling = Move.LongCastling(Color.BLACK)
         val newPosition = longCastling.apply(position)
 
         val noPieceOnE8 = newPosition.at(Board.e8)
@@ -127,7 +127,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val enPassant = Movements.Regular(Board.d5, Board.c6, enPassant = true)
+        val enPassant = Move.Regular(Board.d5, Board.c6, enPassant = true)
         val newPosition = enPassant.apply(position)
 
         val noPieceOnD5 = newPosition.at(Board.d5)
@@ -152,7 +152,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val enPassant = Movements.Regular(Board.g4, Board.f3, enPassant = true)
+        val enPassant = Move.Regular(Board.g4, Board.f3, enPassant = true)
         val newPosition = enPassant.apply(position)
 
         val noPieceOnG4 = newPosition.at(Board.g4)
@@ -177,7 +177,7 @@ class MovementsTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val promotion = Movements.Regular(Board.b7, Board.b8, promotion = Option.some(Type.QUEEN))
+        val promotion = Move.Regular(Board.b7, Board.b8, promotion = Option.some(Type.QUEEN))
         val newPosition = promotion.apply(position)
 
         val noPieceOnB7 = newPosition.at(Board.b7)
@@ -198,7 +198,7 @@ class MovementsTest {
             " | | | | | | | ",
             "P|P|P|P|P|P|P|P",
             "R|N|B|Q|K|B|N|R")
-        val firstMove = Movements.Regular(Board.e2, Board.e4)
+        val firstMove = Move.Regular(Board.e2, Board.e4)
         val newPosition = firstMove.apply(position)
 
         val noPieceOnE2 = newPosition.at(Board.e2)
@@ -219,7 +219,7 @@ class MovementsTest {
             " | | | | |N| | ",
             "P|P|P|P| |P|P|P",
             "R|N|B|Q|K| | |R")
-        val bishopTakesKnight = Movements.Regular(Board.b5, Board.c6)
+        val bishopTakesKnight = Move.Regular(Board.b5, Board.c6)
         val newPosition = bishopTakesKnight.apply(position)
 
         val noPieceOnB5 = newPosition.at(Board.b5)
@@ -231,11 +231,11 @@ class MovementsTest {
 
     @Test
     fun toStringTest() {
-        val regular = Movements.Regular(Board.b5, Board.c6)
+        val regular = Move.Regular(Board.b5, Board.c6)
         assertTrue(regular.toString().startsWith("Regular"))
-        val shortCastling = Movements.ShortCastling(Color.WHITE)
+        val shortCastling = Move.ShortCastling(Color.WHITE)
         assertTrue(shortCastling.toString().startsWith("ShortCastling"))
-        val longCastling = Movements.LongCastling(Color.BLACK)
+        val longCastling = Move.LongCastling(Color.BLACK)
         assertTrue(longCastling.toString().startsWith("LongCastling"))
     }
 }

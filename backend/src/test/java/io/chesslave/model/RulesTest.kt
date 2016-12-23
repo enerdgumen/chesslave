@@ -429,13 +429,13 @@ class RulesTest {
             " | | | | | | | ")
         val got = Rules.allMoves(position, Color.WHITE).toSet()
         val expected = HashSet.of(
-            Movements.Regular(Board.c5, Board.b4),
-            Movements.Regular(Board.c5, Board.b5),
-            Movements.Regular(Board.c5, Board.b6),
-            Movements.Regular(Board.c5, Board.d4),
-            Movements.Regular(Board.c5, Board.d5),
-            Movements.Regular(Board.b7, Board.c8),
-            Movements.Regular(Board.e5, Board.c6))
+            Move.Regular(Board.c5, Board.b4),
+            Move.Regular(Board.c5, Board.b5),
+            Move.Regular(Board.c5, Board.b6),
+            Move.Regular(Board.c5, Board.d4),
+            Move.Regular(Board.c5, Board.d5),
+            Move.Regular(Board.b7, Board.c8),
+            Move.Regular(Board.e5, Board.c6))
         assertEquals(expected, got)
     }
 
