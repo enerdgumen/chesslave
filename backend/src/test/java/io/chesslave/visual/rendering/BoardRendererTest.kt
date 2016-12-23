@@ -1,10 +1,7 @@
 package io.chesslave.visual.rendering
 
-import io.chesslave.model.Color
-import io.chesslave.model.Piece
+import io.chesslave.model.*
 import io.chesslave.model.Piece.Type
-import io.chesslave.model.Position
-import io.chesslave.model.Square
 import io.chesslave.visual.Images
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -15,18 +12,18 @@ class BoardRendererTest {
     val imagesPath = "/images/visual/rendering/"
     val chessSet = ChessSet.read("/images/set1/")
     val position = Position.Builder()
-        .withPiece(Square.of("a1"), Piece(Type.ROOK, Color.WHITE))
-        .withPiece(Square.of("b2"), Piece(Type.KNIGHT, Color.WHITE))
-        .withPiece(Square.of("c3"), Piece(Type.BISHOP, Color.WHITE))
-        .withPiece(Square.of("d4"), Piece(Type.QUEEN, Color.WHITE))
-        .withPiece(Square.of("e5"), Piece(Type.KING, Color.WHITE))
-        .withPiece(Square.of("f6"), Piece(Type.PAWN, Color.WHITE))
-        .withPiece(Square.of("h8"), Piece(Type.ROOK, Color.BLACK))
-        .withPiece(Square.of("g7"), Piece(Type.KNIGHT, Color.BLACK))
-        .withPiece(Square.of("f5"), Piece(Type.BISHOP, Color.BLACK))
-        .withPiece(Square.of("e4"), Piece(Type.QUEEN, Color.BLACK))
-        .withPiece(Square.of("d3"), Piece(Type.KING, Color.BLACK))
-        .withPiece(Square.of("c2"), Piece(Type.PAWN, Color.BLACK))
+        .withPiece(Board.a1, Piece(Type.ROOK, Color.WHITE))
+        .withPiece(Board.b2, Piece(Type.KNIGHT, Color.WHITE))
+        .withPiece(Board.c3, Piece(Type.BISHOP, Color.WHITE))
+        .withPiece(Board.d4, Piece(Type.QUEEN, Color.WHITE))
+        .withPiece(Board.e5, Piece(Type.KING, Color.WHITE))
+        .withPiece(Board.f6, Piece(Type.PAWN, Color.WHITE))
+        .withPiece(Board.h8, Piece(Type.ROOK, Color.BLACK))
+        .withPiece(Board.g7, Piece(Type.KNIGHT, Color.BLACK))
+        .withPiece(Board.f5, Piece(Type.BISHOP, Color.BLACK))
+        .withPiece(Board.e4, Piece(Type.QUEEN, Color.BLACK))
+        .withPiece(Board.d3, Piece(Type.KING, Color.BLACK))
+        .withPiece(Board.c2, Piece(Type.PAWN, Color.BLACK))
         .build()
 
     @Test
@@ -39,8 +36,8 @@ class BoardRendererTest {
     @Test
     fun renderEmptyPositionCustomBackgroundTest() {
         val got = BoardRenderer.using(chessSet)
-            .withBackground(Square.of("d4"), java.awt.Color.RED)
-            .withBackground(Square.of("e5"), java.awt.Color.YELLOW)
+            .withBackground(Board.d4, java.awt.Color.RED)
+            .withBackground(Board.e5, java.awt.Color.YELLOW)
             .toBoardImage().image()
         val expected = Images.read(imagesPath + "no-position-with-custom-bg.png")
         assertTrue(Images.areEquals(expected, got))
@@ -59,7 +56,7 @@ class BoardRendererTest {
     fun renderPositionCustomBackgroundTest() {
         val got = BoardRenderer.using(chessSet)
             .withPosition(position)
-            .withBackground(Square.of("h8"), java.awt.Color.BLUE)
+            .withBackground(Board.h8, java.awt.Color.BLUE)
             .toBoardImage().image()
         val expected = Images.read(imagesPath + "with-position-with-custom-bg.png")
         assertTrue(Images.areEquals(expected, got))

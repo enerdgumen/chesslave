@@ -19,7 +19,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printStandardPawnMove() {
-        val move = Movements.Regular(Square.of("e2"), Square.of("e4"))
+        val move = Movements.Regular(Board.e2, Board.e4)
         val position = Positions.fromText(
             "r|n|b|q|k|b|n|r",
             "p|p|p|p|p|p|p|p",
@@ -34,7 +34,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCapturePawnMove() {
-        val move = Movements.Regular(Square.of("c5"), Square.of("d4"))
+        val move = Movements.Regular(Board.c5, Board.d4)
         val position = Positions.fromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
@@ -49,7 +49,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printEnPassantPawnMove() {
-        val move = Movements.Regular(Square.of("d5"), Square.of("c6"), enPassant = true)
+        val move = Movements.Regular(Board.d5, Board.c6, enPassant = true)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -64,7 +64,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckPawnMove() {
-        val move = Movements.Regular(Square.of("h2"), Square.of("h3"))
+        val move = Movements.Regular(Board.h2, Board.h3)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -79,7 +79,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckmatePawnMove() {
-        val move = Movements.Regular(Square.of("h2"), Square.of("h3"))
+        val move = Movements.Regular(Board.h2, Board.h3)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -94,7 +94,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousCapturePawnMove() {
-        val move = Movements.Regular(Square.of("c4"), Square.of("d5"))
+        val move = Movements.Regular(Board.c4, Board.d5)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -109,7 +109,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousCaptureCheckPawnMove() {
-        val move = Movements.Regular(Square.of("c4"), Square.of("d5"))
+        val move = Movements.Regular(Board.c4, Board.d5)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -124,7 +124,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousEnPassantPawnMove() {
-        val move = Movements.Regular(Square.of("d5"), Square.of("c6"), enPassant = true)
+        val move = Movements.Regular(Board.d5, Board.c6, enPassant = true)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -139,7 +139,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printFalseEnPassantPawnMove() {
-        val move = Movements.Regular(Square.of("d4"), Square.of("c5"))
+        val move = Movements.Regular(Board.d4, Board.c5)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -158,7 +158,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printStandardKnightMove() {
-        val move = Movements.Regular(Square.of("g1"), Square.of("f3"))
+        val move = Movements.Regular(Board.g1, Board.f3)
         val position = Positions.fromText(
             "r|n|b|q|k|b|n|r",
             "p|p|p|p|p|p|p|p",
@@ -173,7 +173,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCaptureKnightMove() {
-        val move = Movements.Regular(Square.of("f3"), Square.of("d4"))
+        val move = Movements.Regular(Board.f3, Board.d4)
         val position = Positions.fromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
@@ -188,7 +188,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckKnightMove() {
-        val move = Movements.Regular(Square.of("e4"), Square.of("f6"))
+        val move = Movements.Regular(Board.e4, Board.f6)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -203,7 +203,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckmateKnightMove() {
-        val move = Movements.Regular(Square.of("g5"), Square.of("f7"))
+        val move = Movements.Regular(Board.g5, Board.f7)
         val position = Positions.fromText(
             " |r| | | | |r|k",
             " | | | | | |p|p",
@@ -218,7 +218,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousKnightMove() {
-        val move = Movements.Regular(Square.of("g3"), Square.of("e4"))
+        val move = Movements.Regular(Board.g3, Board.e4)
         val position = Positions.fromText(
             " |r| | | | |r| ",
             " | | |k| | |p|p",
@@ -233,7 +233,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousCaptureKnightMove() {
-        val move = Movements.Regular(Square.of("d2"), Square.of("e4"))
+        val move = Movements.Regular(Board.d2, Board.e4)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | |p|p",
@@ -248,7 +248,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousCheckmateKnightMove() {
-        val move = Movements.Regular(Square.of("g5"), Square.of("f7"))
+        val move = Movements.Regular(Board.g5, Board.f7)
         val position = Positions.fromText(
             " |r| | | | |r|k",
             " | | | | | |p|p",
@@ -267,7 +267,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printStandardBishopMove() {
-        val move = Movements.Regular(Square.of("f1"), Square.of("b5"))
+        val move = Movements.Regular(Board.f1, Board.b5)
         val position = Positions.fromText(
             "r| |b|q|k|b|n|r",
             "p|p|p|p| |p|p|p",
@@ -282,7 +282,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCaptureBishopMove() {
-        val move = Movements.Regular(Square.of("b5"), Square.of("c6"))
+        val move = Movements.Regular(Board.b5, Board.c6)
         val position = Positions.fromText(
             "r| |b|q|k|b|n|r",
             " |p|p|p| |p|p|p",
@@ -297,7 +297,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckBishopMove() {
-        val move = Movements.Regular(Square.of("f1"), Square.of("b5"))
+        val move = Movements.Regular(Board.f1, Board.b5)
         val position = Positions.fromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
@@ -312,7 +312,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckmateBishopMove() {
-        val move = Movements.Regular(Square.of("f1"), Square.of("b5"))
+        val move = Movements.Regular(Board.f1, Board.b5)
         val position = Positions.fromText(
             " | | | |k|r| | ",
             "p|p| | |b|p|p|p",
@@ -331,7 +331,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printStandardRookMove() {
-        val move = Movements.Regular(Square.of("f1"), Square.of("e1"))
+        val move = Movements.Regular(Board.f1, Board.e1)
         val position = Positions.fromText(
             "r| |b|q|k| | |r",
             "p|p|p|p|b|p|p|p",
@@ -346,7 +346,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCaptureRookMove() {
-        val move = Movements.Regular(Square.of("b8"), Square.of("b5"))
+        val move = Movements.Regular(Board.b8, Board.b5)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -361,7 +361,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckRookMove() {
-        val move = Movements.Regular(Square.of("b8"), Square.of("c8"))
+        val move = Movements.Regular(Board.b8, Board.c8)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -376,7 +376,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckmateRookMove() {
-        val move = Movements.Regular(Square.of("c2"), Square.of("a2"))
+        val move = Movements.Regular(Board.c2, Board.a2)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -391,7 +391,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousRookMove() {
-        val move = Movements.Regular(Square.of("b8"), Square.of("b2"))
+        val move = Movements.Regular(Board.b8, Board.b2)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -406,7 +406,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printExtremeAmbiguousRookMove() {
-        val move = Movements.Regular(Square.of("b1"), Square.of("b2"))
+        val move = Movements.Regular(Board.b1, Board.b2)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -421,7 +421,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousCheckmateRookMove() {
-        val move = Movements.Regular(Square.of("c2"), Square.of("b2"))
+        val move = Movements.Regular(Board.c2, Board.b2)
         val position = Positions.fromText(
             " |r| | | | | | ",
             " | | |k| | | | ",
@@ -440,7 +440,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printStandardQueenMove() {
-        val move = Movements.Regular(Square.of("d1"), Square.of("e2"))
+        val move = Movements.Regular(Board.d1, Board.e2)
         val position = Positions.fromText(
             "r| |b|q|k| | |r",
             "p|p|p|p|b|p|p|p",
@@ -455,7 +455,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCaptureQueenMove() {
-        val move = Movements.Regular(Square.of("d8"), Square.of("d7"))
+        val move = Movements.Regular(Board.d8, Board.d7)
         val position = Positions.fromText(
             "r|n| |q|k|b|n|r",
             "p|p| |B|p|p|p|p",
@@ -470,7 +470,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckQueenMove() {
-        val move = Movements.Regular(Square.of("d3"), Square.of("h7"))
+        val move = Movements.Regular(Board.d3, Board.h7)
         val position = Positions.fromText(
             " |r| |q|r| |k| ",
             " | | | | |p|p| ",
@@ -485,7 +485,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCheckmateQueenMove() {
-        val move = Movements.Regular(Square.of("d3"), Square.of("h7"))
+        val move = Movements.Regular(Board.d3, Board.h7)
         val position = Positions.fromText(
             " |r| |q| |r|k| ",
             " | | | | |p|p| ",
@@ -500,7 +500,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCaptureCheckmateQueenMove() {
-        val move = Movements.Regular(Square.of("d3"), Square.of("h7"))
+        val move = Movements.Regular(Board.d3, Board.h7)
         val position = Positions.fromText(
             " |r| |q| |r|k| ",
             " | | | | |p|p|p",
@@ -515,7 +515,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousQueenMove() {
-        val move = Movements.Regular(Square.of("g8"), Square.of("b8"))
+        val move = Movements.Regular(Board.g8, Board.b8)
         val position = Positions.fromText(
             " | | | | | |Q| ",
             " | | | |k| | | ",
@@ -530,7 +530,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousCheckQueenMove() {
-        val move = Movements.Regular(Square.of("b5"), Square.of("e8"))
+        val move = Movements.Regular(Board.b5, Board.e8)
         val position = Positions.fromText(
             " | | | | | |Q| ",
             " | | | |k| | | ",
@@ -545,7 +545,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printExtremeAmbiguousCheckQueenMove() {
-        val move = Movements.Regular(Square.of("b5"), Square.of("e8"))
+        val move = Movements.Regular(Board.b5, Board.e8)
         val position = Positions.fromText(
             " |Q| | | | |Q| ",
             " | | | |k| | | ",
@@ -564,7 +564,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printStandardKingMove() {
-        val move = Movements.Regular(Square.of("g1"), Square.of("h1"))
+        val move = Movements.Regular(Board.g1, Board.h1)
         val position = Positions.fromText(
             "r| |b|q| |r|k| ",
             "p|p|p|p|b|p|p|p",
@@ -579,7 +579,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printCaptureKingMove() {
-        val move = Movements.Regular(Square.of("c4"), Square.of("b5"))
+        val move = Movements.Regular(Board.c4, Board.b5)
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | |k| | | | ",

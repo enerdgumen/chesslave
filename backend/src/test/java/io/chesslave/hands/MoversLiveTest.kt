@@ -4,6 +4,7 @@ import io.chesslave.eyes.Vision
 import io.chesslave.eyes.sikuli.SikuliScreen
 import io.chesslave.eyes.sikuli.SikuliVision
 import io.chesslave.hands.sikuli.SikuliPointer
+import io.chesslave.model.Board
 import io.chesslave.model.Square
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
@@ -92,17 +93,28 @@ class MoversLiveTest(val subject: Mover, val resetButtonPoint: Point, val flipBu
 
     @Test
     fun spanishOpeningTest() {
-        subject(Square.of("e2"), Square.of("e4"))
-        subject(Square.of("e7"), Square.of("e5"))
-        subject(Square.of("g1"), Square.of("f3"))
-        subject(Square.of("b8"), Square.of("c6"))
-        subject(Square.of("f1"), Square.of("b5"))
-        subject(Square.of("g8"), Square.of("f6"))
-        subject(Square.of("e1"), Square.of("g1"))
-        subject(Square.of("f8"), Square.of("e7"))
-        subject(Square.of("f1"), Square.of("e1"))
-        subject(Square.of("a7"), Square.of("a6"))
+        subject(Board.e2, Board.e4)
+        subject(Board.e7, Board.e5)
+        subject(Board.g1, Board.f3)
+        subject(Board.b8, Board.c6)
+        subject(Board.f1, Board.b5)
+        subject(Board.g8, Board.f6)
+        subject(Board.e1, Board.g1)
+        subject(Board.f8, Board.e7)
+        subject(Board.f1, Board.e1)
+        subject(Board.a7, Board.a6)
         // awkward move, but it tests captures ;)
-        subject(Square.of("b5"), Square.of("c6"))
+        subject(Board.b5, Board.c6)
+    }
+}
+
+class Asd {
+    @Test
+    fun asd() {
+        for (col in 0..7) {
+            for (row in 0..7) {
+                println("val ${'a'+col}${'1'+row} = Square($col, $row)")
+            }
+        }
     }
 }

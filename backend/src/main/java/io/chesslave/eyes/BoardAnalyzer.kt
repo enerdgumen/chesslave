@@ -1,5 +1,6 @@
 package io.chesslave.eyes
 
+import io.chesslave.model.Board
 import io.chesslave.model.Color
 import io.chesslave.model.Piece
 import io.chesslave.model.Piece.Type
@@ -18,18 +19,18 @@ class BoardAnalyzer {
         val withoutBorder = Images.crop(withoutBackground) { it !== chars.whiteColor && it !== chars.blackColor }
         val board = BoardImage(withoutBorder)
         val pieces = HashMap.of<Piece, BufferedImage>(
-            Piece(Type.PAWN, Color.BLACK), cropPiece(board, Square.of("b7")),
-            Piece(Type.KNIGHT, Color.BLACK), cropPiece(board, Square.of("g8")),
-            Piece(Type.BISHOP, Color.BLACK), cropPiece(board, Square.of("c8")),
-            Piece(Type.ROOK, Color.BLACK), cropPiece(board, Square.of("a8")),
-            Piece(Type.QUEEN, Color.BLACK), Images.fillOuterBackground(cropPiece(board, Square.of("d8")), chars.whiteColor),
-            Piece(Type.KING, Color.BLACK), cropPiece(board, Square.of("e8")),
-            Piece(Type.PAWN, Color.WHITE), cropPiece(board, Square.of("b2")),
-            Piece(Type.KNIGHT, Color.WHITE), cropPiece(board, Square.of("g1")),
-            Piece(Type.BISHOP, Color.WHITE), cropPiece(board, Square.of("c1")),
-            Piece(Type.ROOK, Color.WHITE), cropPiece(board, Square.of("a1")),
-            Piece(Type.QUEEN, Color.WHITE), Images.fillOuterBackground(cropPiece(board, Square.of("d1")), chars.blackColor),
-            Piece(Type.KING, Color.WHITE), cropPiece(board, Square.of("e1")))
+            Piece(Type.PAWN, Color.BLACK), cropPiece(board, Board.b7),
+            Piece(Type.KNIGHT, Color.BLACK), cropPiece(board, Board.g8),
+            Piece(Type.BISHOP, Color.BLACK), cropPiece(board, Board.c8),
+            Piece(Type.ROOK, Color.BLACK), cropPiece(board, Board.a8),
+            Piece(Type.QUEEN, Color.BLACK), Images.fillOuterBackground(cropPiece(board, Board.d8), chars.whiteColor),
+            Piece(Type.KING, Color.BLACK), cropPiece(board, Board.e8),
+            Piece(Type.PAWN, Color.WHITE), cropPiece(board, Board.b2),
+            Piece(Type.KNIGHT, Color.WHITE), cropPiece(board, Board.g1),
+            Piece(Type.BISHOP, Color.WHITE), cropPiece(board, Board.c1),
+            Piece(Type.ROOK, Color.WHITE), cropPiece(board, Board.a1),
+            Piece(Type.QUEEN, Color.WHITE), Images.fillOuterBackground(cropPiece(board, Board.d1), chars.blackColor),
+            Piece(Type.KING, Color.WHITE), cropPiece(board, Board.e1))
         return BoardConfiguration(board, pieces, chars, false)
     }
 

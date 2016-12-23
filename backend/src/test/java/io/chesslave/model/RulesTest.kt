@@ -21,8 +21,8 @@ class RulesTest {
             " |r|*|N| | | | ",
             " | |P| | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("c2")).map { it.to }
-        val expected = HashSet.of(Square.of("c3"), Square.of("c4"), Square.of("b3"))
+        val got = Rules.moves(position, Board.c2).map { it.to }
+        val expected = HashSet.of(Board.c3, Board.c4, Board.b3)
         assertEquals(expected, got)
     }
 
@@ -37,8 +37,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("c7")).map { it.to }
-        val expected = HashSet.of(Square.of("c6"), Square.of("c5"), Square.of("b6"))
+        val got = Rules.moves(position, Board.c7).map { it.to }
+        val expected = HashSet.of(Board.c6, Board.c5, Board.b6)
         assertEquals(expected, got)
     }
 
@@ -53,7 +53,7 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("c4")).map { it.to }
+        val got = Rules.moves(position, Board.c4).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -69,8 +69,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("d5")).map { it.to }
-        val expected = HashSet.of(Square.of("d6"), Square.of("c6"))
+        val got = Rules.moves(position, Board.d5).map { it.to }
+        val expected = HashSet.of(Board.d6, Board.c6)
         assertEquals(expected, got)
     }
 
@@ -85,8 +85,8 @@ class RulesTest {
             " | |*|*| | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("c4")).map { it.to }
-        val expected = HashSet.of(Square.of("c3"), Square.of("d3"))
+        val got = Rules.moves(position, Board.c4).map { it.to }
+        val expected = HashSet.of(Board.c3, Board.d3)
         assertEquals(expected, got)
     }
 
@@ -101,8 +101,8 @@ class RulesTest {
             " | |r| | |*|K| ",
             " | | | | |P| | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("f2")).map { it.to }
-        val expected = HashSet.of(Square.of("f3"))
+        val got = Rules.moves(position, Board.f2).map { it.to }
+        val expected = HashSet.of(Board.f3)
         assertEquals(expected, got)
     }
 
@@ -117,8 +117,8 @@ class RulesTest {
             " | | | | | |K| ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.attackingPawnSquares(Square.of("d5"), Color.BLACK, position)
-        val expected = HashSet.of(Square.of("e6"))
+        val got = Rules.attackingPawnSquares(Board.d5, Color.BLACK, position)
+        val expected = HashSet.of(Board.e6)
         assertEquals(expected, got)
     }
 
@@ -133,8 +133,8 @@ class RulesTest {
             " | | | |p| |K| ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.attackingPawnSquares(Square.of("d4"), Color.BLACK, position)
-        val expected = HashSet.of(Square.of("c4"))
+        val got = Rules.attackingPawnSquares(Board.d4, Color.BLACK, position)
+        val expected = HashSet.of(Board.c4)
         assertEquals(expected, got)
     }
 
@@ -153,10 +153,10 @@ class RulesTest {
             " | | |*|*|*| | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("e4")).map { it.to }
+        val got = Rules.moves(position, Board.e4).map { it.to }
         val expected = HashSet.of(
-            Square.of("e5"), Square.of("f5"), Square.of("f4"), Square.of("f3"),
-            Square.of("e3"), Square.of("d3"), Square.of("d4"), Square.of("d5"))
+            Board.e5, Board.f5, Board.f4, Board.f3,
+            Board.e3, Board.d3, Board.d4, Board.d5)
         assertEquals(expected, got)
     }
 
@@ -171,8 +171,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("e8")).map { it.to }
-        val expected = HashSet.of(Square.of("f8"), Square.of("f7"), Square.of("e7"), Square.of("d7"), Square.of("d8"))
+        val got = Rules.moves(position, Board.e8).map { it.to }
+        val expected = HashSet.of(Board.f8, Board.f7, Board.e7, Board.d7, Board.d8)
         assertEquals(expected, got)
     }
 
@@ -187,8 +187,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("e8")).map { it.to }
-        val expected = HashSet.of(Square.of("f7"), Square.of("d7"))
+        val got = Rules.moves(position, Board.e8).map { it.to }
+        val expected = HashSet.of(Board.f7, Board.d7)
         assertEquals(expected, got)
     }
 
@@ -203,8 +203,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("f8")).map { it.to }
-        val expected = HashSet.of(Square.of("e7"))
+        val got = Rules.moves(position, Board.f8).map { it.to }
+        val expected = HashSet.of(Board.e7)
         assertEquals(expected, got)
     }
 
@@ -219,8 +219,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("e8")).map { it.to }
-        val expected = HashSet.of(Square.of("d7"), Square.of("d8"))
+        val got = Rules.moves(position, Board.e8).map { it.to }
+        val expected = HashSet.of(Board.d7, Board.d8)
         assertEquals(expected, got)
     }
 
@@ -235,8 +235,8 @@ class RulesTest {
             " | | | | | | |P",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("f8")).map { it.to }
-        val expected = HashSet.of(Square.of("e8"), Square.of("g8"))
+        val got = Rules.moves(position, Board.f8).map { it.to }
+        val expected = HashSet.of(Board.e8, Board.g8)
         assertEquals(expected, got)
     }
 
@@ -251,7 +251,7 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("e8")).map { it.to }
+        val got = Rules.moves(position, Board.e8).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -267,7 +267,7 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = Rules.moves(position, Square.of("f8")).map { it.to }
+        val got = Rules.moves(position, Board.f8).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -287,10 +287,10 @@ class RulesTest {
             " | |*| | | |*| ",
             " | | |*| |*| | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("e4")).map { it.to }
+        val got = Rules.moves(position, Board.e4).map { it.to }
         val expected = HashSet.of(
-            Square.of("f6"), Square.of("g5"), Square.of("g3"), Square.of("f2"),
-            Square.of("d2"), Square.of("c3"), Square.of("c5"), Square.of("d6"))
+            Board.f6, Board.g5, Board.g3, Board.f2,
+            Board.d2, Board.c3, Board.c5, Board.d6)
         assertEquals(expected, got)
     }
 
@@ -305,7 +305,7 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("e4")).map { it.to }
+        val got = Rules.moves(position, Board.e4).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -321,8 +321,8 @@ class RulesTest {
             " | | | |*| | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("c4")).map { it.to }
-        val expected = HashSet.of(Square.of("e5"), Square.of("e3"))
+        val got = Rules.moves(position, Board.c4).map { it.to }
+        val expected = HashSet.of(Board.e5, Board.e3)
         assertEquals(expected, got)
     }
 
@@ -337,8 +337,8 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | |N")
-        val got = Rules.moves(position, Square.of("h1")).map { it.to }
-        val expected = HashSet.of(Square.of("f2"), Square.of("g3"))
+        val got = Rules.moves(position, Board.h1).map { it.to }
+        val expected = HashSet.of(Board.f2, Board.g3)
         assertEquals(expected, got)
     }
 
@@ -357,10 +357,10 @@ class RulesTest {
             " | | |*| |*| | ",
             " | |*| | | |P| ",
             " |*| | |K| | | ")
-        val got = Rules.moves(position, Square.of("e4")).map { it.to }
+        val got = Rules.moves(position, Board.e4).map { it.to }
         val expected = HashSet.of(
-            Square.of("f5"), Square.of("g6"), Square.of("f3"), Square.of("d3"),
-            Square.of("c2"), Square.of("b1"), Square.of("d5"), Square.of("c6"))
+            Board.f5, Board.g6, Board.f3, Board.d3,
+            Board.c2, Board.b1, Board.d5, Board.c6)
         assertEquals(expected, got)
     }
 
@@ -379,11 +379,11 @@ class RulesTest {
             " | | | |*| | | ",
             " | | | |*| | | ",
             " | | | |K| | | ")
-        val got = Rules.moves(position, Square.of("e4")).map { it.to }
+        val got = Rules.moves(position, Board.e4).map { it.to }
         val expected = HashSet.of(
-            Square.of("e5"), Square.of("e6"), Square.of("e7"), Square.of("f4"),
-            Square.of("g4"), Square.of("h4"), Square.of("e3"), Square.of("e2"),
-            Square.of("d4"))
+            Board.e5, Board.e6, Board.e7, Board.f4,
+            Board.g4, Board.h4, Board.e3, Board.e2,
+            Board.d4)
         assertEquals(expected, got)
     }
 
@@ -402,13 +402,13 @@ class RulesTest {
             " | | |*|*|*| | ",
             " | |*| |*| |P| ",
             " |*| | |K| | | ")
-        val got = Rules.moves(position, Square.of("e4")).map { it.to }
+        val got = Rules.moves(position, Board.e4).map { it.to }
         val expected = HashSet.of(
-            Square.of("e5"), Square.of("e6"), Square.of("e7"), Square.of("f5"),
-            Square.of("g6"), Square.of("f4"), Square.of("g4"), Square.of("h4"),
-            Square.of("f3"), Square.of("e3"), Square.of("e2"), Square.of("d3"),
-            Square.of("c2"), Square.of("b1"), Square.of("d4"), Square.of("d5"),
-            Square.of("c6"))
+            Board.e5, Board.e6, Board.e7, Board.f5,
+            Board.g6, Board.f4, Board.g4, Board.h4,
+            Board.f3, Board.e3, Board.e2, Board.d3,
+            Board.c2, Board.b1, Board.d4, Board.d5,
+            Board.c6)
         assertEquals(expected, got)
     }
 
@@ -429,13 +429,13 @@ class RulesTest {
             " | | | | | | | ")
         val got = Rules.allMoves(position, Color.WHITE).toSet()
         val expected = HashSet.of(
-            Movements.Regular(Square.of("c5"), Square.of("b4")),
-            Movements.Regular(Square.of("c5"), Square.of("b5")),
-            Movements.Regular(Square.of("c5"), Square.of("b6")),
-            Movements.Regular(Square.of("c5"), Square.of("d4")),
-            Movements.Regular(Square.of("c5"), Square.of("d5")),
-            Movements.Regular(Square.of("b7"), Square.of("c8")),
-            Movements.Regular(Square.of("e5"), Square.of("c6")))
+            Movements.Regular(Board.c5, Board.b4),
+            Movements.Regular(Board.c5, Board.b5),
+            Movements.Regular(Board.c5, Board.b6),
+            Movements.Regular(Board.c5, Board.d4),
+            Movements.Regular(Board.c5, Board.d5),
+            Movements.Regular(Board.b7, Board.c8),
+            Movements.Regular(Board.e5, Board.c6))
         assertEquals(expected, got)
     }
 
@@ -454,7 +454,7 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val moves = Rules.moves(position, Square.of("e4"))
+        val moves = Rules.moves(position, Board.e4)
         assertEquals(HashSet.empty<Any>(), moves)
     }
 
@@ -469,7 +469,7 @@ class RulesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val moves = Rules.moves(position, Square.of("a2"))
+        val moves = Rules.moves(position, Board.a2)
         assertEquals(HashSet.empty<Any>(), moves)
     }
 }

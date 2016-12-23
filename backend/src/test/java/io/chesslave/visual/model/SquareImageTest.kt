@@ -23,7 +23,7 @@ class SquareImageTest(val board: BufferedImage, val flipped: Boolean) {
                 arrayOf(Images.read("/images/visual/flipped-board.png"), true))
     }
 
-    val square = Square.of("g1")
+    val square = Board.g1
     val squareImage = SquareImage(board, square, flipped)
 
     @Test

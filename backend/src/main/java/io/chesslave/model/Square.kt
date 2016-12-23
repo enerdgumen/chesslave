@@ -82,15 +82,6 @@ class Square(val col: Int, val row: Int) {
     companion object {
 
         /**
-         * @return The square for the specified human-readable coordinates (i.e. "a1", "c4", ect.)
-         */
-        @JvmStatic fun of(coordinates: String): Square {
-            if (coordinates.length != 2) throw IllegalArgumentException("bad coordinate $coordinates")
-            val coo = coordinates.toLowerCase()
-            return Square(coo[0] - 'a', coo[1] - '1')
-        }
-
-        /**
          * @return All the available squares on the board.
          */
         @JvmStatic fun all(): Set<Square> {
@@ -98,4 +89,13 @@ class Square(val col: Int, val row: Int) {
             return HashSet.ofAll(range.flatMap { col -> range.map { row -> Square(col, row) } })
         }
     }
+}
+
+/**
+ * @return The square for the specified human-readable coordinates (i.e. "a1", "c4", ect.)
+ */
+fun Square(coordinates: String): Square {
+    if (coordinates.length != 2) throw IllegalArgumentException("bad coordinate $coordinates")
+    val coo = coordinates.toLowerCase()
+    return Square(coo[0] - 'a', coo[1] - '1')
 }

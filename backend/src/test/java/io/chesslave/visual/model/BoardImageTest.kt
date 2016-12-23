@@ -1,5 +1,6 @@
 package io.chesslave.visual.model
 
+import io.chesslave.model.Board
 import io.chesslave.model.Square
 import io.chesslave.visual.Images
 import org.junit.Assert.*
@@ -77,9 +78,9 @@ class BoardImageTest {
 
     private fun validateBoardImage(boardImage: BoardImage) {
         assertTrue(Images.areEquals(boardImage.image(), if (boardImage.flipped()) flippedBoard else unflippedBoard))
-        assertTrue(Images.areEquals(boardImage.squareImage(Square.of("g1")).image(), knight))
-        assertTrue(Images.areEquals(boardImage.squareImage(Square.of("d7")).image(), pawn))
-        assertTrue(Images.areEquals(boardImage.squareImage(Square.of("e4")).image(), lightSquare))
-        assertTrue(Images.areEquals(boardImage.squareImage(Square.of("e5")).image(), darkSquare))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.g1).image(), knight))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.d7).image(), pawn))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.e4).image(), lightSquare))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.e5).image(), darkSquare))
     }
 }

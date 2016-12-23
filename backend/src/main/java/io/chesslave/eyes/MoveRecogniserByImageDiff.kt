@@ -13,13 +13,13 @@ import javaslang.control.Option
 class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
 
     private val whiteShortCastlingSquares = HashSet.of(
-        Square.of("e1"), Square.of("f1"), Square.of("g1"), Square.of("h1"))
+        Board.e1, Board.f1, Board.g1, Board.h1)
     private val whiteLongCastlingSquares = HashSet.of(
-        Square.of("e1"), Square.of("d1"), Square.of("c1"), Square.of("a1"))
+        Board.e1, Board.d1, Board.c1, Board.a1)
     private val blackShortCastlingSquares = HashSet.of(
-        Square.of("e8"), Square.of("f8"), Square.of("g8"), Square.of("h8"))
+        Board.e8, Board.f8, Board.g8, Board.h8)
     private val blackLongCastlingSquares = HashSet.of(
-        Square.of("e8"), Square.of("d8"), Square.of("c8"), Square.of("a8"))
+        Board.e8, Board.d8, Board.c8, Board.a8)
 
     /**
      * Detects the move by analyzing the differences between the two images.

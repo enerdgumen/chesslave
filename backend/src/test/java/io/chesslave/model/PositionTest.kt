@@ -21,112 +21,112 @@ class PositionTest {
 
     @Test
     fun atTest() {
-        val whiteKing = position.at(Square.of("e1"))
+        val whiteKing = position.at(Board.e1)
         assertTrue(whiteKing.isDefined)
         assertEquals(Piece(Type.KING, Color.WHITE), whiteKing.get())
 
-        val blackQueen = position.at(Square.of("d8"))
+        val blackQueen = position.at(Board.d8)
         assertTrue(blackQueen.isDefined)
         assertEquals(Piece(Type.QUEEN, Color.BLACK), blackQueen.get())
 
-        val noPiece = position.at(Square.of("b4"))
+        val noPiece = position.at(Board.b4)
         assertTrue(noPiece.isEmpty)
     }
 
     @Test
     fun putTest() {
-        val newPosition = position.put(Square.of("e4"), Piece(Type.PAWN, Color.BLACK))
-        val whiteKing = newPosition.at(Square.of("e1"))
+        val newPosition = position.put(Board.e4, Piece(Type.PAWN, Color.BLACK))
+        val whiteKing = newPosition.at(Board.e1)
         assertTrue(whiteKing.isDefined)
         assertEquals(Piece(Type.KING, Color.WHITE), whiteKing.get())
 
-        val blackPawn = newPosition.at(Square.of("e4"))
+        val blackPawn = newPosition.at(Board.e4)
         assertTrue(blackPawn.isDefined)
         assertEquals(Piece(Type.PAWN, Color.BLACK), blackPawn.get())
 
-        val noPiece = newPosition.at(Square.of("g3"))
+        val noPiece = newPosition.at(Board.g3)
         assertTrue(noPiece.isEmpty)
     }
 
     @Test
     fun removeTest() {
-        val newPosition = position.remove(Square.of("a2"))
-        val whiteKing = newPosition.at(Square.of("e1"))
+        val newPosition = position.remove(Board.a2)
+        val whiteKing = newPosition.at(Board.e1)
         assertTrue(whiteKing.isDefined)
         assertEquals(Piece(Type.KING, Color.WHITE), whiteKing.get())
 
-        val noPiece = newPosition.at(Square.of("a2"))
+        val noPiece = newPosition.at(Board.a2)
         assertTrue(noPiece.isEmpty)
     }
 
     @Test
     fun moveTest() {
-        val newPosition = position.move(Square.of("e2"), Square.of("e4"))
-        val whiteKing = newPosition.at(Square.of("e1"))
+        val newPosition = position.move(Board.e2, Board.e4)
+        val whiteKing = newPosition.at(Board.e1)
         assertTrue(whiteKing.isDefined)
         assertEquals(Piece(Type.KING, Color.WHITE), whiteKing.get())
 
-        val whitePawn = newPosition.at(Square.of("e4"))
+        val whitePawn = newPosition.at(Board.e4)
         assertTrue(whitePawn.isDefined)
         assertEquals(Piece(Type.PAWN, Color.WHITE), whitePawn.get())
 
-        val noPiece = newPosition.at(Square.of("e2"))
+        val noPiece = newPosition.at(Board.e2)
         assertTrue(noPiece.isEmpty)
     }
 
     @Test
     fun moveToCaptureTest() {
-        val newPosition = position.move(Square.of("e2"), Square.of("e7"))
-        val whitePawn = newPosition.at(Square.of("e7"))
+        val newPosition = position.move(Board.e2, Board.e7)
+        val whitePawn = newPosition.at(Board.e7)
         assertTrue(whitePawn.isDefined)
         assertEquals(Piece(Type.PAWN, Color.WHITE), whitePawn.get())
 
-        val noPiece = newPosition.at(Square.of("e2"))
+        val noPiece = newPosition.at(Board.e2)
         assertTrue(noPiece.isEmpty)
     }
 
     @Test(expected = NoSuchElementException::class)
     fun moveEmptySquareTest() {
-        position.move(Square.of("e4"), Square.of("e2"))
+        position.move(Board.e4, Board.e2)
     }
 
     @Test
     fun toSetTest() {
         val positionSet = position.toSet()
         assertEquals(32, positionSet.size().toLong())
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("a1"), Piece(Type.ROOK, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("b1"), Piece(Type.KNIGHT, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("c1"), Piece(Type.BISHOP, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("d1"), Piece(Type.QUEEN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("e1"), Piece(Type.KING, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("f1"), Piece(Type.BISHOP, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("g1"), Piece(Type.KNIGHT, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("h1"), Piece(Type.ROOK, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("a2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("b2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("c2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("d2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("e2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("f2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("g2"), Piece(Type.PAWN, Color.WHITE))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("h2"), Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.a1, Piece(Type.ROOK, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.b1, Piece(Type.KNIGHT, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.c1, Piece(Type.BISHOP, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.d1, Piece(Type.QUEEN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.e1, Piece(Type.KING, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.f1, Piece(Type.BISHOP, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.g1, Piece(Type.KNIGHT, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.h1, Piece(Type.ROOK, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.a2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.b2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.c2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.d2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.e2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.f2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.g2, Piece(Type.PAWN, Color.WHITE))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.h2, Piece(Type.PAWN, Color.WHITE))))
 
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("a8"), Piece(Type.ROOK, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("b8"), Piece(Type.KNIGHT, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("c8"), Piece(Type.BISHOP, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("d8"), Piece(Type.QUEEN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("e8"), Piece(Type.KING, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("f8"), Piece(Type.BISHOP, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("g8"), Piece(Type.KNIGHT, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("h8"), Piece(Type.ROOK, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("a7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("b7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("c7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("d7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("e7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("f7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("g7"), Piece(Type.PAWN, Color.BLACK))))
-        assertThat(positionSet, hasItem(Tuple.of(Square.of("h7"), Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.a8, Piece(Type.ROOK, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.b8, Piece(Type.KNIGHT, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.c8, Piece(Type.BISHOP, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.d8, Piece(Type.QUEEN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.e8, Piece(Type.KING, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.f8, Piece(Type.BISHOP, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.g8, Piece(Type.KNIGHT, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.h8, Piece(Type.ROOK, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.a7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.b7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.c7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.d7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.e7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.f7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.g7, Piece(Type.PAWN, Color.BLACK))))
+        assertThat(positionSet, hasItem(Tuple.of(Board.h7, Piece(Type.PAWN, Color.BLACK))))
     }
 
     @Test

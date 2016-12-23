@@ -14,20 +14,20 @@ class PawnsTest {
 
     @Test
     fun inPromotionTest() {
-        assertTrue(Pawns.inPromotion(Color.WHITE, Square.of("e8")))
-        assertTrue(Pawns.inPromotion(Color.BLACK, Square.of("a1")))
+        assertTrue(Pawns.inPromotion(Color.WHITE, Board.e8))
+        assertTrue(Pawns.inPromotion(Color.BLACK, Board.a1))
 
-        assertFalse(Pawns.inPromotion(Color.WHITE, Square.of("c7")))
-        assertFalse(Pawns.inPromotion(Color.BLACK, Square.of("h3")))
+        assertFalse(Pawns.inPromotion(Color.WHITE, Board.c7))
+        assertFalse(Pawns.inPromotion(Color.BLACK, Board.h3))
     }
 
     @Test
     fun isCaptureTest() {
-        assertTrue(Pawns.isCapture(Movements.Regular(Square.of("e5"), Square.of("d6"), enPassant = true)))
-        assertTrue(Pawns.isCapture(Movements.Regular(Square.of("b2"), Square.of("c3"))))
+        assertTrue(Pawns.isCapture(Movements.Regular(Board.e5, Board.d6, enPassant = true)))
+        assertTrue(Pawns.isCapture(Movements.Regular(Board.b2, Board.c3)))
 
-        assertFalse(Pawns.isCapture(Movements.Regular(Square.of("b2"), Square.of("b3"))))
-        assertFalse(Pawns.isCapture(Movements.Regular(Square.of("g7"), Square.of("g8"), promotion = Option.some(Piece.Type.QUEEN))))
+        assertFalse(Pawns.isCapture(Movements.Regular(Board.b2, Board.b3)))
+        assertFalse(Pawns.isCapture(Movements.Regular(Board.g7, Board.g8, promotion = Option.some(Piece.Type.QUEEN))))
     }
 
     @Test
@@ -41,12 +41,12 @@ class PawnsTest {
             " |P| | | | | | ",
             " | | | | | |K| ",
             " | | | | | | | ")
-        assertTrue(Pawns.isEnPassantAvailable(Square.of("f5"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("d5"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("a5"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("b3"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("g2"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("a8"), position))
+        assertTrue(Pawns.isEnPassantAvailable(Board.f5, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.d5, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.a5, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.b3, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.g2, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.a8, position))
     }
 
     @Test
@@ -60,12 +60,12 @@ class PawnsTest {
             " |P| | | |Q| | ",
             " | | | | | |K| ",
             " | | | | | | | ")
-        assertTrue(Pawns.isEnPassantAvailable(Square.of("d4"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("a4"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("g4"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("c6"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("e7"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("a8"), position))
+        assertTrue(Pawns.isEnPassantAvailable(Board.d4, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.a4, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.g4, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.c6, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.e7, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.a8, position))
     }
 
     @Test
@@ -79,8 +79,8 @@ class PawnsTest {
             " | | | |p| |K| ",
             " | | | | | | | ",
             " | | | | | | | ")
-        assertTrue(Pawns.isEnPassantAvailable(Square.of("c4"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("d4"), position))
-        assertFalse(Pawns.isEnPassantAvailable(Square.of("e4"), position))
+        assertTrue(Pawns.isEnPassantAvailable(Board.c4, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.d4, position))
+        assertFalse(Pawns.isEnPassantAvailable(Board.e4, position))
     }
 }
