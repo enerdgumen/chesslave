@@ -1,6 +1,7 @@
 package io.chesslave.eyes
 
 import io.chesslave.model.*
+import io.chesslave.model.Move.Regular.Variation.*
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
 import io.chesslave.visual.model.SquareImage
@@ -51,7 +52,7 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
                 val promotedPiece: Piece = pieceRecogniser.piece(to,
                     List.of(piece.color.queen(), piece.color.rook(), piece.color.knight(), piece.color.bishop()))
                     .getOrElseThrow { IllegalArgumentException("Cannot recognise the piece promoted in ${to.square()}") }
-                return Option.of(Move.Regular(from.square(), to.square(), promotion = Option.some(promotedPiece.type)))
+                return Option.of(Move.Regular(from.square(), to.square(), Promotion(promotedPiece.type)))
             }
             return Option.of(Move.Regular(from.square(), to.square()))
         }
@@ -66,7 +67,7 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
             val captured = fromAndCaptured.find { it.square().col == to.square().col }.get()
             val capturedPiece = previousPosition.at(captured.square()).get()
             assert(capturedPiece == movedPiece.color.opponent().pawn()) { "Expected en-passant of $movedPiece from ${from.square()} to ${to.square()}, found $capturedPiece in ${captured.square()}" }
-            return Option.of(Move.Regular(from.square(), to.square(), enPassant = true))
+            return Option.of(Move.Regular(from.square(), to.square(), EnPassant()))
         }
         // TODO: ensure that position is not changed
         return Option.none()

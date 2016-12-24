@@ -1,7 +1,5 @@
 package io.chesslave.model
 
-import javaslang.control.Option
-
 /**
  * A chess move.
  */
@@ -15,21 +13,33 @@ sealed class Move {
 
     /**
      * Moves a piece from a square to another square.
-     * @param enPassant True if the move is a pawn capturing the opponent pawn en passant
-     * @param promotion The eventual piece to replace the promoted pawn
      */
-    // TODO: separate Regular from EnPassant and Promotion
     data class Regular(val from: Square, val to: Square,
-                       val enPassant: Boolean = false,
-                       val promotion: Option<Piece.Type> = Option.none()) : Move() {
+                       val variation: Variation? = null) : Move() {
+
+        sealed class Variation {
+            /**
+             * If the move is a pawn capturing the opponent pawn en passant.
+             */
+            data class EnPassant(val dummy: Boolean = true) : Variation()
+
+            /**
+             * The eventual piece to replace the promoted pawn.
+             */
+            data class Promotion(val type: Piece.Type) : Variation()
+        }
 
         override fun apply(position: Position): Position {
             val piece = position.at(from).get()
-            val direction = Pawns.direction(piece.color)
             val moved = position.move(from, to)
-            val promoted = promotion.toSet().foldLeft(moved) { pos, type -> pos.put(to, Piece(type, piece.color)) }
-            val captured = if (enPassant) promoted.remove(to.translate(0, -direction).get()) else promoted
-            return captured
+            return when (variation) {
+                is Variation.EnPassant -> {
+                    val direction = Pawns.direction(piece.color)
+                    moved.remove(to.translate(0, -direction).get())
+                }
+                is Variation.Promotion -> moved.put(to, Piece(variation.type, piece.color))
+                else -> moved
+            }
         }
     }
 

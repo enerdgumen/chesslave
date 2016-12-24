@@ -1,7 +1,8 @@
 package io.chesslave.model
 
+import io.chesslave.model.Move.Regular.Variation.EnPassant
+import io.chesslave.model.Move.Regular.Variation.Promotion
 import io.chesslave.model.Piece.Type
-import javaslang.control.Option
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -127,7 +128,7 @@ class MoveTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val enPassant = Move.Regular(Board.d5, Board.c6, enPassant = true)
+        val enPassant = Move.Regular(Board.d5, Board.c6, EnPassant())
         val newPosition = enPassant.apply(position)
 
         val noPieceOnD5 = newPosition.at(Board.d5)
@@ -152,7 +153,7 @@ class MoveTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val enPassant = Move.Regular(Board.g4, Board.f3, enPassant = true)
+        val enPassant = Move.Regular(Board.g4, Board.f3, EnPassant())
         val newPosition = enPassant.apply(position)
 
         val noPieceOnG4 = newPosition.at(Board.g4)
@@ -177,7 +178,7 @@ class MoveTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val promotion = Move.Regular(Board.b7, Board.b8, promotion = Option.some(Type.QUEEN))
+        val promotion = Move.Regular(Board.b7, Board.b8, Promotion(Type.QUEEN))
         val newPosition = promotion.apply(position)
 
         val noPieceOnB7 = newPosition.at(Board.b7)

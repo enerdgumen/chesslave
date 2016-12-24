@@ -1,5 +1,6 @@
 package io.chesslave.model
 
+import io.chesslave.model.Move.Regular.Variation.*
 import io.chesslave.model.Piece.Type
 
 class MoveDescriptor {
@@ -23,9 +24,10 @@ class MoveDescriptor {
                 fromSquare = fromSquareDescription(move, position),
                 toSquare = toSquareDescription(move.to),
                 capture = isCapture(move, position),
-                enPassant = move.enPassant,
-                promotion = move.promotion.getOrElse(null as Piece.Type?),
-                status = status(move, position, position.at(move.from).get().color.opponent()))
+                enPassant = move.variation is EnPassant,
+                promotion = if (move.variation is Promotion) move.variation.type else null,
+                status = status(move, position, position.at(move.from).get().color.opponent())
+            )
         else -> TODO("Moves should be an algebraic data type")
     }
 
@@ -41,7 +43,8 @@ class MoveDescriptor {
             }
             ambiguousSquares.size() > 1 ->
                 MoveDescription.Square(piece = piece.type, row = move.from.row, col = move.from.col)
-            move.enPassant || Type.PAWN == piece.type && position.at(move.to).isDefined ->
+            move.variation is EnPassant
+                || Type.PAWN == piece.type && position.at(move.to).isDefined ->
                 MoveDescription.Square(piece = piece.type, col = move.from.col)
             else ->
                 MoveDescription.Square(piece = piece.type)
@@ -59,7 +62,7 @@ class MoveDescriptor {
             .map { it.from }
 
     private fun isCapture(move: Move.Regular, position: Position) =
-        move.enPassant || position.at(move.to).isDefined
+        move.variation is EnPassant || position.at(move.to).isDefined
 
     private fun status(move: Move, position: Position, opponentColor: Color) =
         move.apply(position).let { nextPosition ->

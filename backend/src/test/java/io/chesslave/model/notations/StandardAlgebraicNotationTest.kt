@@ -1,6 +1,7 @@
 package io.chesslave.model.notations
 
 import io.chesslave.model.*
+import io.chesslave.model.Move.Regular.Variation.EnPassant
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -49,7 +50,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printEnPassantPawnMove() {
-        val move = Move.Regular(Board.d5, Board.c6, enPassant = true)
+        val move = Move.Regular(Board.d5, Board.c6, EnPassant())
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",
@@ -124,7 +125,7 @@ class StandardAlgebraicNotationTest {
 
     @Test
     fun printAmbiguousEnPassantPawnMove() {
-        val move = Move.Regular(Board.d5, Board.c6, enPassant = true)
+        val move = Move.Regular(Board.d5, Board.c6, EnPassant())
         val position = Positions.fromText(
             " | | | | | | | ",
             " | | | | | | | ",

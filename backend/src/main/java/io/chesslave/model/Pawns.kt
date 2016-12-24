@@ -1,5 +1,7 @@
 package io.chesslave.model
 
+import io.chesslave.model.Move.Regular.Variation.*
+
 object Pawns {
 
     fun direction(color: Color): Int = when (color) {
@@ -12,7 +14,8 @@ object Pawns {
 
     // TODO: check
     fun isCapture(pawnMove: Move.Regular): Boolean =
-        pawnMove.enPassant || pawnMove.from.col != pawnMove.to.col
+        pawnMove.variation is EnPassant
+            || pawnMove.from.col != pawnMove.to.col
 
     // TODO: review this code
     fun isEnPassantAvailable(pawnSquare: Square, position: Position): Boolean {

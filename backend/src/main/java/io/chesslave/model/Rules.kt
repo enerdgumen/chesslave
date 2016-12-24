@@ -1,5 +1,6 @@
 package io.chesslave.model
 
+import io.chesslave.model.Move.Regular.Variation.EnPassant
 import javaslang.Predicates
 import javaslang.collection.HashSet
 import javaslang.collection.Set
@@ -163,7 +164,7 @@ object Rules {
                 from.translateAll(Pair(-1, 0), Pair(+1, 0))
                     .filter { sq -> position.at(sq).exists { it == piece.color.opponent().pawn() } }
                     .map { to -> to.translate(0, direction).get() }
-                    .map { to -> Move.Regular(from, to, enPassant = true) }
+                    .map { to -> Move.Regular(from, to, EnPassant()) }
             } else {
                 HashSet.empty<Move.Regular>()
             }
