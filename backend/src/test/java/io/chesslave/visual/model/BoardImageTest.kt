@@ -43,17 +43,16 @@ class BoardImageTest {
     @Test
     fun constructorImageTest() {
         val boardImage = BoardImage(unflippedBoard)
-        assertEquals(Point(0, 0), boardImage.offset())
-        assertFalse(boardImage.flipped())
+        assertEquals(Point(0, 0), boardImage.offset)
+        assertFalse(boardImage.flipped)
         validateBoardImage(boardImage)
     }
 
     @Test
     fun constructorImageFlippedTest() {
-        val flipped = true
-        val boardImage = BoardImage(flippedBoard, flipped)
-        assertEquals(Point(0, 0), boardImage.offset())
-        assertTrue(boardImage.flipped())
+        val boardImage = BoardImage(flippedBoard, flipped=true)
+        assertEquals(Point(0, 0), boardImage.offset)
+        assertTrue(boardImage.flipped)
         validateBoardImage(boardImage)
     }
 
@@ -61,8 +60,8 @@ class BoardImageTest {
     fun constructorImageOffsetTest() {
         val offset = Point(1, 1)
         val boardImage = BoardImage(unflippedBoard, offset)
-        assertEquals(offset, boardImage.offset())
-        assertFalse(boardImage.flipped())
+        assertEquals(offset, boardImage.offset)
+        assertFalse(boardImage.flipped)
         validateBoardImage(boardImage)
     }
 
@@ -71,16 +70,16 @@ class BoardImageTest {
         val offset = Point(1, 1)
         val flipped = true
         val boardImage = BoardImage(flippedBoard, offset, flipped)
-        assertEquals(offset, boardImage.offset())
-        assertTrue(boardImage.flipped())
+        assertEquals(offset, boardImage.offset)
+        assertTrue(boardImage.flipped)
         validateBoardImage(boardImage)
     }
 
     private fun validateBoardImage(boardImage: BoardImage) {
-        assertTrue(Images.areEquals(boardImage.image(), if (boardImage.flipped()) flippedBoard else unflippedBoard))
-        assertTrue(Images.areEquals(boardImage.squareImage(Board.g1).image(), knight))
-        assertTrue(Images.areEquals(boardImage.squareImage(Board.d7).image(), pawn))
-        assertTrue(Images.areEquals(boardImage.squareImage(Board.e4).image(), lightSquare))
-        assertTrue(Images.areEquals(boardImage.squareImage(Board.e5).image(), darkSquare))
+        assertTrue(Images.areEquals(boardImage.image, if (boardImage.flipped) flippedBoard else unflippedBoard))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.g1).image, knight))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.d7).image, pawn))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.e4).image, lightSquare))
+        assertTrue(Images.areEquals(boardImage.squareImage(Board.e5).image, darkSquare))
     }
 }

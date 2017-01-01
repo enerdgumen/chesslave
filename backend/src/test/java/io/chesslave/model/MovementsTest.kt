@@ -11,7 +11,7 @@ class MoveTest {
 
     @Test
     fun shortCastleWhiteTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -24,20 +24,20 @@ class MoveTest {
         val newPosition = shortCastling.apply(position)
 
         val noPieceOnE1 = newPosition.at(Board.e1)
-        assertTrue(noPieceOnE1.isEmpty)
+        assertTrue(noPieceOnE1 == null)
         val whiteRook = newPosition.at(Board.f1)
-        assertTrue(whiteRook.isDefined)
-        assertEquals(Piece(Type.ROOK, Color.WHITE), whiteRook.get())
+        assertTrue(whiteRook != null)
+        assertEquals(Piece.whiteRook, whiteRook)
         val whiteKing = newPosition.at(Board.g1)
-        assertTrue(whiteKing.isDefined)
-        assertEquals(Piece(Type.KING, Color.WHITE), whiteKing.get())
+        assertTrue(whiteKing != null)
+        assertEquals(Piece.whiteKing, whiteKing)
         val noPieceOnH1 = newPosition.at(Board.h1)
-        assertTrue(noPieceOnH1.isEmpty)
+        assertTrue(noPieceOnH1 == null)
     }
 
     @Test
     fun longCastleWhiteTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -50,22 +50,22 @@ class MoveTest {
         val newPosition = longCastling.apply(position)
 
         val noPieceOnE1 = newPosition.at(Board.e1)
-        assertTrue(noPieceOnE1.isEmpty)
+        assertTrue(noPieceOnE1 == null)
         val whiteRook = newPosition.at(Board.d1)
-        assertTrue(whiteRook.isDefined)
-        assertEquals(Piece(Type.ROOK, Color.WHITE), whiteRook.get())
+        assertTrue(whiteRook != null)
+        assertEquals(Piece.whiteRook, whiteRook)
         val whiteKing = newPosition.at(Board.c1)
-        assertTrue(whiteKing.isDefined)
-        assertEquals(Piece(Type.KING, Color.WHITE), whiteKing.get())
+        assertTrue(whiteKing != null)
+        assertEquals(Piece.whiteKing, whiteKing)
         val noPieceOnB1 = newPosition.at(Board.b1)
-        assertTrue(noPieceOnB1.isEmpty)
+        assertTrue(noPieceOnB1 == null)
         val noPieceOnA1 = newPosition.at(Board.a1)
-        assertTrue(noPieceOnA1.isEmpty)
+        assertTrue(noPieceOnA1 == null)
     }
 
     @Test
     fun shortCastleBlackTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | |k| | |r",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -78,20 +78,20 @@ class MoveTest {
         val newPosition = shortCastling.apply(position)
 
         val noPieceOnE8 = newPosition.at(Board.e8)
-        assertTrue(noPieceOnE8.isEmpty)
+        assertTrue(noPieceOnE8 == null)
         val blackRook = newPosition.at(Board.f8)
-        assertTrue(blackRook.isDefined)
-        assertEquals(Piece(Type.ROOK, Color.BLACK), blackRook.get())
+        assertTrue(blackRook != null)
+        assertEquals(Piece.blackRook, blackRook)
         val blackKing = newPosition.at(Board.g8)
-        assertTrue(blackKing.isDefined)
-        assertEquals(Piece(Type.KING, Color.BLACK), blackKing.get())
+        assertTrue(blackKing != null)
+        assertEquals(Piece.blackKing, blackKing)
         val noPieceOnH8 = newPosition.at(Board.h8)
-        assertTrue(noPieceOnH8.isEmpty)
+        assertTrue(noPieceOnH8 == null)
     }
 
     @Test
     fun longCastleBlackTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             "r| | | |k| | | ",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -104,22 +104,22 @@ class MoveTest {
         val newPosition = longCastling.apply(position)
 
         val noPieceOnE8 = newPosition.at(Board.e8)
-        assertTrue(noPieceOnE8.isEmpty)
+        assertTrue(noPieceOnE8 == null)
         val blackRook = newPosition.at(Board.d8)
-        assertTrue(blackRook.isDefined)
-        assertEquals(Piece(Type.ROOK, Color.BLACK), blackRook.get())
+        assertTrue(blackRook != null)
+        assertEquals(Piece.blackRook, blackRook)
         val blackKing = newPosition.at(Board.c8)
-        assertTrue(blackKing.isDefined)
-        assertEquals(Piece(Type.KING, Color.BLACK), blackKing.get())
+        assertTrue(blackKing != null)
+        assertEquals(Piece.blackKing, blackKing)
         val noPieceOnB8 = newPosition.at(Board.b8)
-        assertTrue(noPieceOnB8.isEmpty)
+        assertTrue(noPieceOnB8 == null)
         val noPieceOnA8 = newPosition.at(Board.a8)
-        assertTrue(noPieceOnA8.isEmpty)
+        assertTrue(noPieceOnA8 == null)
     }
 
     @Test
     fun enPassantWhiteTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -132,19 +132,19 @@ class MoveTest {
         val newPosition = enPassant.apply(position)
 
         val noPieceOnD5 = newPosition.at(Board.d5)
-        assertTrue(noPieceOnD5.isEmpty)
+        assertTrue(noPieceOnD5 == null)
         val noPieceOnD6 = newPosition.at(Board.d6)
-        assertTrue(noPieceOnD6.isEmpty)
+        assertTrue(noPieceOnD6 == null)
         val noPieceOnC5 = newPosition.at(Board.c5)
-        assertTrue(noPieceOnC5.isEmpty)
+        assertTrue(noPieceOnC5 == null)
         val whitePawn = newPosition.at(Board.c6)
-        assertTrue(whitePawn.isDefined)
-        assertEquals(Piece(Type.PAWN, Color.WHITE), whitePawn.get())
+        assertTrue(whitePawn != null)
+        assertEquals(Piece.whitePawn, whitePawn)
     }
 
     @Test
     fun enPassantBlackTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -157,19 +157,19 @@ class MoveTest {
         val newPosition = enPassant.apply(position)
 
         val noPieceOnG4 = newPosition.at(Board.g4)
-        assertTrue(noPieceOnG4.isEmpty)
+        assertTrue(noPieceOnG4 == null)
         val noPieceOnG3 = newPosition.at(Board.g3)
-        assertTrue(noPieceOnG3.isEmpty)
+        assertTrue(noPieceOnG3 == null)
         val noPieceOnF4 = newPosition.at(Board.f4)
-        assertTrue(noPieceOnF4.isEmpty)
+        assertTrue(noPieceOnF4 == null)
         val blackPawn = newPosition.at(Board.f3)
-        assertTrue(blackPawn.isDefined)
-        assertEquals(Piece(Type.PAWN, Color.BLACK), blackPawn.get())
+        assertTrue(blackPawn != null)
+        assertEquals(Piece.blackPawn, blackPawn)
     }
 
     @Test
     fun promotionTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " |P| | | | | | ",
             " | | | | | | | ",
@@ -182,15 +182,15 @@ class MoveTest {
         val newPosition = promotion.apply(position)
 
         val noPieceOnB7 = newPosition.at(Board.b7)
-        assertTrue(noPieceOnB7.isEmpty)
+        assertTrue(noPieceOnB7 == null)
         val whiteQueen = newPosition.at(Board.b8)
-        assertTrue(whiteQueen.isDefined)
-        assertEquals(Piece(Type.QUEEN, Color.WHITE), whiteQueen.get())
+        assertTrue(whiteQueen != null)
+        assertEquals(Piece.whiteQueen, whiteQueen)
     }
 
     @Test
     fun regularTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p|p|p|p|p|p|p",
             " | | | | | | | ",
@@ -203,15 +203,15 @@ class MoveTest {
         val newPosition = firstMove.apply(position)
 
         val noPieceOnE2 = newPosition.at(Board.e2)
-        assertTrue(noPieceOnE2.isEmpty)
+        assertTrue(noPieceOnE2 == null)
         val whitePawn = newPosition.at(Board.e4)
-        assertTrue(whitePawn.isDefined)
-        assertEquals(Piece(Type.PAWN, Color.WHITE), whitePawn.get())
+        assertTrue(whitePawn != null)
+        assertEquals(Piece.whitePawn, whitePawn)
     }
 
     @Test
     fun captureTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             "r| |b|q|k|b|n|r",
             " |p|p|p| |p|p|p",
             "p| |n| | | | | ",
@@ -224,10 +224,10 @@ class MoveTest {
         val newPosition = bishopTakesKnight.apply(position)
 
         val noPieceOnB5 = newPosition.at(Board.b5)
-        assertTrue(noPieceOnB5.isEmpty)
+        assertTrue(noPieceOnB5 == null)
         val whiteBishop = newPosition.at(Board.c6)
-        assertTrue(whiteBishop.isDefined)
-        assertEquals(Piece(Type.BISHOP, Color.WHITE), whiteBishop.get())
+        assertTrue(whiteBishop != null)
+        assertEquals(Piece.whiteBishop, whiteBishop)
     }
 
     @Test

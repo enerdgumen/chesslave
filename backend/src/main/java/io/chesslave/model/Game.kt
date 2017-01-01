@@ -6,7 +6,7 @@ import javaslang.collection.List
 /**
  * An immutable chess match tracker.
  */
-class Game(private val initialPosition: Position, private val moves: List<Move>, private val turn: Color) {
+class Game(val initialPosition: Position, val moves: List<Move>, val turn: Color) {
 
     /**
      * Applies the move to the current position.
@@ -16,13 +16,13 @@ class Game(private val initialPosition: Position, private val moves: List<Move>,
      * @return the resulting game
      */
     fun move(move: Move): Game =
-        Game(initialPosition, moves.append(move), turn.opponent())
+            Game(initialPosition, moves.append(move), turn.opponent())
 
     /**
      * @return the current position.
      */
     fun position(): Position =
-        moves.foldLeft(initialPosition) { pos, move -> move.apply(pos) }
+            moves.foldLeft(initialPosition) { pos, move -> move.apply(pos) }
 
     /**
      * @return the color to move next
@@ -41,39 +41,39 @@ class Game(private val initialPosition: Position, private val moves: List<Move>,
          */
         fun initialPosition(): Game {
             val position = Position.Builder()
-                .withPiece(Board.a1, Piece(Type.ROOK, Color.WHITE))
-                .withPiece(Board.b1, Piece(Type.KNIGHT, Color.WHITE))
-                .withPiece(Board.c1, Piece(Type.BISHOP, Color.WHITE))
-                .withPiece(Board.d1, Piece(Type.QUEEN, Color.WHITE))
-                .withPiece(Board.e1, Piece(Type.KING, Color.WHITE))
-                .withPiece(Board.f1, Piece(Type.BISHOP, Color.WHITE))
-                .withPiece(Board.g1, Piece(Type.KNIGHT, Color.WHITE))
-                .withPiece(Board.h1, Piece(Type.ROOK, Color.WHITE))
-                .withPiece(Board.a2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.b2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.c2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.d2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.e2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.f2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.g2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.h2, Piece(Type.PAWN, Color.WHITE))
-                .withPiece(Board.a8, Piece(Type.ROOK, Color.BLACK))
-                .withPiece(Board.b8, Piece(Type.KNIGHT, Color.BLACK))
-                .withPiece(Board.c8, Piece(Type.BISHOP, Color.BLACK))
-                .withPiece(Board.d8, Piece(Type.QUEEN, Color.BLACK))
-                .withPiece(Board.e8, Piece(Type.KING, Color.BLACK))
-                .withPiece(Board.f8, Piece(Type.BISHOP, Color.BLACK))
-                .withPiece(Board.g8, Piece(Type.KNIGHT, Color.BLACK))
-                .withPiece(Board.h8, Piece(Type.ROOK, Color.BLACK))
-                .withPiece(Board.a7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.b7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.c7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.d7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.e7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.f7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.g7, Piece(Type.PAWN, Color.BLACK))
-                .withPiece(Board.h7, Piece(Type.PAWN, Color.BLACK))
-                .build()
+                    .withPiece(Board.a1, Piece.whiteRook)
+                    .withPiece(Board.b1, Piece.whiteKnight)
+                    .withPiece(Board.c1, Piece.whiteBishop)
+                    .withPiece(Board.d1, Piece.whiteQueen)
+                    .withPiece(Board.e1, Piece.whiteKing)
+                    .withPiece(Board.f1, Piece.whiteBishop)
+                    .withPiece(Board.g1, Piece.whiteKnight)
+                    .withPiece(Board.h1, Piece.whiteRook)
+                    .withPiece(Board.a2, Piece.whitePawn)
+                    .withPiece(Board.b2, Piece.whitePawn)
+                    .withPiece(Board.c2, Piece.whitePawn)
+                    .withPiece(Board.d2, Piece.whitePawn)
+                    .withPiece(Board.e2, Piece.whitePawn)
+                    .withPiece(Board.f2, Piece.whitePawn)
+                    .withPiece(Board.g2, Piece.whitePawn)
+                    .withPiece(Board.h2, Piece.whitePawn)
+                    .withPiece(Board.a8, Piece.blackRook)
+                    .withPiece(Board.b8, Piece.blackKnight)
+                    .withPiece(Board.c8, Piece.blackBishop)
+                    .withPiece(Board.d8, Piece.blackQueen)
+                    .withPiece(Board.e8, Piece.blackKing)
+                    .withPiece(Board.f8, Piece.blackBishop)
+                    .withPiece(Board.g8, Piece.blackKnight)
+                    .withPiece(Board.h8, Piece.blackRook)
+                    .withPiece(Board.a7, Piece.blackPawn)
+                    .withPiece(Board.b7, Piece.blackPawn)
+                    .withPiece(Board.c7, Piece.blackPawn)
+                    .withPiece(Board.d7, Piece.blackPawn)
+                    .withPiece(Board.e7, Piece.blackPawn)
+                    .withPiece(Board.f7, Piece.blackPawn)
+                    .withPiece(Board.g7, Piece.blackPawn)
+                    .withPiece(Board.h7, Piece.blackPawn)
+                    .build()
             return Game(position, List.empty(), Color.WHITE)
         }
     }

@@ -18,13 +18,13 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
     fun setUp() {
         val initialPosition = Game.initialPosition().position()
         val initialBoard = BoardRenderer.using(chessSet, initialPosition).toBoardImage()
-        val config = BoardAnalyzer().analyze(initialBoard.image())
+        val config = BoardAnalyzer().analyze(initialBoard.image)
         this.recogniser = MoveRecogniserByImageDiff(PieceRecogniser(SikuliVision(), config))
     }
 
     @Test
     fun ignoreUnchangedPosition() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -40,7 +40,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun ignoreUnchangedPositionWithDifferentQuareBackground() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -59,7 +59,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseSimpleRegularMove() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -77,7 +77,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseRegularMoveWithDifferentSquareBackground() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -98,7 +98,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseSimpleCapture() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -116,7 +116,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseCaptureWithDifferentSquareBackground() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -137,7 +137,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseWhiteShortCastling() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -157,7 +157,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseWhiteLongCastling() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n| |q|k|b|n|r",
             "p|p| |b| |p|p|p",
             " | | |p| | | | ",
@@ -177,7 +177,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseWhitePromotion() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             " |*| | |k| | | ",
             " |P| | | | | | ",
             " | | | | | | | ",
@@ -186,7 +186,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val after = before.remove(Board.b7).put(Board.b8, Color.WHITE.queen())
+        val after = before.remove(Board.b7).put(Board.b8, Piece.whiteQueen)
         val got = recogniser.detect(before,
             BoardRenderer.using(chessSet, before).toBoardImage(),
             BoardRenderer.using(chessSet, after).toBoardImage())
@@ -195,7 +195,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseBlackPromotion() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             " | | | |k| | | ",
             " | | | | | | | ",
             " | | | | | | | ",
@@ -204,7 +204,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             " | | | | | | | ",
             " |p| | | | | | ",
             " |*| | |K| | | ")
-        val after = before.remove(Board.b2).put(Board.b1, Color.BLACK.queen())
+        val after = before.remove(Board.b2).put(Board.b1, Piece.blackQueen)
         val got = recogniser.detect(before,
             BoardRenderer.using(chessSet, before).toBoardImage(),
             BoardRenderer.using(chessSet, after).toBoardImage())
@@ -213,7 +213,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseWhiteEnPassant() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |*| | | | ",
@@ -233,7 +233,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
 
     @Test
     fun recogniseBlackEnPassant() {
-        val before = Positions.fromText(
+        val before = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | |p| | | | | ",

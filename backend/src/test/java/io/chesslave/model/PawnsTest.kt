@@ -34,7 +34,7 @@ class PawnsTest {
 
     @Test
     fun isEnPassantAvailableWhiteTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " | | | | | | | ",
             " | |p| | | | | ",
@@ -53,7 +53,7 @@ class PawnsTest {
 
     @Test
     fun isEnPassantAvailableBlackTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | | ",
             " | | | |k| | | ",
             " | |p| | | | | ",
@@ -72,7 +72,7 @@ class PawnsTest {
 
     @Test
     fun isEnPassantAvailableTest() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             " | | | | | | |k",
             " | | | | | | | ",
             " | | | | | | | ",

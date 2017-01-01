@@ -5,7 +5,6 @@ import io.chesslave.eyes.sikuli.SikuliScreen
 import io.chesslave.eyes.sikuli.SikuliVision
 import io.chesslave.hands.sikuli.SikuliPointer
 import io.chesslave.model.Board
-import io.chesslave.model.Square
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
 import org.hamcrest.CoreMatchers.notNullValue
@@ -105,16 +104,5 @@ class MoversLiveTest(val subject: Mover, val resetButtonPoint: Point, val flipBu
         subject(Board.a7, Board.a6)
         // awkward move, but it tests captures ;)
         subject(Board.b5, Board.c6)
-    }
-}
-
-class Asd {
-    @Test
-    fun asd() {
-        for (col in 0..7) {
-            for (row in 0..7) {
-                println("val ${'a'+col}${'1'+row} = Square($col, $row)")
-            }
-        }
     }
 }

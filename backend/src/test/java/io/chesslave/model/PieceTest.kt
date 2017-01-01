@@ -5,6 +5,15 @@ import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Assert.*
 import org.junit.Test
 
+class ColorTest {
+
+    @Test
+    fun opponentTest() {
+        assertEquals(Color.BLACK, Color.WHITE.opponent())
+        assertEquals(Color.WHITE, Color.BLACK.opponent())
+    }
+}
+
 class PieceTest {
 
     @Test
@@ -19,38 +28,32 @@ class PieceTest {
 
     @Test
     fun isFriendTest() {
-        val whiteKing = Piece(Type.KING, Color.WHITE)
-        val whiteQueen = Piece(Type.QUEEN, Color.WHITE)
-        val blackKing = Piece(Type.KING, Color.BLACK)
-        assertTrue(whiteKing.isFriend(whiteQueen))
-        assertFalse(whiteKing.isFriend(blackKing))
+        assertTrue(Piece.whiteKing.isFriend(Piece.whiteQueen))
+        assertFalse(Piece.whiteKing.isFriend(Piece.blackKing))
     }
 
     @Test
     fun isOpponentTest() {
-        val whiteKing = Piece(Type.KING, Color.WHITE)
-        val whiteQueen = Piece(Type.QUEEN, Color.WHITE)
-        val blackKing = Piece(Type.KING, Color.BLACK)
-        assertTrue(whiteKing.isOpponent(blackKing))
-        assertFalse(whiteKing.isOpponent(whiteQueen))
+        assertTrue(Piece.whiteKing.isOpponent(Piece.blackKing))
+        assertFalse(Piece.whiteKing.isOpponent(Piece.whiteQueen))
     }
 
     @Test
     fun allTest() {
-        val allPieces = Piece.all()
+        val allPieces = Piece.all
         assertEquals(12, allPieces.size())
-        assertThat(allPieces, hasItem(Piece(Type.KING, Color.WHITE)))
-        assertThat(allPieces, hasItem(Piece(Type.QUEEN, Color.WHITE)))
-        assertThat(allPieces, hasItem(Piece(Type.ROOK, Color.WHITE)))
-        assertThat(allPieces, hasItem(Piece(Type.BISHOP, Color.WHITE)))
-        assertThat(allPieces, hasItem(Piece(Type.KNIGHT, Color.WHITE)))
-        assertThat(allPieces, hasItem(Piece(Type.PAWN, Color.WHITE)))
-        assertThat(allPieces, hasItem(Piece(Type.KING, Color.BLACK)))
-        assertThat(allPieces, hasItem(Piece(Type.QUEEN, Color.BLACK)))
-        assertThat(allPieces, hasItem(Piece(Type.ROOK, Color.BLACK)))
-        assertThat(allPieces, hasItem(Piece(Type.BISHOP, Color.BLACK)))
-        assertThat(allPieces, hasItem(Piece(Type.KNIGHT, Color.BLACK)))
-        assertThat(allPieces, hasItem(Piece(Type.PAWN, Color.BLACK)))
+        assertThat(allPieces, hasItem(Piece.whiteKing))
+        assertThat(allPieces, hasItem(Piece.whiteQueen))
+        assertThat(allPieces, hasItem(Piece.whiteRook))
+        assertThat(allPieces, hasItem(Piece.whiteBishop))
+        assertThat(allPieces, hasItem(Piece.whiteKnight))
+        assertThat(allPieces, hasItem(Piece.whitePawn))
+        assertThat(allPieces, hasItem(Piece.blackKing))
+        assertThat(allPieces, hasItem(Piece.blackQueen))
+        assertThat(allPieces, hasItem(Piece.blackRook))
+        assertThat(allPieces, hasItem(Piece.blackBishop))
+        assertThat(allPieces, hasItem(Piece.blackKnight))
+        assertThat(allPieces, hasItem(Piece.blackPawn))
     }
 
     @Test
@@ -64,9 +67,7 @@ class PieceTest {
     @Test
     fun hashCodeTest() {
         val whiteKing = Piece(Type.KING, Color.WHITE)
-        val whiteKingHash = whiteKing.hashCode()
-        assertEquals(whiteKingHash, whiteKing.hashCode())
-        assertNotEquals(whiteKingHash, Any().hashCode())
-        assertEquals(whiteKingHash, Piece(Type.KING, Color.WHITE).hashCode())
+        assertNotEquals(whiteKing.hashCode(), Any().hashCode())
+        assertEquals(whiteKing.hashCode(), Piece(Type.KING, Color.WHITE).hashCode())
     }
 }

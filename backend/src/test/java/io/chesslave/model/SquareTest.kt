@@ -83,48 +83,48 @@ class SquareTest {
     @Test
     fun nameTest() {
         val a1 = Square("a1")
-        assertEquals("a1", a1.name())
+        assertEquals("a1", a1.name)
         val g6 = Square("G6")
-        assertEquals("g6", g6.name())
+        assertEquals("g6", g6.name)
         val f3 = Square(5, 2)
-        assertEquals("f3", f3.name())
+        assertEquals("f3", f3.name)
     }
 
     @Test
     fun columnNameTest() {
         val a1 = Square("a1")
-        assertEquals("a", a1.columnName())
+        assertEquals("a", a1.columnName)
         val g6 = Square("G6")
-        assertEquals("g", g6.columnName())
+        assertEquals("g", g6.columnName)
         val f3 = Square(5, 2)
-        assertEquals("f", f3.columnName())
+        assertEquals("f", f3.columnName)
     }
 
     @Test
     fun rowNameTest() {
         val a1 = Square("a1")
-        assertEquals("1", a1.rowName())
+        assertEquals("1", a1.rowName)
         val g6 = Square("G6")
-        assertEquals("6", g6.rowName())
+        assertEquals("6", g6.rowName)
         val f3 = Square(5, 2)
-        assertEquals("3", f3.rowName())
+        assertEquals("3", f3.rowName)
     }
 
     @Test
     fun translateTest() {
         val a1MovedToC2 = Board.a1.translate(2, 1)
-        assertTrue(a1MovedToC2.isDefined)
-        assertEquals(Board.c2, a1MovedToC2.get())
+        assertTrue(a1MovedToC2 != null)
+        assertEquals(Board.c2, a1MovedToC2)
 
         val g6MovedToG1 = Board.g6.translate(0, -5)
-        assertTrue(g6MovedToG1.isDefined)
-        assertEquals(Board.g1, g6MovedToG1.get())
+        assertTrue(g6MovedToG1 != null)
+        assertEquals(Board.g1, g6MovedToG1)
 
         val h8MovedOutOfBoard = Board.h8.translate(1, 0)
-        assertTrue(h8MovedOutOfBoard.isEmpty)
+        assertTrue(h8MovedOutOfBoard == null)
 
         val e4MovedOutOfBoard = Board.e4.translate(-2, -5)
-        assertTrue(e4MovedOutOfBoard.isEmpty)
+        assertTrue(e4MovedOutOfBoard == null)
     }
 
     @Test

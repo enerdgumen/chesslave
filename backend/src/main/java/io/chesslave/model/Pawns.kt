@@ -1,6 +1,7 @@
 package io.chesslave.model
 
-import io.chesslave.model.Move.Regular.Variation.*
+import io.chesslave.extensions.undefined
+import io.chesslave.model.Move.Regular.Variation.EnPassant
 
 object Pawns {
 
@@ -18,18 +19,14 @@ object Pawns {
             || pawnMove.from.col != pawnMove.to.col
 
     // TODO: review this code
-    fun isEnPassantAvailable(pawnSquare: Square, position: Position): Boolean {
-        val piece = position.at(pawnSquare)
-        return piece.isDefined && Piece.Type.PAWN == piece.get().type
-            && (Color.WHITE == piece.get().color && pawnSquare.row == 4
-            || Color.BLACK == piece.get().color && pawnSquare.row == 3)
-            && (pawnSquare.translate(-1, 0).flatMap { position.at(it) }
-            .contains(piece.get().color.opponent().pawn())
-            && pawnSquare.translate(-1, direction(piece.get().color))
-            .flatMap { position.at(it) }.isEmpty
-            || pawnSquare.translate(+1, 0).flatMap { position.at(it) }
-            .contains(piece.get().color.opponent().pawn())
-            && pawnSquare.translate(+1, direction(piece.get().color))
-            .flatMap { position.at(it) }.isEmpty)
+    fun isEnPassantAvailable(square: Square, position: Position): Boolean {
+        val piece = position.at(square)
+        return piece != null && Piece.Type.PAWN == piece.type &&
+            (Color.WHITE == piece.color && square.row == 4 || Color.BLACK == piece.color && square.row == 3)
+            &&
+            (square.translate(-1, 0)?.let { position.at(it) } == Piece.pawnOf(piece.color.opponent()) && square.translate(-1, direction(piece.color))?.let { position.at(it) }.undefined
+                ||
+                square.translate(+1, 0)?.let { position.at(it) } == Piece.pawnOf(piece.color.opponent()) && square.translate(+1, direction(piece.color))?.let { position.at(it) }.undefined)
+
     }
 }

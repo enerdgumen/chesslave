@@ -1,8 +1,17 @@
 package io.chesslave.model
 
+import io.chesslave.extensions.concat
+import io.chesslave.extensions.iterate
+import io.chesslave.extensions.nullableToSet
+import io.chesslave.model.Piece.Type
+import javaslang.collection.HashSet
+import javaslang.collection.Set
+import javaslang.collection.Stream
+
 object Board {
 
     const val SIZE = 8
+    val range = 0 until Board.SIZE
 
     val a1 = Square(0, 0)
     val a2 = Square(0, 1)
@@ -68,4 +77,77 @@ object Board {
     val h6 = Square(7, 5)
     val h7 = Square(7, 6)
     val h8 = Square(7, 7)
+}
+
+
+/**
+ * A square of a board.
+ *
+ * @param col A zero-based column index (0=a, ..., 7=h)
+ * @param row A zero-based row index (0=1, ..., 7=8)
+ */
+data class Square(val col: Int, val row: Int) {
+
+    init {
+        if (col !in Board.range) throw IllegalArgumentException("illegal column $col")
+        if (row !in Board.range) throw IllegalArgumentException("illegal row $row")
+    }
+
+    /**
+     * The common name of the square column (a-h)
+     */
+    val columnName: String = ('a' + col).toString()
+
+    /**
+     * The common name of the square row (1-8)
+     */
+    val rowName: String = ('1' + row).toString()
+
+    /**
+     * The common name of the square.
+     */
+    val name: String = columnName concat rowName
+
+    /**
+     * @return The square related to this applying the given col/row offsets, or nothing if the resulting square is out of the board.
+     */
+    fun translate(col: Int, row: Int): Square? {
+        val newCol = this.col + col
+        val newRow = this.row + row
+        return if (newCol in Board.range && newRow in Board.range) Square(newCol, newRow)
+        else null
+    }
+
+    /**
+     * @return All valid squares gotten applying the given translations.
+     */
+    fun translateAll(vararg translations: Pair<Int, Int>): Set<Square>
+        = HashSet.ofAll(translations.flatMap { (col, row) -> translate(col, row).nullableToSet() })
+
+    /**
+     * @return A stream of all valid squares crossed from this square (excluded) applying repeatedly the translation.
+     */
+    fun walk(col: Int, row: Int): Stream<Square>
+        = translate(col, row).iterate { it.translate(col, row) }
+
+    override fun toString(): String = name
+
+    companion object {
+
+        /**
+         * @return All the available squares on the board.
+         */
+        fun all(): Set<Square>
+            = Board.range.flatMap { col -> Board.range.map { row -> Square(col, row) } }
+            .let { HashSet.ofAll(it) }
+    }
+}
+
+/**
+ * @return The square for the specified human-readable coordinates (i.e. "a1", "c4", etc.)
+ */
+fun Square(coordinates: String): Square {
+    if (coordinates.length != 2) throw IllegalArgumentException("bad coordinate $coordinates")
+    val coo = coordinates.toLowerCase()
+    return Square(coo[0] - 'a', coo[1] - '1')
 }

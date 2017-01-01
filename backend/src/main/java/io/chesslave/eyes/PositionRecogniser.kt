@@ -12,9 +12,9 @@ class PositionRecogniser(private val vision: Vision, private val config: BoardCo
      * Detects the position represented by the given board image.
      */
     fun position(board: BoardImage): Position {
-        val recogniser = vision.recognise(board.image())
+        val recogniser = vision.recognise(board.image)
         val position = Position.Builder()
-        Piece.all().forEach { piece ->
+        Piece.all.forEach { piece ->
             findAllPieces(recogniser, piece).forEach { square ->
                 position.withPiece(square, piece)
             }

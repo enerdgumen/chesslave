@@ -39,9 +39,5 @@ fun moveByDrag(points: SquarePoints): Mover = { from: Square, to: Square ->
 typealias SquarePoints = (Square) -> Point
 
 fun squarePoints(board: BoardImage): SquarePoints = { square ->
-    with(board.squareImage(square)) {
-        Point(
-            board.offset().x + middleX(),
-            board.offset().y + middleY())
-    }
+    with(board.squareImage(square)) { Point(board.offset.x + middleX(), board.offset.y + middleY()) }
 }

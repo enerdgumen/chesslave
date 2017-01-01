@@ -37,7 +37,7 @@ object BoardRenderer {
 
     private fun render(set: ChessSet, position: Option<Position>, backgrounds: Map<Square, Color>): BoardImage {
         val graphics = createGraphics()
-        drawBoard(graphics, set.board.image())
+        drawBoard(graphics, set.board.image)
         drawCustomBackgrounds(graphics, set, backgrounds)
         drawPieces(graphics, set, position)
         return graphicsToBoardImage(graphics)
@@ -52,7 +52,7 @@ object BoardRenderer {
         backgrounds.forEach { square, color ->
             graphics.color = color
             val squareImage = set.board.squareImage(square)
-            graphics.fillRect(squareImage.left(), squareImage.top(), squareImage.size(), squareImage.size())
+            graphics.fillRect(squareImage.left(), squareImage.top(), squareImage.size, squareImage.size)
         }
     }
 
@@ -62,8 +62,8 @@ object BoardRenderer {
                 val pieceImg = set.pieces.apply(piece)
                 val squareImg = set.board.squareImage(square)
                 val translation = AffineTransform.getTranslateInstance(
-                    (squareImg.left() + (squareImg.size() - pieceImg.width) / 2).toDouble(),
-                    (squareImg.top() + (squareImg.size() - pieceImg.height) / 2).toDouble())
+                    (squareImg.left() + (squareImg.size - pieceImg.width) / 2).toDouble(),
+                    (squareImg.top() + (squareImg.size - pieceImg.height) / 2).toDouble())
                 graphics.drawRenderedImage(pieceImg, translation)
             }
         }

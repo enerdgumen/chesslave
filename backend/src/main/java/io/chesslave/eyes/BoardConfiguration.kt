@@ -16,7 +16,7 @@ class BoardConfiguration(
     class Characteristics(val cellWidth: Int, val cellHeight: Int, val whiteColor: Int, val blackColor: Int)
 
     fun save(dir: File) {
-        Images.write(board.image(), File(dir, "board.png"))
+        Images.write(board.image, File(dir, "board.png"))
         pieces.forEach { (type, color), image -> Images.write(image, File(dir, "${type}_${color}.png")) }
     }
 }

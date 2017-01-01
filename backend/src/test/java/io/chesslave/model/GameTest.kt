@@ -15,7 +15,7 @@ class GameTest {
             .move(Move.Regular(Board.d7, Board.d6))
             .move(Move.Regular(Board.d2, Board.d4))
             .move(Move.Regular(Board.c5, Board.d4))
-        val expectedPosition = Positions.fromText(
+        val expectedPosition = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",
@@ -30,7 +30,7 @@ class GameTest {
     @Test
     fun initialPositionTest() {
         val game = Game.initialPosition()
-        val expectedPosition = Positions.fromText(
+        val expectedPosition = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p|p|p|p|p|p|p",
             " | | | | | | | ",

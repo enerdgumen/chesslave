@@ -34,7 +34,7 @@ class BoardObserver(private val config: BoardConfiguration) {
 
     private fun findBoardInDesktop(board: BoardImage): Vision.Match {
         val desktop = screen.captureAll()
-        val match = vision.recognise(desktop).bestMatch(board.image()).get()
+        val match = vision.recognise(desktop).bestMatch(board.image).get()
         screen.highlight(match.region(), 1, TimeUnit.SECONDS)
         return match
     }
@@ -43,7 +43,7 @@ class BoardObserver(private val config: BoardConfiguration) {
         val boards: Observable<BoardImage> = Observable.interval(1, TimeUnit.SECONDS)
             .map { BoardImage(screen.capture(region), region.location) }
         return boards.zipWith(boards.skip(1)) { a, b -> Pair(a, b) }
-            .filter { Images.areDifferent(it.first.image(), it.second.image()) }
+            .filter { Images.areDifferent(it.first.image, it.second.image) }
     }
 
     private fun observeGame(initGame: Game, boards: Observable<Pair<BoardImage, BoardImage>>): Observable<Game> =

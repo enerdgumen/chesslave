@@ -18,13 +18,13 @@ class PositionRecogniserTest(chessSet: ChessSet) : SinglePieceRecognitionTest(ch
     fun setUp() {
         val initialPosition = Game.initialPosition().position()
         val initialBoard = BoardRenderer.using(chessSet, initialPosition).toBoardImage()
-        val config = BoardAnalyzer().analyze(initialBoard.image())
+        val config = BoardAnalyzer().analyze(initialBoard.image)
         this.recogniser = PositionRecogniser(SikuliVision(), config)
     }
 
     @Test
     fun recognisePosition() {
-        val position = Positions.fromText(
+        val position = positionFromText(
             "r|n|b|q|k|b|n|r",
             "p|p| | |p|p|p|p",
             " | | |p| | | | ",

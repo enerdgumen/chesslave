@@ -2,7 +2,7 @@ package io.chesslave.eyes
 
 import io.chesslave.model.Move
 import io.chesslave.model.Position
-import io.chesslave.model.Rules
+import io.chesslave.model.moves
 import javaslang.control.Option
 import org.slf4j.LoggerFactory
 
@@ -32,7 +32,7 @@ class MoveRecogniserByPositionDiff {
         val fromSquare = from.find { it._2 == movedPiece }.map { it._1 }.get()
         val toSquare = to.get()._1
         // TODO: validate move outer
-        return Option.of(Rules.moves(previous, fromSquare)
+        return Option.of(moves(previous, fromSquare)
             .filter { it.to == toSquare }
             .option
             .getOrElseThrow { UnexpectedMoveException("invalid move $fromSquare:$toSquare (from: $previous, to: $current)") })

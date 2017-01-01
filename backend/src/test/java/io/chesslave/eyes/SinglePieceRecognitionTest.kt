@@ -12,122 +12,122 @@ abstract class SinglePieceRecognitionTest(chessSet: ChessSet) : BaseRecognitionT
 
     @Test
     fun whiteRookOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.ROOK, Color.WHITE))
+        withPieceOnSquare(Board.a1, Piece.whiteRook)
     }
 
     @Test
     fun blackRookOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.ROOK, Color.BLACK))
+        withPieceOnSquare(Board.a1, Piece.blackRook)
     }
 
     @Test
     fun whiteRookOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.ROOK, Color.WHITE))
+        withPieceOnSquare(Board.b1, Piece.whiteRook)
     }
 
     @Test
     fun blackRookOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.ROOK, Color.BLACK))
+        withPieceOnSquare(Board.b1, Piece.blackRook)
     }
 
     @Test
     fun whiteKnightOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.KNIGHT, Color.WHITE))
+        withPieceOnSquare(Board.a1, Piece.whiteKnight)
     }
 
     @Test
     fun blackKnightOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.KNIGHT, Color.BLACK))
+        withPieceOnSquare(Board.a1, Piece.blackKnight)
     }
 
     @Test
     fun whiteKnightOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.KNIGHT, Color.WHITE))
+        withPieceOnSquare(Board.b1, Piece.whiteKnight)
     }
 
     @Test
     fun blackKnightOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.KNIGHT, Color.BLACK))
+        withPieceOnSquare(Board.b1, Piece.blackKnight)
     }
 
     @Test
     fun whitePawnOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.PAWN, Color.WHITE))
+        withPieceOnSquare(Board.a1, Piece.whitePawn)
     }
 
     @Test
     fun blackPawnOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.PAWN, Color.BLACK))
+        withPieceOnSquare(Board.a1, Piece.blackPawn)
     }
 
     @Test
     fun whitePawnOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.PAWN, Color.WHITE))
+        withPieceOnSquare(Board.b1, Piece.whitePawn)
     }
 
     @Test
     fun blackPawnOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.PAWN, Color.BLACK))
+        withPieceOnSquare(Board.b1, Piece.blackPawn)
     }
 
     @Test
     fun whiteQueenOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.QUEEN, Color.WHITE))
+        withPieceOnSquare(Board.a1, Piece.whiteQueen)
     }
 
     @Test
     fun blackQueenOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.QUEEN, Color.BLACK))
+        withPieceOnSquare(Board.a1, Piece.blackQueen)
     }
 
     @Test
     fun whiteQueenOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.QUEEN, Color.WHITE))
+        withPieceOnSquare(Board.b1, Piece.whiteQueen)
     }
 
     @Test
     fun blackQueenOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.QUEEN, Color.BLACK))
+        withPieceOnSquare(Board.b1, Piece.blackQueen)
     }
 
     @Test
     fun whiteKingOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.KING, Color.WHITE))
+        withPieceOnSquare(Board.a1, Piece.whiteKing)
     }
 
     @Test
     fun blackKingOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.KING, Color.BLACK))
+        withPieceOnSquare(Board.a1, Piece.blackKing)
     }
 
     @Test
     fun whiteKingOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.KING, Color.WHITE))
+        withPieceOnSquare(Board.b1, Piece.whiteKing)
     }
 
     @Test
     fun blackKingOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.KING, Color.BLACK))
+        withPieceOnSquare(Board.b1, Piece.blackKing)
     }
 
     @Test
     fun whiteBishopOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.BISHOP, Color.WHITE))
+        withPieceOnSquare(Board.a1, Piece.whiteBishop)
     }
 
     @Test
     fun blackBishopOnDarkSquare() {
-        withPieceOnSquare(Board.a1, Piece(Type.BISHOP, Color.BLACK))
+        withPieceOnSquare(Board.a1, Piece.blackBishop)
     }
 
     @Test
     fun whiteBishopOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.BISHOP, Color.WHITE))
+        withPieceOnSquare(Board.b1, Piece.whiteBishop)
     }
 
     @Test
     fun blackBishopOnLightSquare() {
-        withPieceOnSquare(Board.b1, Piece(Type.BISHOP, Color.BLACK))
+        withPieceOnSquare(Board.b1, Piece.blackBishop)
     }
 
     @Test

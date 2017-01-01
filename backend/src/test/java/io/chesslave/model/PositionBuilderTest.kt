@@ -12,8 +12,8 @@ class PositionBuilderTest {
     @Test
     fun withPieceIllegalArgumentTest() {
         val e2 = Board.e2
-        val whitePawn = Piece(Type.PAWN, Color.WHITE)
-        val whiteKnight = Piece(Type.KNIGHT, Color.WHITE)
+        val whitePawn = Piece.whitePawn
+        val whiteKnight = Piece.whiteKnight
         val positionBuilder = Position.Builder().withPiece(e2, whitePawn)
         try {
             positionBuilder.withPiece(e2, whiteKnight)

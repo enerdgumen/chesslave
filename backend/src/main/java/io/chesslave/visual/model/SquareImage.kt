@@ -2,25 +2,13 @@ package io.chesslave.visual.model
 
 import io.chesslave.model.Board
 import io.chesslave.model.Square
-import javaslang.Lazy
-
 import java.awt.image.BufferedImage
 
-class SquareImage(board: BufferedImage, private val square: Square, private val flipped: Boolean) {
+class SquareImage(board: BufferedImage, val square: Square, val flipped: Boolean) {
 
-    private val image: Lazy<BufferedImage>
-    private val size: Int
+    val image: BufferedImage by lazy { board.getSubimage(left(), top(), size, size) }
 
-    init {
-        this.size = board.width / Board.SIZE
-        this.image = Lazy.of { board.getSubimage(left(), top(), size, size) }
-    }
-
-    fun square(): Square = square
-
-    fun image(): BufferedImage = image.get()
-
-    fun size(): Int = size
+    val size: Int = board.width / Board.SIZE
 
     fun left(): Int = size * horizontalOffset(square.col)
 

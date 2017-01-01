@@ -30,12 +30,12 @@ sealed class Move {
         }
 
         override fun apply(position: Position): Position {
-            val piece = position.at(from).get()
+            val piece = position.get(from)
             val moved = position.move(from, to)
             return when (variation) {
                 is Variation.EnPassant -> {
                     val direction = Pawns.direction(piece.color)
-                    moved.remove(to.translate(0, -direction).get())
+                    moved.remove(to.translate(0, -direction)!!)
                 }
                 is Variation.Promotion -> moved.put(to, Piece(variation.type, piece.color))
                 else -> moved

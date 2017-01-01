@@ -15,7 +15,7 @@ class PieceRecogniser(private val vision: Vision, private val config: BoardConfi
      * @return the detected piece or nothing if none piece was be recognised
      */
     fun piece(square: SquareImage, expectedPieces: List<Piece>): Option<Piece> {
-        val recogniser = vision.recognise(square.image())
+        val recogniser = vision.recognise(square.image)
         return expectedPieces.iterator()
             .map { piece ->
                 val image = config.pieces.apply(piece)
