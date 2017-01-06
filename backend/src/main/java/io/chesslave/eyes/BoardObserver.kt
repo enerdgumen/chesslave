@@ -50,13 +50,13 @@ class BoardObserver(private val config: BoardConfiguration) {
         boards.scan(initGame) { game, (previous, current) ->
             // TODO: restore from eventual exception
             val move = recogniser.next(game, previous, current)
-            if (move.isEmpty) {
+            if (move == null) {
                 logger.debug("nothing is changed")
                 game
             } else {
                 // TODO: validate move
                 logger.debug("detective move:\n{}", move)
-                game.move(move.get())
+                game.move(move)
             }
         }
 }

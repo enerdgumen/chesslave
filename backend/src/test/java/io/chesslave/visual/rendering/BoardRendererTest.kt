@@ -28,36 +28,36 @@ class BoardRendererTest {
 
     @Test
     fun renderEmptyPositionTest() {
-        val got = BoardRenderer.using(chessSet).toBoardImage().image
+        val got = BoardRenderer(chessSet).render().image
         val expected = Images.read(imagesPath + "no-position-no-custom-bg.png")
         assertTrue(Images.areEquals(expected, got))
     }
 
     @Test
     fun renderEmptyPositionCustomBackgroundTest() {
-        val got = BoardRenderer.using(chessSet)
+        val got = BoardRenderer(chessSet)
             .withBackground(Board.d4, java.awt.Color.RED)
             .withBackground(Board.e5, java.awt.Color.YELLOW)
-            .toBoardImage().image
+            .render().image
         val expected = Images.read(imagesPath + "no-position-with-custom-bg.png")
         assertTrue(Images.areEquals(expected, got))
     }
 
     @Test
     fun renderPositionTest() {
-        val got = BoardRenderer.using(chessSet)
+        val got = BoardRenderer(chessSet)
             .withPosition(position)
-            .toBoardImage().image
+            .render().image
         val expected = Images.read(imagesPath + "with-position-no-custom-bg.png")
         assertTrue(Images.areEquals(expected, got))
     }
 
     @Test
     fun renderPositionCustomBackgroundTest() {
-        val got = BoardRenderer.using(chessSet)
+        val got = BoardRenderer(chessSet)
             .withPosition(position)
             .withBackground(Board.h8, java.awt.Color.BLUE)
-            .toBoardImage().image
+            .render().image
         val expected = Images.read(imagesPath + "with-position-with-custom-bg.png")
         assertTrue(Images.areEquals(expected, got))
     }

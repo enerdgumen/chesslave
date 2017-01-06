@@ -3,7 +3,6 @@ package io.chesslave.model
 import io.chesslave.extensions.concat
 import io.chesslave.extensions.iterate
 import io.chesslave.extensions.nullableToSet
-import io.chesslave.model.Piece.Type
 import javaslang.collection.HashSet
 import javaslang.collection.Set
 import javaslang.collection.Stream
@@ -79,6 +78,10 @@ object Board {
     val h8 = Square(7, 7)
 }
 
+/**
+ * A sequence of board squares traversed by a piece.
+ */
+typealias BoardPath = Stream<Square>
 
 /**
  * A square of a board.
@@ -127,7 +130,7 @@ data class Square(val col: Int, val row: Int) {
     /**
      * @return A stream of all valid squares crossed from this square (excluded) applying repeatedly the translation.
      */
-    fun walk(col: Int, row: Int): Stream<Square>
+    fun walk(col: Int, row: Int): BoardPath
         = translate(col, row).iterate { it.translate(col, row) }
 
     override fun toString(): String = name

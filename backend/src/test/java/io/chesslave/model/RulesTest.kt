@@ -21,7 +21,7 @@ class movesTest {
             " |r|*|N| | | | ",
             " | |P| | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.c2).map { it.to }
+        val got = position.moves(Board.c2).map { it.to }
         val expected = HashSet.of(Board.c3, Board.c4, Board.b3)
         assertEquals(expected, got)
     }
@@ -37,7 +37,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.c7).map { it.to }
+        val got = position.moves(Board.c7).map { it.to }
         val expected = HashSet.of(Board.c6, Board.c5, Board.b6)
         assertEquals(expected, got)
     }
@@ -53,7 +53,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.c4).map { it.to }
+        val got = position.moves(Board.c4).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -69,7 +69,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.d5).map { it.to }
+        val got = position.moves(Board.d5).map { it.to }
         val expected = HashSet.of(Board.d6, Board.c6)
         assertEquals(expected, got)
     }
@@ -85,7 +85,7 @@ class movesTest {
             " | |*|*| | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.c4).map { it.to }
+        val got = position.moves(Board.c4).map { it.to }
         val expected = HashSet.of(Board.c3, Board.d3)
         assertEquals(expected, got)
     }
@@ -101,7 +101,7 @@ class movesTest {
             " | |r| | |*|K| ",
             " | | | | |P| | ",
             " | | | | | | | ")
-        val got = moves(position, Board.f2).map { it.to }
+        val got = position.moves(Board.f2).map { it.to }
         val expected = HashSet.of(Board.f3)
         assertEquals(expected, got)
     }
@@ -121,7 +121,7 @@ class movesTest {
             " | | |*|*|*| | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.e4).map { it.to }
+        val got = position.moves(Board.e4).map { it.to }
         val expected = HashSet.of(
             Board.e5, Board.f5, Board.f4, Board.f3,
             Board.e3, Board.d3, Board.d4, Board.d5)
@@ -139,7 +139,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.e8).map { it.to }
+        val got = position.moves(Board.e8).map { it.to }
         val expected = HashSet.of(Board.f8, Board.f7, Board.e7, Board.d7, Board.d8)
         assertEquals(expected, got)
     }
@@ -155,7 +155,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.e8).map { it.to }
+        val got = position.moves(Board.e8).map { it.to }
         val expected = HashSet.of(Board.f7, Board.d7)
         assertEquals(expected, got)
     }
@@ -171,7 +171,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.f8).map { it.to }
+        val got = position.moves(Board.f8).map { it.to }
         val expected = HashSet.of(Board.e7)
         assertEquals(expected, got)
     }
@@ -187,7 +187,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.e8).map { it.to }
+        val got = position.moves(Board.e8).map { it.to }
         val expected = HashSet.of(Board.d7, Board.d8)
         assertEquals(expected, got)
     }
@@ -203,7 +203,7 @@ class movesTest {
             " | | | | | | |P",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.f8).map { it.to }
+        val got = position.moves(Board.f8).map { it.to }
         val expected = HashSet.of(Board.e8, Board.g8)
         assertEquals(expected, got)
     }
@@ -219,7 +219,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.e8).map { it.to }
+        val got = position.moves(Board.e8).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -235,7 +235,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = moves(position, Board.f8).map { it.to }
+        val got = position.moves(Board.f8).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -255,7 +255,7 @@ class movesTest {
             " | |*| | | |*| ",
             " | | |*| |*| | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.e4).map { it.to }
+        val got = position.moves(Board.e4).map { it.to }
         val expected = HashSet.of(
             Board.f6, Board.g5, Board.g3, Board.f2,
             Board.d2, Board.c3, Board.c5, Board.d6)
@@ -273,7 +273,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.e4).map { it.to }
+        val got = position.moves(Board.e4).map { it.to }
         val expected = HashSet.empty<Square>()
         assertEquals(expected, got)
     }
@@ -289,7 +289,7 @@ class movesTest {
             " | | | |*| | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.c4).map { it.to }
+        val got = position.moves(Board.c4).map { it.to }
         val expected = HashSet.of(Board.e5, Board.e3)
         assertEquals(expected, got)
     }
@@ -305,7 +305,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | |N")
-        val got = moves(position, Board.h1).map { it.to }
+        val got = position.moves(Board.h1).map { it.to }
         val expected = HashSet.of(Board.f2, Board.g3)
         assertEquals(expected, got)
     }
@@ -325,7 +325,7 @@ class movesTest {
             " | | |*| |*| | ",
             " | |*| | | |P| ",
             " |*| | |K| | | ")
-        val got = moves(position, Board.e4).map { it.to }
+        val got = position.moves(Board.e4).map { it.to }
         val expected = HashSet.of(
             Board.f5, Board.g6, Board.f3, Board.d3,
             Board.c2, Board.b1, Board.d5, Board.c6)
@@ -347,7 +347,7 @@ class movesTest {
             " | | | |*| | | ",
             " | | | |*| | | ",
             " | | | |K| | | ")
-        val got = moves(position, Board.e4).map { it.to }
+        val got = position.moves(Board.e4).map { it.to }
         val expected = HashSet.of(
             Board.e5, Board.e6, Board.e7, Board.f4,
             Board.g4, Board.h4, Board.e3, Board.e2,
@@ -370,7 +370,7 @@ class movesTest {
             " | | |*|*|*| | ",
             " | |*| |*| |P| ",
             " |*| | |K| | | ")
-        val got = moves(position, Board.e4).map { it.to }
+        val got = position.moves(Board.e4).map { it.to }
         val expected = HashSet.of(
             Board.e5, Board.e6, Board.e7, Board.f5,
             Board.g6, Board.f4, Board.g4, Board.h4,
@@ -395,7 +395,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val moves = moves(position, Board.e4)
+        val moves = position.moves(Board.e4)
         assertEquals(HashSet.empty<Any>(), moves)
     }
 
@@ -410,7 +410,7 @@ class movesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | |K| | | ")
-        val moves = moves(position, Board.a2)
+        val moves = position.moves(Board.a2)
         assertEquals(HashSet.empty<Any>(), moves)
     }
 }
@@ -428,7 +428,7 @@ class allMovesTest {
             " | | | | | | | ",
             " | | | | | | | ",
             " | | | | | | | ")
-        val got = allMoves(position, Color.WHITE).toSet()
+        val got = position.allMoves(Color.WHITE).toSet()
         val expected = HashSet.of(
             Move.Regular(Board.c5, Board.b4),
             Move.Regular(Board.c5, Board.b5),
@@ -454,11 +454,11 @@ class isTargetForColorTest {
             " | | |*| |*| | ",
             " | |*| | | |P| ",
             " |*| | |K| | | ")
-        assertEquals(false, isTargetForColor(position, Board.a1, Color.WHITE))
-        assertEquals(true, isTargetForColor(position, Board.b1, Color.WHITE))
-        assertEquals(true, isTargetForColor(position, Board.g6, Color.WHITE))
-        assertEquals(true, isTargetForColor(position, Board.c6, Color.WHITE))
-        assertEquals(true, isTargetForColor(position, Board.g2, Color.WHITE))
-        assertEquals(false, isTargetForColor(position, Board.h1, Color.WHITE))
+        assertEquals(false, Board.a1.isTargetForColor(position, Color.WHITE))
+        assertEquals(true, Board.b1.isTargetForColor(position, Color.WHITE))
+        assertEquals(true, Board.g6.isTargetForColor(position, Color.WHITE))
+        assertEquals(true, Board.c6.isTargetForColor(position, Color.WHITE))
+        assertEquals(true, Board.g2.isTargetForColor(position, Color.WHITE))
+        assertEquals(false, Board.h1.isTargetForColor(position, Color.WHITE))
     }
 }

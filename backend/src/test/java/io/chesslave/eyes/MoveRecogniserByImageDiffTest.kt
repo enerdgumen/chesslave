@@ -1,10 +1,12 @@
 package io.chesslave.eyes
 
 import io.chesslave.eyes.sikuli.SikuliVision
-import io.chesslave.model.*
+import io.chesslave.model.Board
+import io.chesslave.model.Game
+import io.chesslave.model.Piece
+import io.chesslave.model.positionFromText
 import io.chesslave.visual.rendering.BoardRenderer
 import io.chesslave.visual.rendering.ChessSet
-import javaslang.control.Option
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -17,7 +19,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
     @Before
     fun setUp() {
         val initialPosition = Game.initialPosition().position()
-        val initialBoard = BoardRenderer.using(chessSet, initialPosition).toBoardImage()
+        val initialBoard = BoardRenderer(chessSet).withPosition(initialPosition).render()
         val config = BoardAnalyzer().analyze(initialBoard.image)
         this.recogniser = MoveRecogniserByImageDiff(PieceRecogniser(SikuliVision(), config))
     }
@@ -33,9 +35,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             " | | | | |N| | ",
             "P|P|P| | |P|P|P",
             "R|N|B|Q|K|B| |R")
-        val image = BoardRenderer.using(chessSet, position).toBoardImage()
+        val image = BoardRenderer(chessSet).withPosition(position).render()
         val got = recogniser.detect(position, image, image)
-        Assert.assertEquals(Option.none<Any>(), got)
+        Assert.assertEquals(null, got)
     }
 
     @Test
@@ -50,11 +52,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             "P|P|P| | |P|P|P",
             "R|N|B|Q|K|B| |R")
         val got = recogniser.detect(position,
-            BoardRenderer.using(chessSet, position).toBoardImage(),
-            BoardRenderer.using(chessSet, position)
-                .withBackground(Board.d4, YELLOW)
-                .toBoardImage())
-        Assert.assertEquals(Option.none<Any>(), got)
+            BoardRenderer(chessSet).withPosition(position).render(),
+            BoardRenderer(chessSet).withPosition(position).withBackground(Board.d4, YELLOW).render())
+        Assert.assertEquals(null, got)
     }
 
     @Test
@@ -70,9 +70,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             "R|N|B|Q|K|B| |R")
         val after = before.move(Board.d1, Board.d3)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -88,12 +88,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             "R|N|B|Q|K|B| |R")
         val after = before.move(Board.d1, Board.d3)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after)
-                .withBackground(Board.d1, YELLOW)
-                .withBackground(Board.d3, YELLOW)
-                .toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).withBackground(Board.d1, YELLOW).withBackground(Board.d3, YELLOW).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -109,9 +106,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             "R|N|B|Q|K|B| |R")
         val after = before.move(Board.d1, Board.d4)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -127,12 +124,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             "R|N|B|Q|K|B| |R")
         val after = before.move(Board.d1, Board.d4)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after)
-                .withBackground(Board.d1, YELLOW)
-                .withBackground(Board.d4, YELLOW)
-                .toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).withBackground(Board.d1, YELLOW).withBackground(Board.d4, YELLOW).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -150,9 +144,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             .move(Board.e1, Board.g1)
             .move(Board.h1, Board.f1)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -170,9 +164,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             .move(Board.e1, Board.c1)
             .move(Board.a1, Board.d1)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -188,9 +182,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             " | | | |K| | | ")
         val after = before.remove(Board.b7).put(Board.b8, Piece.whiteQueen)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -206,9 +200,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             " |*| | |K| | | ")
         val after = before.remove(Board.b2).put(Board.b1, Piece.blackQueen)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -226,9 +220,9 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             .move(Board.e5, Board.d6)
             .remove(Board.d5)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 
     @Test
@@ -246,8 +240,8 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
             .move(Board.d4, Board.e3)
             .remove(Board.e4)
         val got = recogniser.detect(before,
-            BoardRenderer.using(chessSet, before).toBoardImage(),
-            BoardRenderer.using(chessSet, after).toBoardImage())
-        Assert.assertEquals(Option.of(after), got.map { it.apply(before) })
+            BoardRenderer(chessSet).withPosition(before).render(),
+            BoardRenderer(chessSet).withPosition(after).render())
+        Assert.assertEquals(after, got?.apply(before))
     }
 }

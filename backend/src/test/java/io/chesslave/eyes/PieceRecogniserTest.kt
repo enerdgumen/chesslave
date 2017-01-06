@@ -19,14 +19,14 @@ class PieceRecogniserTest(chessSet: ChessSet) : SinglePieceRecognitionTest(chess
     @Before
     fun setUp() {
         val initialPosition = Game.initialPosition().position()
-        val initialBoard = BoardRenderer.using(chessSet, initialPosition).toBoardImage()
+        val initialBoard = BoardRenderer(chessSet).withPosition(initialPosition).render()
         val config = BoardAnalyzer().analyze(initialBoard.image)
         this.recogniser = PieceRecogniser(SikuliVision(), config)
     }
 
     override fun withPieceOnSquare(square: Square, piece: Piece) {
         val position = Position.Builder().withPiece(square, piece).build()
-        val board = BoardRenderer.using(chessSet, position).toBoardImage()
+        val board = BoardRenderer(chessSet).withPosition(position).render()
         val got = recogniser.piece(board.squareImage(square), Piece.all.toList())
         assertEquals(Option.of(piece), got)
     }

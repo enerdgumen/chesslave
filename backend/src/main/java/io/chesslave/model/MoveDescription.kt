@@ -76,7 +76,7 @@ private fun toSquareDescription(square: Square) =
 private fun ambiguousSquares(movingPiece: Piece, move: Move.Regular, position: Position) =
     position.toSet()
         .filter { (square, piece) -> square != move.from && piece == movingPiece }
-        .flatMap { (square, _) -> moves(position, square) }
+        .flatMap { (square, _) -> position.moves(square) }
         .filter { it.to == move.to }
         .map { it.from }
 
@@ -86,8 +86,8 @@ private fun isCapture(move: Move.Regular, position: Position) =
 private fun status(move: Move, position: Position, opponentColor: Color) =
     move.apply(position).let { nextPosition ->
         when {
-            isKingSafe(nextPosition, opponentColor) -> MoveDescription.Status.RELAX
-            allMoves(nextPosition, opponentColor).isEmpty -> MoveDescription.Status.CHECKMATE
+            nextPosition.isKingSafe(opponentColor) -> MoveDescription.Status.RELAX
+            nextPosition.allMoves(opponentColor).isEmpty -> MoveDescription.Status.CHECKMATE
             else -> MoveDescription.Status.CHECK
         }
     }

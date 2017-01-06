@@ -3,7 +3,6 @@ package io.chesslave.eyes
 import io.chesslave.model.Move
 import io.chesslave.model.Position
 import io.chesslave.model.moves
-import javaslang.control.Option
 import org.slf4j.LoggerFactory
 
 class MoveRecogniserByPositionDiff {
@@ -13,13 +12,12 @@ class MoveRecogniserByPositionDiff {
     /**
      * Detects the move by analyzing the differences between the two positions.
 
-     * @return the detected move or nothing if none move was done
-     * *
-     * @throws RuntimeException if the detection fails
+     * @return the detected move or null if none move was done
+     * @throws Exception if the detection fails
      */
-    fun detect(previous: Position, current: Position): Option<Move> {
+    fun detect(previous: Position, current: Position): Move? {
         if (previous == current) {
-            return Option.none()
+            return null
         }
         val from = previous.toSet().diff(current.toSet())
         val to = current.toSet().diff(previous.toSet())
@@ -32,9 +30,8 @@ class MoveRecogniserByPositionDiff {
         val fromSquare = from.find { it._2 == movedPiece }.map { it._1 }.get()
         val toSquare = to.get()._1
         // TODO: validate move outer
-        return Option.of(moves(previous, fromSquare)
+        return previous.moves(fromSquare)
             .filter { it.to == toSquare }
-            .option
-            .getOrElseThrow { UnexpectedMoveException("invalid move $fromSquare:$toSquare (from: $previous, to: $current)") })
+            .getOrElseThrow { UnexpectedMoveException("invalid move $fromSquare:$toSquare (from: $previous, to: $current)") }
     }
 }

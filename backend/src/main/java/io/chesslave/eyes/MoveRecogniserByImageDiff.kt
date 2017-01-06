@@ -7,9 +7,7 @@ import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
 import io.chesslave.visual.model.SquareImage
 import javaslang.collection.HashSet
-import javaslang.collection.List
 import javaslang.collection.Set
-import javaslang.control.Option
 
 class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
 
@@ -25,36 +23,33 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
     /**
      * Detects the move by analyzing the differences between the two images.
 
-     * @return the detected move or nothing if none move was done
-     * *
-     * @throws RuntimeException if the detection fails
+     * @return the detected move or null if none move was done
+     * @throws Exception if the detection fails
      */
-    fun detect(previousPosition: Position, previousImage: BoardImage, currentImage: BoardImage): Option<Move> {
+    fun detect(previousPosition: Position, previousImage: BoardImage, currentImage: BoardImage): Move? {
         val changes = changedSquares(previousImage, currentImage)
         val squares = changes.map { it.square }
         if (squares == whiteShortCastlingSquares) {
-            return Option.of(Move.ShortCastling(Color.WHITE))
+            return Move.ShortCastling(Color.WHITE)
         }
         if (squares == whiteLongCastlingSquares) {
-            return Option.of(Move.LongCastling(Color.WHITE))
+            return Move.LongCastling(Color.WHITE)
         }
         if (squares == blackShortCastlingSquares) {
-            return Option.of(Move.ShortCastling(Color.BLACK))
+            return Move.ShortCastling(Color.BLACK)
         }
         if (squares == blackLongCastlingSquares) {
-            return Option.of(Move.LongCastling(Color.BLACK))
+            return Move.LongCastling(Color.BLACK)
         }
         if (changes.size() == 2) {
             val from = changes.find(EmptySquareRecogniser::isEmpty).get()
             val to = changes.remove(from).get()
             val piece = previousPosition.get(from.square)
-            if (piece.type === Piece.Type.PAWN && Pawns.inPromotion(piece.color, to.square)) {
-                val promotedPiece: Piece = pieceRecogniser.piece(to,
-                    List.of(Piece.queenOf(piece.color), Piece.rookOf(piece.color), Piece.knightOf(piece.color), Piece.bishopOf(piece.color)))
-                    .getOrElseThrow { IllegalArgumentException("Cannot recognise the piece promoted in ${to.square}") }
-                return Option.of(Move.Regular(from.square, to.square, Promotion(promotedPiece.type)))
+            val variation = piece.candidatesForPromotion(to.square)?.let { candidates ->
+                val promotedPiece = pieceRecogniser.piece(to, candidates).getOrElseThrow { IllegalArgumentException("Cannot recognise the promoted piece in ${to.square}") }
+                Promotion(promotedPiece.type)
             }
-            return Option.of(Move.Regular(from.square, to.square))
+            return Move.Regular(from.square, to.square, variation)
         }
         if (changes.size() == 3) {
             // en passant
@@ -67,10 +62,10 @@ class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
             val captured = fromAndCaptured.find { it.square.col == to.square.col }.get()
             val capturedPiece = previousPosition.get(captured.square)
             assert(capturedPiece == Piece.pawnOf(movedPiece.color.opponent())) { "Expected en-passant of $movedPiece from ${from.square} to ${to.square}, found $capturedPiece in ${captured.square}" }
-            return Option.of(Move.Regular(from.square, to.square, EnPassant()))
+            return Move.Regular(from.square, to.square, EnPassant())
         }
         // TODO: ensure that position is not changed
-        return Option.none()
+        return null
     }
 
     private fun changedSquares(previousImage: BoardImage, currentImage: BoardImage): Set<SquareImage> =
