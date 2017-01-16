@@ -40,11 +40,11 @@ val standardAlgebraicNotation: MoveNotation = { move ->
 
     when (move) {
         is MoveDescription.Castling
-        -> (if (move.short) Symbols.shortCastling else Symbols.longCastling) concat
+        -> (if (move.short ?: true) Symbols.shortCastling else Symbols.longCastling) concat
             notation(move.status)
 
         is MoveDescription.Regular
-        -> notation(move.fromSquare) concat
+        -> (move.fromSquare?.let(::notation) ?: "") concat
             (if (move.capture) Symbols.Capture else "") concat
             notation(move.toSquare) concat
             // TODO: en passant

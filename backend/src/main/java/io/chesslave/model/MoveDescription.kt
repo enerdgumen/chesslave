@@ -6,11 +6,15 @@ import io.chesslave.extensions.defined
 
 sealed class MoveDescription {
 
-    data class Regular(val fromSquare: Square, val toSquare: Square,
-                       val capture: Boolean, val enPassant: Boolean,
-                       val promotion: Piece.Type?, val status: Status) : MoveDescription()
+    data class Regular(val fromSquare: Square? = null,
+                       val toSquare: Square,
+                       val capture: Boolean = false,
+                       val enPassant: Boolean = false,
+                       val promotion: Piece.Type? = null,
+                       val status: Status = Status.RELAX) : MoveDescription()
 
-    data class Castling(val short: Boolean, val status: Status) : MoveDescription()
+    data class Castling(val short: Boolean? = null,
+                        val status: Status = Status.RELAX) : MoveDescription()
 
     data class Square(val piece: Piece.Type? = null,
                       val col: Int? = null,

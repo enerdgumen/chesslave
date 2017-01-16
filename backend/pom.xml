@@ -80,6 +80,12 @@
             <version>${batik.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- Parser Combinator dependencies -->
+        <dependency>
+            <groupId>org.jparsec</groupId>
+            <artifactId>jparsec</artifactId>
+            <version>3.0</version>
+        </dependency>
         <!-- Logging dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>
