@@ -14,7 +14,7 @@
 
     <properties>
         <mainClass>io.chesslave.app.Application</mainClass>
-        <kotlin.version>1.1-M04</kotlin.version>
+        <kotlin.version>1.1.1</kotlin.version>
         <jetty.version>9.3.10.v20160621</jetty.version>
         <batik.version>1.7</batik.version>
     </properties>
@@ -243,20 +243,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>kotlin</id>
-            <url>http://dl.bintray.com/kotlin/kotlin-eap-1.1</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>kotlin</id>
-            <url>http://dl.bintray.com/kotlin/kotlin-eap-1.1</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <profiles>
         <profile>
