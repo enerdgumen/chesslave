@@ -5,6 +5,8 @@
 
 # Chesslave
 
+[![Join the chat at https://gitter.im/chesslave/chesslave](https://badges.gitter.im/chesslave/chesslave.svg)](https://gitter.im/chesslave/chesslave?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **Under active development - Contributions are welcome!**
 
 _Chesslave_ is an application helping you to play chess in a better way, using a real chessboard.
