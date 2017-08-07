@@ -1,10 +1,10 @@
 package io.chesslave.eyes.sikuli
 
 import io.chesslave.eyes.Screen
+import io.reactivex.Observable
 import org.sikuli.script.Location
 import org.sikuli.util.OverlayCapturePrompt
 import org.sikuli.util.ScreenHighlighter
-import rx.Observable
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit

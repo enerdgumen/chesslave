@@ -6,8 +6,9 @@ import io.chesslave.model.Color
 import io.chesslave.model.Game
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
+import io.reactivex.Observable
+import io.reactivex.rxkotlin.zipWith
 import org.slf4j.LoggerFactory
-import rx.Observable
 import java.awt.Rectangle
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +41,7 @@ class BoardObserver(private val config: BoardConfiguration) {
     }
 
     private fun captureBoards(region: Rectangle): Observable<Pair<BoardImage, BoardImage>> {
-        val boards: Observable<BoardImage> = Observable.interval(1, TimeUnit.SECONDS)
+        val boards = Observable.interval(1, TimeUnit.SECONDS)
             .map { BoardImage(screen.capture(region), region.location) }
         return boards.zipWith(boards.skip(1)) { a, b -> Pair(a, b) }
             .filter { Images.areDifferent(it.first.image, it.second.image) }

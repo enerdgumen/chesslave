@@ -1,7 +1,7 @@
 package io.chesslave.app
 
-import rx.Observable
-import rx.Observer
+import io.reactivex.Observable
+import io.reactivex.Observer
 
 class EventBus(
     private val input: Observable<Event>,

@@ -20,6 +20,6 @@ class BoardObserverTestRunner {
 
         val config = BoardAnalyzer().analyze(Images.read("/images/set1/initial-board.png"))
         val moves = BoardObserver(config).start(Color.WHITE)
-        moves.toBlocking().last() // waiting forever
+        moves.blockingLast() // waiting forever
     }
 }

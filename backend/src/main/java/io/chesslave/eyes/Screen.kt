@@ -1,6 +1,6 @@
 package io.chesslave.eyes
 
-import rx.Observable
+import io.reactivex.Observable
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.util.concurrent.TimeUnit

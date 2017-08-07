@@ -1,21 +1,18 @@
 package io.chesslave.app
 
+import io.reactivex.subjects.PublishSubject
 import org.eclipse.jetty.websocket.api.Session
 import org.eclipse.jetty.websocket.api.WebSocketAdapter
 import org.slf4j.LoggerFactory
-import rx.subjects.PublishSubject
 import java.io.IOException
 
 class RxWebSocket(private val converter: Converter<Event>) : WebSocketAdapter() {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-    val input: PublishSubject<Event>
-    val output: PublishSubject<Event>
-
-    init {
-        this.input = PublishSubject.create<Event>()
-        this.output = PublishSubject.create<Event>()
-        this.output.subscribe { this.writeEvent(it) }
+    
+    val input: PublishSubject<Event> = PublishSubject.create<Event>()
+    val output: PublishSubject<Event> = PublishSubject.create<Event>().apply {
+        subscribe { writeEvent(it) }
     }
 
     override fun onWebSocketConnect(session: Session) {
@@ -33,7 +30,7 @@ class RxWebSocket(private val converter: Converter<Event>) : WebSocketAdapter() 
         }
     }
 
-    override fun onWebSocketError(cause: Throwable?) {
+    override fun onWebSocketError(cause: Throwable) {
         logger.error("Socket Error", cause)
         input.onError(cause)
     }
@@ -41,8 +38,8 @@ class RxWebSocket(private val converter: Converter<Event>) : WebSocketAdapter() 
     override fun onWebSocketClose(statusCode: Int, reason: String?) {
         logger.debug("Socket Closed: [$statusCode] $reason")
         super.onWebSocketClose(statusCode, reason)
-        input.onCompleted()
-        output.onCompleted()
+        input.onComplete()
+        output.onComplete()
     }
 
     private fun writeEvent(event: Event) {
