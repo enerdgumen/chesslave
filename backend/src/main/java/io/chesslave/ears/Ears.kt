@@ -53,13 +53,15 @@ val parseUtterance: UtteranceParser = { utterance ->
     val tokenizer = Parsers.or(
         words.map { Tokens.fragment(it, "WORD") },
         nums.map { Tokens.fragment(it, "NUM") })
+    val queenParser = Parsers.or(term("donna"), term("regina"))
+    val kingParser = term("re")
     val pieceParser = Parsers.or(
         term("pedone").map { Type.PAWN },
         term("cavallo").map { Type.KNIGHT },
         term("alfiere").map { Type.BISHOP },
         term("torre").map { Type.ROOK },
-        Parsers.or(term("donna"), term("regina")).map { Type.QUEEN },
-        term("re").map { Type.KING })
+        queenParser.map { Type.QUEEN },
+        kingParser.map { Type.KING })
     val colParser = Parsers.or(
         term("a").map { 0 },
         term("b").map { 1 },
@@ -105,8 +107,8 @@ val parseUtterance: UtteranceParser = { utterance ->
     val castlingParser = Parsers.sequence(
         term("arrocco"),
         Parsers.or(
-            Parsers.or(term("corto"), term("di").next(term("re"))).map { true },
-            Parsers.or(term("lungo"), term("di").next(term("donna").or(term("regina")))).map { false }
+            Parsers.or(term("corto"), term("di").next(kingParser)).map { true },
+            Parsers.or(term("lungo"), term("di").next(queenParser)).map { false }
         ).optional(null),
         statusParser,
         { _, short, status -> MoveDescription.Castling(short, status) })

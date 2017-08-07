@@ -14,9 +14,9 @@ class BoardAnalyzer {
 
     fun analyze(userImage: BufferedImage): BoardConfiguration {
         val bgColor = userImage.getRGB(0, 0)
-        val withoutBackground = Images.crop(userImage) { it === bgColor }
+        val withoutBackground = Images.crop(userImage) { it == bgColor }
         val chars = detectCharacteristics(withoutBackground)
-        val withoutBorder = Images.crop(withoutBackground) { it !== chars.whiteColor && it !== chars.blackColor }
+        val withoutBorder = Images.crop(withoutBackground) { it != chars.whiteColor && it != chars.blackColor }
         val board = BoardImage(withoutBorder)
         val pieces = HashMap.of<Piece, BufferedImage>(
             Piece.blackPawn, cropPiece(board, Board.b7),
@@ -45,6 +45,6 @@ class BoardAnalyzer {
 
     private fun cropPiece(board: BoardImage, square: Square): BufferedImage {
         val squareImage = board.squareImage(square).image
-        return Images.crop(squareImage) { it === squareImage.getRGB(0, 0) }
+        return Images.crop(squareImage) { it == squareImage.getRGB(0, 0) }
     }
 }
