@@ -8,7 +8,7 @@ import io.chesslave.model.Square
 import io.chesslave.visual.model.BoardImage
 import io.chesslave.visual.rendering.BoardRenderer
 import io.chesslave.visual.rendering.ChessSet
-import javaslang.control.Option
+import io.vavr.control.Option
 import org.junit.Before
 import org.junit.Assert.assertEquals
 

@@ -1,7 +1,7 @@
 package io.chesslave.model
 
-import io.chesslave.extensions.component1
-import io.chesslave.extensions.component2
+import io.vavr.kotlin.component1
+import io.vavr.kotlin.component2
 import io.chesslave.extensions.defined
 
 sealed class MoveDescription {

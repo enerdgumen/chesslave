@@ -6,8 +6,8 @@ import io.chesslave.model.Move.Regular.Variation.Promotion
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
 import io.chesslave.visual.model.SquareImage
-import javaslang.collection.HashSet
-import javaslang.collection.Set
+import io.vavr.collection.HashSet
+import io.vavr.collection.Set
 
 class MoveRecogniserByImageDiff(private val pieceRecogniser: PieceRecogniser) {
 

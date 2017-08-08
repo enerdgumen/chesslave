@@ -1,6 +1,6 @@
 package io.chesslave.model
 
-import javaslang.collection.List
+import io.vavr.collection.List
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Assert.*

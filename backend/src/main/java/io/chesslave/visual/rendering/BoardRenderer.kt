@@ -3,8 +3,8 @@ package io.chesslave.visual.rendering
 import io.chesslave.model.Position
 import io.chesslave.model.Square
 import io.chesslave.visual.model.BoardImage
-import javaslang.collection.HashMap
-import javaslang.collection.Map
+import io.vavr.collection.HashMap
+import io.vavr.collection.Map
 import org.apache.batik.dom.GenericDOMImplementation
 import org.apache.batik.svggen.SVGGraphics2D
 import org.apache.batik.transcoder.TranscoderInput

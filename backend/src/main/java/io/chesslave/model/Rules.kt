@@ -1,12 +1,17 @@
 package io.chesslave.model
 
-import io.chesslave.extensions.*
+import io.chesslave.extensions.and
+import io.chesslave.extensions.defined
+import io.chesslave.extensions.exists
+import io.chesslave.extensions.undefined
 import io.chesslave.model.Move.Regular.Variation.EnPassant
 import io.chesslave.model.Piece.Type
-import javaslang.collection.HashSet
-import javaslang.collection.List
-import javaslang.collection.Set
-import javaslang.collection.Stream
+import io.vavr.collection.HashSet
+import io.vavr.collection.List
+import io.vavr.collection.Set
+import io.vavr.collection.Stream
+import io.vavr.kotlin.component1
+import io.vavr.kotlin.component2
 
 /**
  * TODO: Handle pawn promotion.
@@ -104,7 +109,7 @@ private fun Position.walkUntilPiece(walk: BoardPath): BoardPath
     = walk
     .splitAt { at(it).defined }
     .map({ it }, { it.headOption() })
-    .transform(BoardPath::appendAll)
+    .apply(BoardPath::appendAll)
 
 private fun Square.pawnCaptureSquares(color: Color): Set<Square> {
     val direction = Pawns.direction(color)
@@ -115,7 +120,7 @@ private fun Position.pawnMoves(from: Square): Set<Move.Regular> {
     val piece = get(from)
     val direction = Pawns.direction(piece.color)
     val initialRow = if (piece.color === Color.WHITE) 1 else 6
-    val push = if (from.row == initialRow) 2L else 1L
+    val push = if (from.row == initialRow) 2 else 1
     val forward = from.walk(0, direction)
         .takeWhile { at(it).undefined }
         .take(push)

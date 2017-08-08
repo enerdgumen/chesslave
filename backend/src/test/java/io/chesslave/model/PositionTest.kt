@@ -1,7 +1,7 @@
 package io.chesslave.model
 
 import io.chesslave.model.Piece.Type
-import javaslang.Tuple
+import io.vavr.Tuple
 import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Assert.*
 import org.junit.Test

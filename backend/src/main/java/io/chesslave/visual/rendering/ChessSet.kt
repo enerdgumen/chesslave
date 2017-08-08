@@ -5,9 +5,9 @@ import io.chesslave.model.Color
 import io.chesslave.model.Piece
 import io.chesslave.model.Piece.Type
 import io.chesslave.visual.model.BoardImage
-import javaslang.Tuple
-import javaslang.collection.HashMap
-import javaslang.collection.Map
+import io.vavr.Tuple
+import io.vavr.collection.HashMap
+import io.vavr.collection.Map
 
 import java.awt.image.BufferedImage
 

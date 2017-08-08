@@ -1,10 +1,10 @@
 package io.chesslave.model
 
 import io.chesslave.extensions.concat
-import io.chesslave.extensions.getOrNull
 import io.chesslave.model.MoveDescription.Status
 import io.chesslave.model.Piece.Type
-import javaslang.collection.HashMap
+import io.vavr.collection.HashMap
+import io.vavr.kotlin.getOrNull
 
 /**
  * A notation to describe chess moves.

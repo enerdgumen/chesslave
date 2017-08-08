@@ -3,7 +3,7 @@ package io.chesslave.eyes
 import io.chesslave.model.Piece
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
-import javaslang.collection.Map
+import io.vavr.collection.Map
 import java.awt.image.BufferedImage
 import java.io.File
 

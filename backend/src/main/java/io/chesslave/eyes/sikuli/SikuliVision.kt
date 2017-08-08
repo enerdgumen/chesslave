@@ -1,9 +1,9 @@
 package io.chesslave.eyes.sikuli
 
 import io.chesslave.eyes.Vision
-import javaslang.Lazy
-import javaslang.collection.Stream
-import javaslang.control.Option
+import io.vavr.Lazy
+import io.vavr.collection.Stream
+import io.vavr.control.Option
 import org.sikuli.script.Finder
 import org.sikuli.script.Image
 import org.sikuli.script.Match

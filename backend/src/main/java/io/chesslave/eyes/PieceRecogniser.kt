@@ -2,8 +2,8 @@ package io.chesslave.eyes
 
 import io.chesslave.model.Piece
 import io.chesslave.visual.model.SquareImage
-import javaslang.collection.List
-import javaslang.control.Option
+import io.vavr.collection.List
+import io.vavr.control.Option
 
 class PieceRecogniser(private val vision: Vision, private val config: BoardConfiguration) {
 

@@ -1,11 +1,11 @@
 package io.chesslave.model
 
 import io.chesslave.extensions.concat
-import io.chesslave.extensions.iterate
 import io.chesslave.extensions.nullableToSet
-import javaslang.collection.HashSet
-import javaslang.collection.Set
-import javaslang.collection.Stream
+import io.vavr.collection.HashSet
+import io.vavr.collection.Set
+import io.vavr.collection.Stream
+import io.vavr.kotlin.toVavrStream
 
 object Board {
 
@@ -124,14 +124,14 @@ data class Square(val col: Int, val row: Int) {
     /**
      * @return All valid squares gotten applying the given translations.
      */
-    fun translateAll(vararg translations: Pair<Int, Int>): Set<Square>
-        = HashSet.ofAll(translations.flatMap { (col, row) -> translate(col, row).nullableToSet() })
+    fun translateAll(vararg translations: Pair<Int, Int>): Set<Square> =
+        HashSet.ofAll(translations.flatMap { (col, row) -> translate(col, row).nullableToSet() })
 
     /**
      * @return A stream of all valid squares crossed from this square (excluded) applying repeatedly the translation.
      */
-    fun walk(col: Int, row: Int): BoardPath
-        = translate(col, row).iterate { it.translate(col, row) }
+    fun walk(col: Int, row: Int): BoardPath =
+        generateSequence(translate(col, row)) { it.translate(col, row) }.toVavrStream()
 
     override fun toString(): String = name
 

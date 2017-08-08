@@ -1,14 +1,15 @@
 package io.chesslave.model
 
-import io.chesslave.extensions.component1
-import io.chesslave.extensions.component2
-import io.chesslave.extensions.getOrNull
-import javaslang.Tuple
-import javaslang.Tuple2
-import javaslang.collection.HashMap
-import javaslang.collection.List
-import javaslang.collection.Map
-import javaslang.collection.Set
+import io.vavr.Tuple
+import io.vavr.Tuple2
+import io.vavr.collection.HashMap
+import io.vavr.collection.List
+import io.vavr.collection.Map
+import io.vavr.collection.Set
+import io.vavr.kotlin.component1
+import io.vavr.kotlin.component2
+import io.vavr.kotlin.getOrNull
+import io.vavr.kotlin.hashMap
 
 /**
  * An immutable chess position.
@@ -87,19 +88,19 @@ class Position(private val position: Map<Square, Piece>) {
     }
 }
 
-private val pieceFromCode = HashMap.of<String, Piece>(
-    "P", Piece.whitePawn,
-    "N", Piece.whiteKnight,
-    "B", Piece.whiteBishop,
-    "R", Piece.whiteRook,
-    "Q", Piece.whiteQueen,
-    "K", Piece.whiteKing,
-    "p", Piece.blackPawn,
-    "n", Piece.blackKnight,
-    "b", Piece.blackBishop,
-    "r", Piece.blackRook,
-    "q", Piece.blackQueen,
-    "k", Piece.blackKing)
+private val pieceFromCode = hashMap(
+    "P" to Piece.whitePawn,
+    "N" to Piece.whiteKnight,
+    "B" to Piece.whiteBishop,
+    "R" to Piece.whiteRook,
+    "Q" to Piece.whiteQueen,
+    "K" to Piece.whiteKing,
+    "p" to Piece.blackPawn,
+    "n" to Piece.blackKnight,
+    "b" to Piece.blackBishop,
+    "r" to Piece.blackRook,
+    "q" to Piece.blackQueen,
+    "k" to Piece.blackKing)
 private val codeFromPiece = pieceFromCode.toMap { (code, piece) -> Tuple.of(piece, code) }
 
 /**

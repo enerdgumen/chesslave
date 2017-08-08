@@ -7,7 +7,9 @@ import io.chesslave.model.Piece.Type
 import io.chesslave.model.Square
 import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
-import javaslang.collection.HashMap
+import io.vavr.Tuple
+import io.vavr.Tuple2
+import io.vavr.collection.HashMap
 import java.awt.image.BufferedImage
 
 class BoardAnalyzer {
@@ -18,19 +20,19 @@ class BoardAnalyzer {
         val chars = detectCharacteristics(withoutBackground)
         val withoutBorder = Images.crop(withoutBackground) { it != chars.whiteColor && it != chars.blackColor }
         val board = BoardImage(withoutBorder)
-        val pieces = HashMap.of<Piece, BufferedImage>(
-            Piece.blackPawn, cropPiece(board, Board.b7),
-            Piece.blackKnight, cropPiece(board, Board.g8),
-            Piece.blackBishop, cropPiece(board, Board.c8),
-            Piece.blackRook, cropPiece(board, Board.a8),
-            Piece.blackQueen, Images.fillOuterBackground(cropPiece(board, Board.d8), chars.whiteColor),
-            Piece.blackKing, cropPiece(board, Board.e8),
-            Piece.whitePawn, cropPiece(board, Board.b2),
-            Piece.whiteKnight, cropPiece(board, Board.g1),
-            Piece.whiteBishop, cropPiece(board, Board.c1),
-            Piece.whiteRook, cropPiece(board, Board.a1),
-            Piece.whiteQueen, Images.fillOuterBackground(cropPiece(board, Board.d1), chars.blackColor),
-            Piece.whiteKing, cropPiece(board, Board.e1))
+        val pieces = HashMap.ofEntries(
+            Tuple.of(Piece.blackPawn, cropPiece(board, Board.b7)),
+            Tuple.of(Piece.blackKnight, cropPiece(board, Board.g8)),
+            Tuple.of(Piece.blackBishop, cropPiece(board, Board.c8)),
+            Tuple.of(Piece.blackRook, cropPiece(board, Board.a8)),
+            Tuple.of(Piece.blackQueen, Images.fillOuterBackground(cropPiece(board, Board.d8), chars.whiteColor)),
+            Tuple.of(Piece.blackKing, cropPiece(board, Board.e8)),
+            Tuple.of(Piece.whitePawn, cropPiece(board, Board.b2)),
+            Tuple.of(Piece.whiteKnight, cropPiece(board, Board.g1)),
+            Tuple.of(Piece.whiteBishop, cropPiece(board, Board.c1)),
+            Tuple.of(Piece.whiteRook, cropPiece(board, Board.a1)),
+            Tuple.of(Piece.whiteQueen, Images.fillOuterBackground(cropPiece(board, Board.d1), chars.blackColor)),
+            Tuple.of(Piece.whiteKing, cropPiece(board, Board.e1)))
         return BoardConfiguration(board, pieces, chars, false)
     }
 

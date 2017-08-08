@@ -1,7 +1,7 @@
 package io.chesslave.model
 
 import io.chesslave.model.Piece.Type
-import javaslang.collection.List
+import io.vavr.collection.List
 
 /**
  * An immutable chess match tracker.

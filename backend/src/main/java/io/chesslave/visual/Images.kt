@@ -1,7 +1,7 @@
 package io.chesslave.visual
 
-import javaslang.collection.Iterator
-import javaslang.collection.Stream
+import io.vavr.collection.Iterator
+import io.vavr.collection.Stream
 import org.slf4j.LoggerFactory
 import java.awt.image.BufferedImage
 import java.io.File

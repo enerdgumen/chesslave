@@ -1,7 +1,7 @@
 package io.chesslave.eyes
 
-import javaslang.collection.Stream
-import javaslang.control.Option
+import io.vavr.collection.Stream
+import io.vavr.control.Option
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 

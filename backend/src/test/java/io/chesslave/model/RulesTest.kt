@@ -1,6 +1,6 @@
 package io.chesslave.model
 
-import javaslang.collection.HashSet
+import io.vavr.collection.HashSet
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
