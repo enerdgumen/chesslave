@@ -11,14 +11,14 @@ object Chesslave {
         val screen = SikuliScreen()
         val speechSynthesis = WebSpeechSynthesis(events)
         events
-            .on("select-board")
+            .receive("select-board")
             .flatMap { screen.select("Select board...").map { BoardAnalyzer().analyze(it) } }
             .subscribe(
                 {
-                    events.fire(Event("board-selected"))
+                    events.send("board-selected")
                     speechSynthesis.speak(Utterance("Scacchiera selezionata"))
                 },
-                { events.fire(Event("board-selection-failed")) }
+                { events.send("board-selection-failed") }
             )
     }
 }
