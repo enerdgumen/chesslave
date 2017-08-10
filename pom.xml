@@ -6,7 +6,6 @@
     <groupId>io.chesslave</groupId>
     <artifactId>chesslave-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <name>Chesslave</name>
     <packaging>pom</packaging>
     <organization>
         <name>Chesslave</name>
