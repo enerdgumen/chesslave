@@ -8,7 +8,7 @@ gulp.task('less', function() {
         .pipe(gulp.dest('src/app'))
 })
 
-gulp.task('serve', function() {
+gulp.task('serve', ['less'], function() {
     electron.start()
     // Currently the restarter works bad!
     // gulp.watch('src/main.js', electron.restart)
