@@ -3,11 +3,12 @@
   "private": "true",
   "main": "src/main.js",
   "devDependencies": {
-    "electron-connect": "0.6.1",
     "electron": "1.6.2",
+    "electron-connect": "0.6.1",
     "eslint": "3.19.0",
     "eslint-plugin-promise": "3.5.0",
-    "gulp": "3.9.1"
+    "gulp": "3.9.1",
+    "gulp-less": "^3.3.2"
   },
   "dependencies": {
     "bootstrap": "3.3.7",
