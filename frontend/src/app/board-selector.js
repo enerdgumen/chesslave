@@ -1,3 +1,5 @@
+const $ = require('jquery')
+
 function create(events) {
     const el = document.createElement('div')
     el.innerHTML = `
@@ -9,12 +11,23 @@ function create(events) {
     </div>
     `
     const button = el.querySelector('button')
-    button.addEventListener('click',  () => events.fire('select-board'))
-    return {
-        el,
-        enable: () => button.removeAttribute('disabled'),
-        disable: () => button.setAttribute('disabled', true)
-    }
+    const enable = () => button.removeAttribute('disabled')
+    const disable = () => button.setAttribute('disabled', true)
+    button.addEventListener('click', () => {
+        disable()
+        $(button).tooltip('destroy')
+        events.publish('select-board')
+    })
+    events.consumerRx('board-selection-failed').subscribe(() => {
+        enable()
+        $(button)
+            .tooltip({ 
+                title: 'Selection failed, please retry!',
+                placement: 'right'
+            })
+            .tooltip('show')
+    })
+    return { el }
 }
 
 module.exports = {create}

@@ -1,117 +1,76 @@
 package io.chesslave.app
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.subjects.PublishSubject
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.servlet.ServletContextHandler
-import org.eclipse.jetty.servlet.ServletHolder
-import org.eclipse.jetty.websocket.api.Session
-import org.eclipse.jetty.websocket.api.WebSocketAdapter
-import org.eclipse.jetty.websocket.servlet.WebSocketCreator
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory
+import io.reactivex.Single
+import io.vertx.core.Vertx
+import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.eventbus.Message
+import io.vertx.core.json.Json
+import io.vertx.core.json.JsonObject
+import io.vertx.ext.web.Router
+import io.vertx.ext.web.handler.sockjs.BridgeEventType
+import io.vertx.ext.web.handler.sockjs.BridgeOptions
+import io.vertx.ext.web.handler.sockjs.PermittedOptions
+import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import org.slf4j.LoggerFactory
-import java.util.*
+import io.vertx.core.eventbus.EventBus as VertxEventBus
+
+object log {
+
+    private val logger = LoggerFactory.getLogger("main")
+    internal lateinit var bus: VertxEventBus
+
+    fun info(message: String) {
+        logger.info(message)
+        publish("INFO", message)
+    }
+
+    fun error(message: String, throwable: Throwable) {
+        logger.error(message, throwable)
+        publish("ERROR", "$message ($throwable)")
+    }
+
+    private fun publish(level: String, message: String) {
+        bus.publish("log", message, DeliveryOptions().addHeader("level", level))
+    }
+}
 
 fun main(args: Array<String>) {
-    val creator = WebSocketCreator { req, resp ->
-        val socket = RxWebSocket(JsonEventConverter())
-        val events = EventBus(socket.input, socket.output)
-        Chesslave.configure(events)
-        socket
+    Json.mapper.registerModule(KotlinModule())
+    val vertx = Vertx.vertx()
+    log.bus = vertx.eventBus()
+    val router = Router.router(vertx)
+    val bridgeOptions = BridgeOptions()
+        .addInboundPermitted(PermittedOptions())
+        .addOutboundPermitted(PermittedOptions())
+    val eventBusHandler = SockJSHandler.create(vertx).bridge(bridgeOptions) { event ->
+        if (event.type() === BridgeEventType.SOCKET_CREATED) log.info("Web socket created")
+        event.complete(true)
     }
-    val holder = ServletHolder("ws", EventServlet(creator))
-    val context = ServletContextHandler(ServletContextHandler.SESSIONS)
-    context.contextPath = "/"
-    context.addServlet(holder, "/events/*")
-    val server = Server(8080)
-    server.handler = context
-    server.start()
-    server.join()
+    router.route("/events/*").handler(eventBusHandler)
+    vertx.createHttpServer().requestHandler(router::accept).listen(8080) {
+        if (it.succeeded()) log.info("Server started")
+    }
+    Chesslave.configure(EventBus(vertx.eventBus()))
 }
 
-interface Converter<T> {
+class EventBus(private val bus: VertxEventBus) {
 
-    fun asString(value: T): String
+    fun <T> consume(address: String): Observable<Message<T>> =
+        Observable.create { source -> bus.consumer<T>(address, source::onNext) }
 
-    fun fromString(text: String): T
-}
-
-class JsonEventConverter : Converter<Event> {
-
-    private val mapper = ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-
-    override fun asString(event: Event): String = mapper.writeValueAsString(event)
-
-    override fun fromString(text: String): Event = mapper.readValue(text, Event::class.java)
-}
-
-data class Event(
-    val address: String,
-    val payload: Any? = null,
-    val replyTo: String? = null
-)
-
-class EventBus(
-    private val input: Observable<Event>,
-    private val output: Observer<Event>
-) {
-
-    fun receive(address: String): Observable<Event> = input.filter { address == it.address }
-
-    fun send(address: String, payload: Any? = null): Unit = output.onNext(Event(address, payload))
-
-    fun sendAndReceive(address: String, payload: Any?): Observable<Event> {
-        val replyTo = "$address.${UUID.randomUUID()}"
-        output.onNext(Event(address, payload, replyTo))
-        return receive(replyTo)
-    }
-}
-
-class EventServlet(val creator: WebSocketCreator) : WebSocketServlet() {
-
-    override fun configure(factory: WebSocketServletFactory) {
-        factory.creator = creator
-    }
-}
-
-class RxWebSocket(private val converter: Converter<Event>) : WebSocketAdapter() {
-
-    private val logger = LoggerFactory.getLogger(javaClass)
-
-    val input: PublishSubject<Event> = PublishSubject.create<Event>()
-    val output: PublishSubject<Event> = PublishSubject.create<Event>().apply {
-        subscribe { writeEvent(it) }
+    fun publish(address: String, payload: Any? = null) {
+        bus.publish(address, payload?.let(JsonObject::mapFrom))
     }
 
-    override fun onWebSocketConnect(session: Session) {
-        logger.debug("Socket Connected: $session")
-        super.onWebSocketConnect(session)
-    }
-
-    override fun onWebSocketText(message: String?) {
-        logger.debug("Received TEXT message: $message")
-        if (message == null) throw IllegalArgumentException("message should not be null")
-        input.onNext(converter.fromString(message))
-    }
-
-    override fun onWebSocketError(cause: Throwable) {
-        logger.error("Socket Error", cause)
-    }
-
-    override fun onWebSocketClose(statusCode: Int, reason: String?) {
-        logger.debug("Socket Closed: [$statusCode] $reason")
-        super.onWebSocketClose(statusCode, reason)
-        input.onComplete()
-        output.onComplete()
-    }
-
-    private fun writeEvent(event: Event) {
-        val message = converter.asString(event)
-        logger.debug("Sending TEXT message: {}", message)
-        remote.sendString(message)
-    }
+    fun <T> send(address: String, payload: Any?): Single<Message<T>> =
+        Single.create { source ->
+            bus.send<T>(address, payload?.let(JsonObject::mapFrom)) { response ->
+                if (response.succeeded())
+                    source.onSuccess(response.result())
+                else
+                    source.onError(response.cause())
+            }
+        }
 }

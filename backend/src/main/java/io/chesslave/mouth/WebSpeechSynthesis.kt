@@ -4,5 +4,5 @@ import io.chesslave.app.EventBus
 
 class WebSpeechSynthesis(val events: EventBus) : SpeechSynthesis {
 
-    override fun speak(utterance: Utterance) = events.send("speak", utterance)
+    override fun speak(utterance: Utterance) = events.publish("speak", utterance)
 }

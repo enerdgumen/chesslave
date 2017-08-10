@@ -23,7 +23,7 @@ function create(events) {
     body.appendChild(starter.el)
     starter.action
         .withLatestFrom(whitePlayer.status, blackPlayer.status,
-            (turn, white, black) => events.fire('start-game', {turn, white, black}))
+            (turn, white, black) => events.publish('start-game', {turn, white, black}))
         .subscribe()
     return {el}
 }
