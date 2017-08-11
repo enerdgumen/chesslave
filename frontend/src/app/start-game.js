@@ -11,8 +11,8 @@ function create() {
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="#" data-turn="white">White</a></li>
-            <li><a href="#" data-turn="black">Black</a></li>
+            <li><a href="#" data-turn="WHITE">White</a></li>
+            <li><a href="#" data-turn="BLACK">Black</a></li>
           </ul>
         </div>`
     const button = el.querySelector('button')

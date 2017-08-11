@@ -1,6 +1,6 @@
 package io.chesslave.eyes
 
-import io.chesslave.eyes.sikuli.SikuliScreen
+import io.chesslave.app.log
 import io.chesslave.eyes.sikuli.SikuliVision
 import io.chesslave.model.Color
 import io.chesslave.model.Game
@@ -8,14 +8,11 @@ import io.chesslave.visual.Images
 import io.chesslave.visual.model.BoardImage
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.zipWith
-import org.slf4j.LoggerFactory
 import java.awt.Rectangle
 import java.util.concurrent.TimeUnit
 
-class BoardObserver(private val config: BoardConfiguration) {
+class BoardObserver(val config: BoardConfiguration, val screen: Screen) {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val screen: Screen = SikuliScreen()
     private val vision: Vision = SikuliVision()
     private val recogniser: GameRecogniser = GameRecogniser(
         PositionRecogniser(vision, config),
@@ -27,7 +24,7 @@ class BoardObserver(private val config: BoardConfiguration) {
         val match = findBoardInDesktop(config.board)
         val initImage = BoardImage(match.image(), match.region().location)
         val initGame = recogniser.begin(initImage, color)
-        logger.debug("initial position:\n${initGame.position()}")
+        log.debug("initial position:\n${initGame.position()}")
         // following game
         val boards = captureBoards(match.region())
         return observeGame(initGame, boards)
@@ -52,11 +49,11 @@ class BoardObserver(private val config: BoardConfiguration) {
             // TODO: restore from eventual exception
             val move = recogniser.next(game, previous, current)
             if (move == null) {
-                logger.debug("nothing is changed")
+                log.debug("nothing is changed")
                 game
             } else {
                 // TODO: validate move
-                logger.debug("detective move:\n{}", move)
+                log.debug("detective move:\n$move")
                 game.move(move)
             }
         }

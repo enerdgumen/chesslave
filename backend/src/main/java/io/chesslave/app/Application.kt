@@ -26,6 +26,11 @@ object log {
         publish("INFO", message)
     }
 
+    fun debug(message: String) {
+        logger.debug(message)
+        publish("DEBUG", message)
+    }
+
     fun error(message: String, throwable: Throwable) {
         logger.error(message, throwable)
         publish("ERROR", "$message ($throwable)")
@@ -55,10 +60,18 @@ fun main(args: Array<String>) {
     Chesslave.configure(EventBus(vertx.eventBus()))
 }
 
-class EventBus(private val bus: VertxEventBus) {
+class EventBus(val bus: VertxEventBus) {
 
-    fun <T> consume(address: String): Observable<Message<T>> =
-        Observable.create { source -> bus.consumer<T>(address, source::onNext) }
+
+    fun consume(address: String): Observable<Message<Any?>> =
+        Observable.create { source -> bus.consumer<Any?>(address, source::onNext) }
+
+    fun <T> consume(address: String, eventClass: Class<T>): Observable<T> =
+        Observable.create { source ->
+            bus.consumer<JsonObject>(address, { message ->
+                source.onNext(message.body().mapTo(eventClass))
+            })
+        }
 
     fun publish(address: String, payload: Any? = null) {
         bus.publish(address, payload?.let(JsonObject::mapFrom))
