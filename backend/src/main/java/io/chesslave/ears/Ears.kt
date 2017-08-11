@@ -12,40 +12,6 @@ import org.jparsec.pattern.Patterns
 
 typealias UtteranceParser = (String) -> MoveDescription?
 
-val parseWithRegex: UtteranceParser = { utterance ->
-    val pieces = mapOf(
-        "pedone" to Type.PAWN,
-        "cavallo" to Type.KNIGHT,
-        "alfiere" to Type.BISHOP,
-        "torre" to Type.ROOK,
-        "donna" to Type.QUEEN,
-        "regina" to Type.QUEEN,
-        "re" to Type.KING
-    )
-    val pieceNames = pieces.keys.joinToString(separator = "|")
-    val spaces = """\s*"""
-    val pattern = Regex("""
-    (?<squareFrom>
-        (?<pieceFrom>$pieceNames) ($spaces(?<colFrom>[a-h]))? ($spaces(?<rowFrom>[1-8]))? |
-        (?<colFrom2>[a-h]) ($spaces(?<rowFrom2>[1-8]))?
-    )?
-    (?<pieceTo>$pieceNames)?$spaces(?<colTo>[a-h])$spaces(?<rowTo>[1-8])
-    """.replace(Regex("\\s+"), ""))
-    pattern.matchEntire(utterance)?.let { matches ->
-        val pieceFrom = matches.groups["pieceFrom"]?.let { pieces[it.value] }
-        val colFrom = (matches.groups["colFrom"] ?: matches.groups["colFrom2"])?.let { it.value[0] - 'a' }
-        val rowFrom = (matches.groups["rowFrom"] ?: matches.groups["rowFrom2"])?.let { it.value[0] - '1' }
-        val fromSquare = matches.groups["squareFrom"]?.let { MoveDescription.Square(piece = pieceFrom, col = colFrom, row = rowFrom) }
-        val pieceTo = matches.groups["pieceTo"]?.let { pieces[it.value] }
-        val colTo = matches.groups["colTo"]?.let { it.value[0] - 'a' }
-        val rowTo = matches.groups["rowTo"]?.let { it.value[0] - '1' }
-        MoveDescription.Regular(
-            fromSquare = fromSquare,
-            toSquare = MoveDescription.Square(piece = pieceTo, col = colTo, row = rowTo)
-        )
-    }
-}
-
 val parseUtterance: UtteranceParser = { utterance ->
     fun term(text: String): Parser<Boolean> = Parsers.token { if (it.value().toString() == text) true else null }
     val words = Patterns.isChar(CharPredicates.IS_ALPHA).many1().toScanner("word").source()
