@@ -3,9 +3,10 @@ package io.chesslave.visual
 import io.vavr.collection.Iterator
 import io.vavr.collection.Stream
 import org.slf4j.LoggerFactory
+import java.awt.Color
+import java.awt.Point
 import java.awt.image.BufferedImage
 import java.io.File
-import java.util.function.Predicate
 import javax.imageio.ImageIO
 
 /**
@@ -26,7 +27,7 @@ object Images {
     /**
      * Writes the image of the given file as PNG.
      */
-   fun write(image: BufferedImage, file: File) {
+    fun write(image: BufferedImage, file: File) {
         logger.debug("Writing image {}", file)
         ImageIO.write(image, "PNG", file)
     }
@@ -207,3 +208,40 @@ object Images {
         return true
     }
 }
+
+typealias RBG = Int
+
+data class Movement(val dx: Int, val dy: Int) {
+
+    companion object {
+        val UP = Movement(0, -1)
+        val DOWN = Movement(0, 1)
+        val LEFT = Movement(-1, 0)
+        val RIGHT = Movement(1, 0)
+    }
+
+    fun plus(that: Movement): Movement =
+        Movement(this.dx + that.dx, this.dy + that.dy)
+}
+
+fun Point.move(movement: Movement): Point =
+    Point(this).apply {
+        translate(movement.dx, movement.dy)
+    }
+
+fun BufferedImage.getColor(at: Point): Color =
+    Color(this.getRGB(at.x, at.y))
+
+fun BufferedImage.getRGB(at: Point): Int =
+    this.getRGB(at.x, at.y)
+
+fun BufferedImage.moveFrom(from: Point, movement: Movement, predicate: (RBG) -> Boolean): Point {
+    val current = Point(from)
+    do current.translate(movement.dx, movement.dy)
+    while (current in this && predicate(this.getRGB(current)))
+    return current
+}
+
+operator fun BufferedImage.contains(point: Point): Boolean =
+    0 <= point.x && point.x < this.width
+        && 0 <= point.y && point.y < this.height

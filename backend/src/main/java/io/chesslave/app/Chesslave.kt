@@ -1,8 +1,8 @@
 package io.chesslave.app
 
-import io.chesslave.eyes.BoardAnalyzer
 import io.chesslave.eyes.BoardConfiguration
 import io.chesslave.eyes.BoardObserver
+import io.chesslave.eyes.analyzeBoardImage
 import io.chesslave.eyes.sikuli.SikuliScreen
 import io.chesslave.model.Color
 import io.chesslave.mouth.Utterance
@@ -21,7 +21,7 @@ object Chesslave {
         // board selection
         val boardConfig: Observable<BoardConfiguration> = events
             .consume("select-board")
-            .flatMap { screen.select("Select board...").map { BoardAnalyzer().analyze(it) } }
+            .flatMap { screen.select("Select board...").map(::analyzeBoardImage) }
             .doOnError { error ->
                 log.error("Board selection failed", error)
                 events.publish("board-selection-failed")

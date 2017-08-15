@@ -20,7 +20,7 @@ class MoveRecogniserByImageDiffTest(chessSet: ChessSet) : BaseRecognitionTest(ch
     fun setUp() {
         val initialPosition = Game.initialPosition().position()
         val initialBoard = BoardRenderer(chessSet).withPosition(initialPosition).render()
-        val config = BoardAnalyzer().analyze(initialBoard.image)
+        val config = analyzeBoardImage(initialBoard.image)
         this.recogniser = MoveRecogniserByImageDiff(PieceRecogniser(SikuliVision(), config))
     }
 

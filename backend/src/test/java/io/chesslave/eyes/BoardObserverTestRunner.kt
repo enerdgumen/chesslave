@@ -19,7 +19,7 @@ class BoardObserverTestRunner {
         // 5 seconds to open the browser
         Thread.sleep(5000)
 
-        val config = BoardAnalyzer().analyze(Images.read("/images/set1/initial-board.png"))
+        val config = analyzeBoardImage(Images.read("/images/set1/initial-board.png"))
         val moves = BoardObserver(config, SikuliScreen()).start(Color.WHITE)
         moves.blockingLast() // waiting forever
     }

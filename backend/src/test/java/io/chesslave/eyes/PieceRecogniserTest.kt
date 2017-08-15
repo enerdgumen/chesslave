@@ -5,7 +5,6 @@ import io.chesslave.model.Game
 import io.chesslave.model.Piece
 import io.chesslave.model.Position
 import io.chesslave.model.Square
-import io.chesslave.visual.model.BoardImage
 import io.chesslave.visual.rendering.BoardRenderer
 import io.chesslave.visual.rendering.ChessSet
 import io.vavr.control.Option
@@ -20,7 +19,7 @@ class PieceRecogniserTest(chessSet: ChessSet) : SinglePieceRecognitionTest(chess
     fun setUp() {
         val initialPosition = Game.initialPosition().position()
         val initialBoard = BoardRenderer(chessSet).withPosition(initialPosition).render()
-        val config = BoardAnalyzer().analyze(initialBoard.image)
+        val config = analyzeBoardImage(initialBoard.image)
         this.recogniser = PieceRecogniser(SikuliVision(), config)
     }
 
