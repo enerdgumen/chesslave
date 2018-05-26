@@ -1,4 +1,5 @@
-/etc
-/node
-/node_modules
-/src/app/style.css
+.DS_Store
+dist/
+node_modules/
+thumbs.db
+node/

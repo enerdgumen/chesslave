@@ -9,8 +9,10 @@ import io.chesslave.mouth.Utterance
 import io.chesslave.mouth.WebSpeechSynthesis
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.withLatestFrom
+import io.vertx.core.json.JsonObject
+import io.vertx.reactivex.core.eventbus.EventBus
 
-data class StartGameEvent(val turn: Color, val white: String, val black: String)
+data class StartGameCommand(val turn: Color, val white: String, val black: String)
 
 object Chesslave {
 
@@ -20,25 +22,35 @@ object Chesslave {
 
         // board selection
         val boardConfig: Observable<BoardConfiguration> = events
-            .consume("select-board")
-            .flatMap { screen.select("Select board...").map(::analyzeBoardImage) }
-            .doOnError { error ->
-                log.error("Board selection failed", error)
-                events.publish("board-selection-failed")
+            .consumer<Unit>("select-board")
+            .toObservable()
+            .flatMapSingle { message ->
+                screen.select("Select board...")
+                    .map(::analyzeBoardImage)
+                    .doOnError { error ->
+                        log.error("Board selection failed", error)
+                        message.reply(false)
+                    }
+                    .doOnSuccess {
+                        log.info("Board selected")
+                        message.reply(true)
+                        speechSynthesis.speak(Utterance("Scacchiera selezionata"))
+                    }
             }
-            .retry()
-        boardConfig.subscribe {
-            log.info("Board selected")
-            events.publish("board-selected")
-            speechSynthesis.speak(Utterance("Scacchiera selezionata"))
-        }
+
+        events
+            .consumer<Unit>("test")
+            .toObservable()
+            .subscribe { it.reply("ok") }
 
         // game starting
-        events.consume("start-game", StartGameEvent::class.java)
-            .withLatestFrom(boardConfig) { event, config ->
-                BoardObserver(config, screen).start(event.turn)
+        events.consumer<JsonObject>("start-game")
+            .toObservable()
+            .map { message -> message.body().mapTo(StartGameCommand::class.java) }
+            .withLatestFrom(boardConfig) { cmd, config ->
+                BoardObserver(config, screen).start(cmd.turn)
             }
             .flatMap { it }
-            .subscribe { log.info("Current game: $it") }
+            .subscribe { log.info("Current position: ${it.position()}") }
     }
 }

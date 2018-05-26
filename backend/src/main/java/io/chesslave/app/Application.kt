@@ -1,25 +1,21 @@
 package io.chesslave.app
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.vertx.core.Vertx
 import io.vertx.core.eventbus.DeliveryOptions
-import io.vertx.core.eventbus.Message
 import io.vertx.core.json.Json
-import io.vertx.core.json.JsonObject
-import io.vertx.ext.web.Router
-import io.vertx.ext.web.handler.sockjs.BridgeEventType
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
 import io.vertx.ext.web.handler.sockjs.PermittedOptions
-import io.vertx.ext.web.handler.sockjs.SockJSHandler
+import io.vertx.reactivex.core.Vertx
+import io.vertx.reactivex.core.eventbus.EventBus
+import io.vertx.reactivex.ext.web.Router
+import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import org.slf4j.LoggerFactory
 import io.vertx.core.eventbus.EventBus as VertxEventBus
 
 object log {
 
     private val logger = LoggerFactory.getLogger("main")
-    internal lateinit var bus: VertxEventBus
+    internal lateinit var bus: EventBus
 
     fun info(message: String) {
         logger.info(message)
@@ -49,41 +45,10 @@ fun main(args: Array<String>) {
     val bridgeOptions = BridgeOptions()
         .addInboundPermitted(PermittedOptions())
         .addOutboundPermitted(PermittedOptions())
-    val eventBusHandler = SockJSHandler.create(vertx).bridge(bridgeOptions) { event ->
-        if (event.type() === BridgeEventType.SOCKET_CREATED) log.info("Web socket created")
-        event.complete(true)
-    }
+    val eventBusHandler = SockJSHandler.create(vertx).bridge(bridgeOptions)
     router.route("/events/*").handler(eventBusHandler)
     vertx.createHttpServer().requestHandler(router::accept).listen(8080) {
         if (it.succeeded()) log.info("Server started")
     }
-    Chesslave.configure(EventBus(vertx.eventBus()))
-}
-
-class EventBus(val bus: VertxEventBus) {
-
-
-    fun consume(address: String): Observable<Message<Any?>> =
-        Observable.create { source -> bus.consumer<Any?>(address, source::onNext) }
-
-    fun <T> consume(address: String, eventClass: Class<T>): Observable<T> =
-        Observable.create { source ->
-            bus.consumer<JsonObject>(address, { message ->
-                source.onNext(message.body().mapTo(eventClass))
-            })
-        }
-
-    fun publish(address: String, payload: Any? = null) {
-        bus.publish(address, payload?.let(JsonObject::mapFrom))
-    }
-
-    fun <T> send(address: String, payload: Any?): Single<Message<T>> =
-        Single.create { source ->
-            bus.send<T>(address, payload?.let(JsonObject::mapFrom)) { response ->
-                if (response.succeeded())
-                    source.onSuccess(response.result())
-                else
-                    source.onError(response.cause())
-            }
-        }
+    Chesslave.configure(vertx.eventBus())
 }

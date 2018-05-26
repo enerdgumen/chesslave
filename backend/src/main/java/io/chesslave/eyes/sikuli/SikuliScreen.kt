@@ -3,6 +3,7 @@ package io.chesslave.eyes.sikuli
 import io.chesslave.app.log
 import io.chesslave.eyes.Screen
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.sikuli.script.Location
 import org.sikuli.util.OverlayCapturePrompt
 import org.sikuli.util.ScreenHighlighter
@@ -18,14 +19,16 @@ class SikuliScreen : Screen {
 
     override fun capture(region: Rectangle) = screen.capture(region).image!!
 
-    override fun select(message: String): Observable<BufferedImage> {
+    override fun select(message: String): Single<BufferedImage> {
         log.info("Selecting board...")
-        return Observable.create<BufferedImage> { result ->
-            val overlay = OverlayCapturePrompt(screen) { subject ->
-                val me = subject as OverlayCapturePrompt
-                result.onNext(me.selection.image)
+        return Single.create<BufferedImage> { result ->
+            OverlayCapturePrompt(screen).apply {
+                addObserver { subject ->
+                    val me = subject as OverlayCapturePrompt
+                    result.onSuccess(me.selection.image)
+                }
+                prompt(message)
             }
-            overlay.prompt(message)
         }!!
     }
 

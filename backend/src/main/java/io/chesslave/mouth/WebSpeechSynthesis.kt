@@ -1,8 +1,13 @@
 package io.chesslave.mouth
 
-import io.chesslave.app.EventBus
+import io.vertx.core.json.JsonObject
+import io.vertx.reactivex.core.eventbus.EventBus
 
-class WebSpeechSynthesis(val events: EventBus) : SpeechSynthesis {
+class WebSpeechSynthesis(
+    private val events: EventBus
+) : SpeechSynthesis {
 
-    override fun speak(utterance: Utterance) = events.publish("speak", utterance)
+    override fun speak(utterance: Utterance) {
+        events.publish("speak", JsonObject.mapFrom(utterance))
+    }
 }
