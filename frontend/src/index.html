@@ -11,16 +11,7 @@
 <script type="text/jsx">
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { AppContainer } from 'react-hot-loader'
-
-const render = () => {
-  const Index = require('./index').default
-  ReactDOM.render(<AppContainer><Index /></AppContainer>, document.getElementById('app'))
-}
-
-render()
-if (module.hot) {
-  module.hot.accept(render)
-}
+import App from './Boot'
+ReactDOM.render(<App />, document.getElementById('app'))
 </script>
 </html>

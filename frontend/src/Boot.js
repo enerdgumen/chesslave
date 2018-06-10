@@ -14,11 +14,10 @@ events.state$.pipe(filter(isOpen)).subscribe(() => {
   registerSpeaker(events)
 })
 
-
-const Main = () => (
+const Boot = () => (
   <Provider events={events}>
     <App />
   </Provider>
 )
 
-export default Main
+export default Boot

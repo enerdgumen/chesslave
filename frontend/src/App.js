@@ -1,4 +1,5 @@
 import React from 'react'
+import { hot } from 'react-hot-loader'
 import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
@@ -47,4 +48,4 @@ const App = ({ classes, events }) => {
   )
 }
 
-export default inject('events')(withStyles(styles)(App))
+export default hot(module)(inject('events')(withStyles(styles)(App)))
