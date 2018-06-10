@@ -51,6 +51,6 @@ object Chesslave {
                 BoardObserver(config, screen).start(cmd.turn)
             }
             .flatMap { it }
-            .subscribe { log.info("Current position: ${it.position()}") }
+            .subscribe { log.info("Current position:\n${it.position()}") }
     }
 }
