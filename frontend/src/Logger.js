@@ -1,7 +1,7 @@
 function registerLogger(events) {
-  events.rxConsumer('log').subscribe(message => {
+  events.rxConsumer('log').subscribe((message) => {
     /* eslint-disable no-console */
-    const {body, headers: {level}} = message
+    const { body, headers: { level } } = message
     console.log(`${level}: ${body}`)
     /* eslint-enable no-console */
   })

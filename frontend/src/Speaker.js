@@ -10,7 +10,7 @@ function speak(utterance) {
 
 function registerSpeaker(events) {
   events.rxConsumer('speak')
-        .subscribe(({body}) => speak(body))
+        .subscribe(({ body }) => speak(body))
 }
 
 export { registerSpeaker, speak }

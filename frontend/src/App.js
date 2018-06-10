@@ -9,13 +9,13 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faChess from '@fortawesome/fontawesome-free-solid/faChess'
 import { inject } from 'mobx-react'
 
-const theme = createMuiTheme({
+const muiTheme = createMuiTheme({
   palette: {
     type: 'dark',
   },
 })
 
-const styles = (theme) => ({
+const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
@@ -24,23 +24,27 @@ const styles = (theme) => ({
 const App = ({ classes, events }) => {
   const selectBoard = () => events
       .rxSend('select-board')
-      .subscribe(({ body: selected }) => { console.log("Selected?", selected) })
+      .subscribe(({ body: selected }) => { console.log('Selected?', selected) })
   const startGame = () => events
-      .rxSend('start-game', {turn: 'WHITE', white: 'human', black: 'machine'})
-      .subscribe(({ body }) => { console.log("Started", body) })
+      .rxSend('start-game', { turn: 'WHITE', white: 'human', black: 'machine' })
+      .subscribe(({ body }) => { console.log('Started', body) })
   return (
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={muiTheme}>
       <CssBaseline />
       <AppBar position="static" color="default">
-          <Toolbar>
-          <FontAwesomeIcon icon={faChess} size="2x" style={{marginRight: '1rem'}} />
+        <Toolbar>
+          <FontAwesomeIcon icon={faChess} size="2x" style={{ marginRight: '1rem' }} />
           <Typography variant="title" color="inherit">Chesslave</Typography>
-          </Toolbar>
+        </Toolbar>
       </AppBar>
-      <Button variant="raised" color="primary" className={classes.button}  onClick={selectBoard}>Select board</Button>
-      <Button variant="raised" color="secondary" className={classes.button} onClick={startGame}>Start game</Button>
+      <Button variant="raised" color="primary" className={classes.button} onClick={selectBoard}>
+        Select board
+      </Button>
+      <Button variant="raised" color="secondary" className={classes.button} onClick={startGame}>
+        Start game
+      </Button>
     </MuiThemeProvider>
   )
 }
 
-export default inject("events")(withStyles(styles)(App))
+export default inject('events')(withStyles(styles)(App))

@@ -1,5 +1,3 @@
-.DS_Store
-dist/
-node_modules/
-thumbs.db
-node/
+node_modules
+out
+.eslintcache
