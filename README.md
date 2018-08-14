@@ -5,7 +5,7 @@
 
 # Chesslave
 
-**Under active development - Contributions are welcome!**
+**† Not under development anymore.**
 
 _Chesslave_ is an application helping you to play chess in a better way, using a real chessboard.
 
